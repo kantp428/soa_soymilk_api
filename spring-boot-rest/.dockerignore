@@ -1,0 +1,9 @@
+target
+.git
+.github
+.idea
+.vscode
+*.log
+.attach_pid*
+README.md
+spring-boot-rest.postman_collection.json

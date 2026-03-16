@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.ConstraintViolationException;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -49,6 +50,14 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	public final ResponseEntity<ErrorResponse> dataIntegrityViolationException(CustomDataIntegrityViolationException ex, WebRequest request) {
 		String[] detail = ex.getLocalizedMessage().split("Detail: Key ");
 		ErrorResponse error = new ErrorResponse(CONFLICT, Arrays.asList(detail));
+		return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+	}
+
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public final ResponseEntity<ErrorResponse> handleDataIntegrityViolation(DataIntegrityViolationException ex, WebRequest request) {
+		List<String> details = new ArrayList<>();
+		details.add(ex.getMostSpecificCause().getMessage());
+		ErrorResponse error = new ErrorResponse(CONFLICT, details);
 		return new ResponseEntity<>(error, HttpStatus.CONFLICT);
 	}
 }
