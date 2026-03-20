@@ -25,13 +25,13 @@ export default function AdminDashboardPage() {
     queryFn: () => apiClient.get('/orders?page=1&limit=100')
   });
 
-  const orders = data?.data || [];
+  const orders = [...(data?.data || [])].sort((a, b) => (b.order_id || 0) - (a.order_id || 0));
   const totalSales = orders.reduce((sum: number, order: Order) => sum + (order.total_price || 0), 0);
   const totalOrders = orders.length;
 
   const salesByDate = orders.reduce((acc: Record<string, { date: string; revenue: number; count: number; timestamp: number }>, order: Order) => {
     const rawDate = order.created_at || new Date().toISOString();
-    const dateObj = new Date(rawDate);
+    const dateObj = new Date(rawDate.replace(' ', 'T'));
     const dateStr = dateObj.toLocaleDateString('th-TH', { month: 'short', day: 'numeric' });
 
     if (!acc[dateStr]) {
@@ -142,10 +142,10 @@ export default function AdminDashboardPage() {
                         <tr key={order.order_id} className="border-b transition-colors hover:bg-zinc-50/50">
                           <td className="p-4 align-middle font-medium">#{order.order_id}</td>
                           <td className="p-4 align-middle">
-                            {new Date(order.created_at || '').toLocaleString('th-TH', { 
+                            {order.created_at ? new Date(order.created_at.replace(' ', 'T')).toLocaleString('th-TH', { 
                               day: '2-digit', month: '2-digit', year: '2-digit', 
                               hour: '2-digit', minute: '2-digit' 
-                            })}
+                            }) : 'N/A'}
                           </td>
                           <td className="p-4 align-middle text-zinc-500">{order.customer_id ? `ลูกค้า #${order.customer_id}` : 'หน้าร้าน'}</td>
                           <td className="p-4 align-middle font-bold">฿{order.total_price?.toLocaleString()}</td>
