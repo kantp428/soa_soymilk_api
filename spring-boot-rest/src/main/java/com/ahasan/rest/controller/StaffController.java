@@ -89,6 +89,7 @@ public class StaffController extends ApiControllerSupport {
 		data.put("phone", entity.getPhone());
 		data.put("role", entity.getRole());
 		data.put("status", entity.getStatus());
+		data.put("created_at", entity.getCreatedAt());
 		return data;
 	}
 

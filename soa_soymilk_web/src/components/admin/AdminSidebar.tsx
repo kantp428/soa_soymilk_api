@@ -29,7 +29,7 @@ export function AdminSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 bg-zinc-950 text-zinc-300 flex-shrink-0 flex flex-col h-screen overflow-y-auto">
+    <aside className="w-72 bg-zinc-950 text-zinc-300 flex-shrink-0 flex flex-col h-screen overflow-hidden border-r border-zinc-800 shadow-2xl z-50">
       <div className="h-16 flex items-center px-6 border-b border-zinc-800">
         <Store className="w-6 h-6 mr-3 text-white" />
         <span className="text-white font-semibold text-lg tracking-tight">ระบบหลังบ้าน</span>
@@ -44,22 +44,22 @@ export function AdminSidebar() {
          </Link>
       </div>
 
-      <nav className="flex-1 py-4">
-        <ul className="space-y-1">
+      <nav className="flex-1 py-6 px-4 overflow-y-auto">
+        <ul className="space-y-1.5">
           {navItems.map((item) => {
             const isActive = pathname === item.href || (pathname.startsWith(item.href) && item.href !== '/admin');
             return (
-              <li key={item.href} className="px-3">
+              <li key={item.href}>
                 <Link
                   href={item.href}
                   className={cn(
-                    "flex items-center px-3 py-2.5 rounded-md text-sm transition-colors",
+                    "flex items-center px-4 py-3 rounded-xl text-sm transition-all duration-200 group",
                     isActive
-                      ? "bg-zinc-800 text-white font-medium"
+                      ? "bg-white text-zinc-950 font-bold shadow-lg"
                       : "hover:bg-zinc-800/50 hover:text-white"
                   )}
                 >
-                  <item.icon className="w-4 h-4 mr-3" />
+                  <item.icon className={cn("w-5 h-5 mr-3 transition-transform group-hover:scale-110", isActive ? "text-zinc-950" : "text-zinc-500")} />
                   {item.label}
                 </Link>
               </li>
