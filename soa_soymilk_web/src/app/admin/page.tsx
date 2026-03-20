@@ -95,8 +95,8 @@ export default function AdminDashboardPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-bold text-zinc-900">฿{totalSales.toLocaleString()}</div>
-                <p className="text-xs text-green-600 mt-2 font-medium flex items-center">
-                  <TrendingUp className="w-3 h-3 mr-1" /> +12% จากสัปดาห์ที่แล้ว
+                <p className="text-xs text-zinc-500 mt-2 font-medium flex items-center">
+                  <TrendingUp className="w-3 h-3 mr-1 text-primary" /> +12% จากสัปดาห์ที่แล้ว
                 </p>
               </CardContent>
             </Card>
@@ -123,13 +123,13 @@ export default function AdminDashboardPage() {
                 <CardTitle className="text-sm font-medium text-zinc-500">
                   สถานะระบบ
                 </CardTitle>
-                <div className="h-8 w-8 rounded-full bg-green-50 flex items-center justify-center">
-                  <UsersIcon className="h-4 w-4 text-green-600" />
+                <div className="h-8 w-8 rounded-full bg-zinc-100 flex items-center justify-center">
+                  <UsersIcon className="h-4 w-4 text-zinc-900" />
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold text-green-600">พร้อมใช้งาน</div>
-                <p className="text-xs text-green-600/80 mt-2 font-medium">ทุกบริการทำงานประสานกันปกติ</p>
+                <div className="text-3xl font-bold text-zinc-900">พร้อมใช้งาน</div>
+                <p className="text-xs text-zinc-500 mt-2 font-medium">ทุกบริการทำงานประสานกันปกติ</p>
               </CardContent>
             </Card>
           </div>
@@ -175,7 +175,7 @@ export default function AdminDashboardPage() {
                             </span>
                           </td>
                           <td className="p-4 align-middle">
-                            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold bg-green-100 text-green-700">
+                            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold bg-primary/10 text-primary">
                               {order.order_status || 'PAID'}
                             </span>
                           </td>
@@ -212,8 +212,8 @@ export default function AdminDashboardPage() {
                   <p className="font-bold text-zinc-900">{orderDetail.payment_method}</p>
                 </div>
                 <div>
-                  <p className="text-zinc-500">สถานะ</p>
-                  <p className="font-bold text-green-600">{orderDetail.order_status || 'PAID'}</p>
+                  <p className="text-zinc-500">สถานะออเดอร์</p>
+                  <p className="font-bold text-primary">{orderDetail.order_status || 'PAID'}</p>
                 </div>
               </div>
 

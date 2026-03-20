@@ -196,5 +196,18 @@
   body {
     @apply bg-background text-foreground;
     letter-spacing: var(--tracking-normal);
+    position: relative;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: url("/bg-pattern.png");
+    background-repeat: repeat;
+    background-size: 250px;
+    opacity: 0.06;
+    z-index: -1;
+    pointer-events: none;
   }
 }
