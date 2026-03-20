@@ -118,70 +118,52 @@ export default function AdminDashboardPage() {
             </Card>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+          <div className="mt-6">
             <Card className="shadow-sm border-zinc-200">
               <CardHeader>
-                <CardTitle>แนวโน้มยอดขาย (Revenue Trend)</CardTitle>
-                <CardDescription>กราฟแสดงยอดขายรายวัน 7 วันล่าสุด</CardDescription>
+                <CardTitle>รายการสั่งซื้อล่าสุด (Recent Orders)</CardTitle>
+                <CardDescription>แสดงรายการล่าสุด 10 รายการที่เพิ่งเข้ามาในระบบ</CardDescription>
               </CardHeader>
               <CardContent>
-                <ChartContainer config={chartConfig} className="h-[300px] w-full [--color-revenue:theme(colors.zinc.900)]">
-                  <BarChart accessibilityLayer data={displayData} margin={{ top: 20, right: 0, left: -20, bottom: 0 }}>
-                    <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="#e4e4e7" />
-                    <XAxis
-                      dataKey="date"
-                      tickLine={false}
-                      axisLine={false}
-                      tickMargin={10}
-                      fontSize={12}
-                    />
-                    <YAxis
-                      tickLine={false}
-                      axisLine={false}
-                      tickMargin={10}
-                      fontSize={12}
-                      tickFormatter={(value) => `฿${value}`}
-                    />
-                    <ChartTooltip cursor={{ fill: 'rgba(0,0,0,0.05)' }} content={<ChartTooltipContent />} />
-                    <Bar dataKey="revenue" fill="var(--color-revenue)" radius={[4, 4, 0, 0]} barSize={40} />
-                  </BarChart>
-                </ChartContainer>
-              </CardContent>
-            </Card>
-
-            <Card className="shadow-sm border-zinc-200">
-              <CardHeader>
-                <CardTitle>ปริมาณออเดอร์ (Order Volume)</CardTitle>
-                <CardDescription>กราฟแสดงจำนวนรายการสั่งซื้อ 7 วันล่าสุด</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ChartContainer config={chartConfig} className="h-[300px] w-full [--color-count:theme(colors.zinc.500)]">
-                  <LineChart accessibilityLayer data={displayData} margin={{ top: 20, right: 20, left: -20, bottom: 0 }}>
-                    <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="#e4e4e7" />
-                    <XAxis
-                      dataKey="date"
-                      tickLine={false}
-                      axisLine={false}
-                      tickMargin={10}
-                      fontSize={12}
-                    />
-                    <YAxis
-                      tickLine={false}
-                      axisLine={false}
-                      tickMargin={10}
-                      fontSize={12}
-                    />
-                    <ChartTooltip cursor={{ stroke: '#a1a1aa', strokeWidth: 1 }} content={<ChartTooltipContent />} />
-                    <Line
-                      type="monotone"
-                      dataKey="count"
-                      stroke="var(--color-count)"
-                      strokeWidth={3}
-                      dot={{ fill: 'var(--color-count)', r: 4 }}
-                      activeDot={{ r: 6 }}
-                    />
-                  </LineChart>
-                </ChartContainer>
+                <div className="relative w-full overflow-auto">
+                  <table className="w-full caption-bottom text-sm">
+                    <thead className="[&_tr]:border-b bg-zinc-50/50">
+                      <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                        <th className="h-12 px-4 text-left align-middle font-medium text-zinc-500">ID</th>
+                        <th className="h-12 px-4 text-left align-middle font-medium text-zinc-500">วันเวลา</th>
+                        <th className="h-12 px-4 text-left align-middle font-medium text-zinc-500">โต๊ะ/ลูกค้า</th>
+                        <th className="h-12 px-4 text-left align-middle font-medium text-zinc-500">ราคา</th>
+                        <th className="h-12 px-4 text-left align-middle font-medium text-zinc-500">ช่องทาง</th>
+                        <th className="h-12 px-4 text-left align-middle font-medium text-zinc-500">สถานะ</th>
+                      </tr>
+                    </thead>
+                    <tbody className="[&_tr:last-child]:border-0">
+                      {orders.slice(0, 10).map((order) => (
+                        <tr key={order.order_id} className="border-b transition-colors hover:bg-zinc-50/50">
+                          <td className="p-4 align-middle font-medium">#{order.order_id}</td>
+                          <td className="p-4 align-middle">
+                            {new Date(order.created_at || '').toLocaleString('th-TH', { 
+                              day: '2-digit', month: '2-digit', year: '2-digit', 
+                              hour: '2-digit', minute: '2-digit' 
+                            })}
+                          </td>
+                          <td className="p-4 align-middle text-zinc-500">{order.customer_id ? `ลูกค้า #${order.customer_id}` : 'หน้าร้าน'}</td>
+                          <td className="p-4 align-middle font-bold">฿{order.total_price?.toLocaleString()}</td>
+                          <td className="p-4 align-middle">
+                            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold bg-zinc-100 text-zinc-800">
+                              {order.payment_method}
+                            </span>
+                          </td>
+                          <td className="p-4 align-middle">
+                            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold bg-green-100 text-green-700">
+                              {order.order_status || 'PAID'}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </CardContent>
             </Card>
           </div>

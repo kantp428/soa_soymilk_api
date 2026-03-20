@@ -34,9 +34,9 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
         total_price: total,
         payment_method: paymentMethod,
         order_status: 'COMPLETED',
-      });
+      }) as any;
 
-      const orderId = res.data.data.order_id;
+      const orderId = res.data.order_id;
 
       for (const item of items) {
 
@@ -45,9 +45,9 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
           menu_id: parseInt(item.productId),
           quantity: item.quantity,
           price: item.price
-        });
+        }) as any;
 
-        const orderItemId = orderItemRes.data.order_item_id;
+        const orderItemId = orderItemRes.order_item_id;
 
         for (const topping of item.toppings) {
           await createOrderItemAddon({
