@@ -120,7 +120,7 @@ export default function Home() {
               <div className="w-12 h-12 bg-zinc-800 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-white group-hover:text-zinc-900 transition-colors duration-300">
                 <LayoutDashboard className="w-6 h-6" />
               </div>
-              <h2 className="text-2xl font-bold text-white mb-2">ระบบหลังหน้า</h2>
+              <h2 className="text-2xl font-bold text-white mb-2">ระบบหลังบ้าน</h2>
               <p className="text-zinc-400 text-left font-medium">สำหรับผู้จัดการและแอดมิน จัดการสต็อก โปรโมชั่น ซัพพลายเออร์ สรุปยอดขาย</p>
               <div className="mt-auto pt-8 flex items-center text-white font-bold group-hover:translate-x-2 transition-transform">
                 เข้าสู่แผงควบคุมหลัก <ArrowRight className="w-5 h-5 ml-2" />
