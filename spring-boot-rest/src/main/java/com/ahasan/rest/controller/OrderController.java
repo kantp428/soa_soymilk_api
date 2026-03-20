@@ -15,15 +15,32 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ahasan.rest.common.exceptions.RecordNotFoundException;
 import com.ahasan.rest.entity.OrderEntity;
+import com.ahasan.rest.entity.OrderItemEntity;
+import com.ahasan.rest.entity.OrderItemAddonEntity;
 import com.ahasan.rest.repo.OrderRepo;
+import com.ahasan.rest.repo.OrderItemRepo;
+import com.ahasan.rest.repo.OrderItemAddonRepo;
+import com.ahasan.rest.repo.MenuRepo;
+import com.ahasan.rest.repo.AddonRepo;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class OrderController extends ApiControllerSupport {
 
 	private final OrderRepo orderRepo;
+	private final OrderItemRepo orderItemRepo;
+	private final OrderItemAddonRepo orderItemAddonRepo;
+	private final MenuRepo menuRepo;
+	private final AddonRepo addonRepo;
 
-	public OrderController(OrderRepo orderRepo) {
+	public OrderController(OrderRepo orderRepo, OrderItemRepo orderItemRepo, 
+			OrderItemAddonRepo orderItemAddonRepo, MenuRepo menuRepo, AddonRepo addonRepo) {
 		this.orderRepo = orderRepo;
+		this.orderItemRepo = orderItemRepo;
+		this.orderItemAddonRepo = orderItemAddonRepo;
+		this.menuRepo = menuRepo;
+		this.addonRepo = addonRepo;
 	}
 
 	@GetMapping("/orders")
@@ -45,7 +62,46 @@ public class OrderController extends ApiControllerSupport {
 
 	@GetMapping("/orders/{id}")
 	public Map<String, Object> getOne(@PathVariable Integer id) {
-		return toOrderMap(orderRepo.findById(id).orElseThrow(() -> new RecordNotFoundException("Order id " + id + " not found")));
+		OrderEntity order = orderRepo.findById(id).orElseThrow(() -> new RecordNotFoundException("Order id " + id + " not found"));
+		return toOrderMap(order);
+	}
+
+	@GetMapping("/orders/{id}/details")
+	public Map<String, Object> getDetails(@PathVariable Integer id) {
+		OrderEntity order = orderRepo.findById(id).orElseThrow(() -> new RecordNotFoundException("Order id " + id + " not found"));
+		Map<String, Object> response = toOrderMap(order);
+		
+		List<OrderItemEntity> items = orderItemRepo.findByOrderId(id);
+		List<Map<String, Object>> itemsList = new ArrayList<>();
+		
+		for (OrderItemEntity item : items) {
+			Map<String, Object> itemMap = new LinkedHashMap<>();
+			itemMap.put("order_item_id", item.getOrderItemId());
+			itemMap.put("menu_id", item.getMenuId());
+			itemMap.put("quantity", item.getQuantity());
+			itemMap.put("price", item.getPrice());
+			
+			menuRepo.findById(item.getMenuId()).ifPresent(menu -> {
+				itemMap.put("menu_name", menu.getMenuName());
+			});
+			
+			List<OrderItemAddonEntity> addons = orderItemAddonRepo.findByOrderItemId(item.getOrderItemId());
+			List<Map<String, Object>> addonsList = new ArrayList<>();
+			for (OrderItemAddonEntity addon : addons) {
+				Map<String, Object> addonMap = new LinkedHashMap<>();
+				addonMap.put("addon_id", addon.getAddonId());
+				addonRepo.findById(addon.getAddonId()).ifPresent(a -> {
+					addonMap.put("addon_name", a.getAddonName());
+					addonMap.put("price", a.getPrice());
+				});
+				addonsList.add(addonMap);
+			}
+			itemMap.put("addons", addonsList);
+			itemsList.add(itemMap);
+		}
+		
+		response.put("items", itemsList);
+		return response;
 	}
 
 	@PostMapping("/orders")
