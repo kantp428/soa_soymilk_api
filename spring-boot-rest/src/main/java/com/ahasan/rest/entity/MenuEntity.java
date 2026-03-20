@@ -10,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import com.ahasan.rest.common.CrudEntity;
 
 @Entity
@@ -36,10 +39,12 @@ public class MenuEntity implements CrudEntity {
 	@Column(name = "status", length = 20)
 	private String status = "ACTIVE";
 
-	@Column(name = "created_at", insertable = false, updatable = false)
+	@CreationTimestamp
+	@Column(name = "created_at", updatable = false)
 	private LocalDateTime createdAt;
 
-	@Column(name = "updated_at", insertable = false, updatable = false)
+	@UpdateTimestamp
+	@Column(name = "updated_at")
 	private LocalDateTime updatedAt;
 
 	@Override
