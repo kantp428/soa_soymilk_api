@@ -15,15 +15,15 @@ export default function AdminPurchasesPage() {
       </div>
 
       <div className="flex gap-2 border-b border-zinc-200 pb-px">
-        <Button 
-          variant="ghost" 
+        <Button
+          variant="ghost"
           className={`rounded-none border-b-2 px-6 ${activeTab === 'suppliers' ? 'border-zinc-900 font-semibold' : 'border-transparent text-zinc-500'}`}
           onClick={() => setActiveTab('suppliers')}
         >
           Suppliers
         </Button>
-        <Button 
-          variant="ghost" 
+        <Button
+          variant="ghost"
           className={`rounded-none border-b-2 px-6 ${activeTab === 'purchases' ? 'border-zinc-900 font-semibold' : 'border-transparent text-zinc-500'}`}
           onClick={() => setActiveTab('purchases')}
         >

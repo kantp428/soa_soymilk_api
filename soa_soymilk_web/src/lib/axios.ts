@@ -7,12 +7,12 @@ export const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 10000, 
+  timeout: 10000,
 });
 
 apiClient.interceptors.request.use(
   (config) => {
-    
+
     const token = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -42,7 +42,7 @@ apiClient.interceptors.response.use(
             }
         }
     }
-    
+
     return Promise.reject(error);
   }
 );

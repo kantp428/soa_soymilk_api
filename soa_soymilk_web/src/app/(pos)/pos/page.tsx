@@ -36,7 +36,7 @@ export default function POSPage() {
       productId: product.menu_id.toString(),
       name: product.menu_name,
       price: product.price,
-      sweetness, 
+      sweetness,
       toppings,
       quantity,
     });
@@ -51,7 +51,7 @@ export default function POSPage() {
       filtered = filtered.filter((p) => p.category_id === selectedCategoryId);
     }
     if (searchQuery.trim() !== '') {
-      filtered = filtered.filter((p) => 
+      filtered = filtered.filter((p) =>
         p.menu_name.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
@@ -72,7 +72,7 @@ export default function POSPage() {
          </div>
          <div className="font-bold text-lg text-zinc-900 tracking-tight">ร้านน้ำเต้าหู้ ตั้งหวังเจ๊ง</div>
       </header>
-      
+
       <div className="flex flex-1 overflow-hidden">
         {}
         <div className="flex-1 flex flex-col pt-6 pb-6 px-8 h-full">
@@ -84,7 +84,7 @@ export default function POSPage() {
           </div>
           <div className="relative w-64 hidden sm:block">
              <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
-             <input 
+             <input
                type="text"
                placeholder="ค้นหาเมนู..."
                value={searchQuery}
@@ -96,7 +96,7 @@ export default function POSPage() {
 
         {}
         <div className="mb-6 flex gap-2 overflow-x-auto pb-2 scrollbar-none">
-          <Button 
+          <Button
             variant={selectedCategoryId === 'all' ? 'default' : 'outline'}
             className="rounded-full shadow-sm flex-shrink-0"
             onClick={() => setSelectedCategoryId('all')}
@@ -110,7 +110,7 @@ export default function POSPage() {
              </div>
           ) : (
             categories.map((cat) => (
-              <Button 
+              <Button
                 key={cat.category_id}
                 variant={selectedCategoryId === cat.category_id ? 'default' : 'outline'}
                 className="rounded-full shadow-sm flex-shrink-0"
@@ -136,8 +136,8 @@ export default function POSPage() {
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pb-20">
               {filteredProducts.map((product) => (
-                <Card 
-                  key={product.menu_id} 
+                <Card
+                  key={product.menu_id}
                   className="cursor-pointer hover:border-zinc-400 hover:shadow-md transition-all h-[200px] flex flex-col justify-between overflow-hidden bg-white"
                   onClick={() => handleProductClick(product)}
                 >
@@ -166,7 +166,7 @@ export default function POSPage() {
           <ShoppingCart className="w-6 h-6" />
           <h2 className="text-xl font-bold tracking-tight">รายการสั่งซื้อ (Cart)</h2>
         </div>
-        
+
         <ScrollArea className="flex-1 p-6">
           {items.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-zinc-400 mt-20">
@@ -182,7 +182,7 @@ export default function POSPage() {
                     <div className="font-semibold text-zinc-800">{item.name}</div>
                     <div className="font-bold text-lg">฿{(item.price + item.toppings.reduce((s, t) => s + t.price, 0)) * item.quantity}</div>
                   </div>
-                  
+
                   <div className="flex flex-wrap gap-1 mt-1">
                     <div className="text-xs text-zinc-600 font-medium bg-white px-2 py-1 rounded inline-block border shadow-sm">
                       หวาน {item.sweetness}%
@@ -196,9 +196,9 @@ export default function POSPage() {
 
                   <div className="flex items-center justify-between mt-3">
                     <div className="flex items-center gap-1 bg-white border rounded-lg shadow-sm">
-                      <Button 
-                        variant="ghost" 
-                        size="icon" 
+                      <Button
+                        variant="ghost"
+                        size="icon"
                         className="h-8 w-8 text-zinc-500 rounded-none rounded-l-lg hover:bg-zinc-100"
                         onClick={() => {
                           if (item.quantity > 1) updateQuantity(item.id, item.quantity - 1);
@@ -208,19 +208,19 @@ export default function POSPage() {
                         <Minus className="h-3 w-3" />
                       </Button>
                       <span className="w-8 text-center text-sm font-semibold">{item.quantity}</span>
-                      <Button 
-                        variant="ghost" 
-                        size="icon" 
+                      <Button
+                        variant="ghost"
+                        size="icon"
                         className="h-8 w-8 text-zinc-500 rounded-none rounded-r-lg hover:bg-zinc-100"
                         onClick={() => updateQuantity(item.id, item.quantity + 1)}
                       >
                         <Plus className="h-3 w-3" />
                       </Button>
                     </div>
-                    
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
+
+                    <Button
+                      variant="ghost"
+                      size="icon"
                       className="h-8 w-8 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-lg"
                       onClick={() => removeItem(item.id)}
                     >
@@ -243,8 +243,8 @@ export default function POSPage() {
             <Button variant="outline" className="flex-1 py-6 rounded-xl border-zinc-300 font-medium" onClick={clearCart} disabled={items.length === 0}>
               ล้างตะกร้า
             </Button>
-            <Button 
-              className="flex-[2] py-6 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white font-semibold text-lg shadow-lg" 
+            <Button
+              className="flex-[2] py-6 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white font-semibold text-lg shadow-lg"
               disabled={items.length === 0}
               onClick={() => setIsCheckoutModalOpen(true)}
             >
@@ -255,7 +255,7 @@ export default function POSPage() {
         </div>
       </div>
 
-      <AddonModal 
+      <AddonModal
         isOpen={isAddonModalOpen}
         onClose={() => setIsAddonModalOpen(false)}
         product={selectedProduct}

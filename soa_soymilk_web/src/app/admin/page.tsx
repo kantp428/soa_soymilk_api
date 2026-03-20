@@ -3,9 +3,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '@/lib/axios';
 import { Loader2, DollarSign, ShoppingBag, Users as UsersIcon, TrendingUp } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer, Line, LineChart } from 'recharts';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Line, LineChart } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+import { Order, PaginatedResponse } from '@/features/products/types';
 
 const chartConfig = {
   revenue: {
@@ -19,21 +20,20 @@ const chartConfig = {
 };
 
 export default function AdminDashboardPage() {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading } = useQuery<PaginatedResponse<Order>>({
     queryKey: ['/orders'],
     queryFn: () => apiClient.get('/orders?page=1&limit=100')
   });
 
   const orders = data?.data || [];
-  const totalSales = orders.reduce((sum: number, order: any) => sum + (order.total_price || 0), 0);
+  const totalSales = orders.reduce((sum: number, order: Order) => sum + (order.total_price || 0), 0);
   const totalOrders = orders.length;
 
-  const salesByDate = orders.reduce((acc: any, order: any) => {
-    
-    const rawDate = order.created_at || order.createdAt || order.order_date || order.orderDate || new Date().toISOString();
+  const salesByDate = orders.reduce((acc: Record<string, { date: string; revenue: number; count: number; timestamp: number }>, order: Order) => {
+    const rawDate = order.created_at || new Date().toISOString();
     const dateObj = new Date(rawDate);
     const dateStr = dateObj.toLocaleDateString('th-TH', { month: 'short', day: 'numeric' });
-    
+
     if (!acc[dateStr]) {
       acc[dateStr] = { date: dateStr, revenue: 0, count: 0, timestamp: dateObj.getTime() };
     }
@@ -43,8 +43,8 @@ export default function AdminDashboardPage() {
   }, {});
 
   const chartData = Object.values(salesByDate)
-    .sort((a: any, b: any) => a.timestamp - b.timestamp)
-    .map(({ date, revenue, count }: any) => ({ date, revenue, count }))
+    .sort((a, b) => a.timestamp - b.timestamp)
+    .map(({ date, revenue, count }) => ({ date, revenue, count }))
     .slice(-7);
 
   const displayData = chartData.length > 0 ? chartData : [
@@ -59,7 +59,7 @@ export default function AdminDashboardPage() {
         <h1 className="text-2xl font-bold tracking-tight text-zinc-900">แผงควบคุมหลัก (Dashboard)</h1>
         <p className="text-zinc-500 text-sm mt-1">ภาพรวมผลประกอบการและยอดขายประจำร้านของคุณ</p>
       </div>
-      
+
       {isLoading ? (
         <div className="flex flex-col items-center justify-center p-20 text-zinc-500 space-y-4">
           <Loader2 className="w-8 h-8 animate-spin" />
@@ -128,17 +128,17 @@ export default function AdminDashboardPage() {
                 <ChartContainer config={chartConfig} className="h-[300px] w-full [--color-revenue:theme(colors.zinc.900)]">
                   <BarChart accessibilityLayer data={displayData} margin={{ top: 20, right: 0, left: -20, bottom: 0 }}>
                     <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="#e4e4e7" />
-                    <XAxis 
-                      dataKey="date" 
-                      tickLine={false} 
-                      axisLine={false} 
-                      tickMargin={10} 
+                    <XAxis
+                      dataKey="date"
+                      tickLine={false}
+                      axisLine={false}
+                      tickMargin={10}
                       fontSize={12}
                     />
-                    <YAxis 
-                      tickLine={false} 
-                      axisLine={false} 
-                      tickMargin={10} 
+                    <YAxis
+                      tickLine={false}
+                      axisLine={false}
+                      tickMargin={10}
                       fontSize={12}
                       tickFormatter={(value) => `฿${value}`}
                     />
@@ -158,27 +158,27 @@ export default function AdminDashboardPage() {
                 <ChartContainer config={chartConfig} className="h-[300px] w-full [--color-count:theme(colors.zinc.500)]">
                   <LineChart accessibilityLayer data={displayData} margin={{ top: 20, right: 20, left: -20, bottom: 0 }}>
                     <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="#e4e4e7" />
-                    <XAxis 
-                      dataKey="date" 
-                      tickLine={false} 
-                      axisLine={false} 
-                      tickMargin={10} 
+                    <XAxis
+                      dataKey="date"
+                      tickLine={false}
+                      axisLine={false}
+                      tickMargin={10}
                       fontSize={12}
                     />
-                    <YAxis 
-                      tickLine={false} 
-                      axisLine={false} 
-                      tickMargin={10} 
+                    <YAxis
+                      tickLine={false}
+                      axisLine={false}
+                      tickMargin={10}
                       fontSize={12}
                     />
                     <ChartTooltip cursor={{ stroke: '#a1a1aa', strokeWidth: 1 }} content={<ChartTooltipContent />} />
-                    <Line 
-                      type="monotone" 
-                      dataKey="count" 
-                      stroke="var(--color-count)" 
-                      strokeWidth={3} 
-                      dot={{ fill: 'var(--color-count)', r: 4 }} 
-                      activeDot={{ r: 6 }} 
+                    <Line
+                      type="monotone"
+                      dataKey="count"
+                      stroke="var(--color-count)"
+                      strokeWidth={3}
+                      dot={{ fill: 'var(--color-count)', r: 4 }}
+                      activeDot={{ r: 6 }}
                     />
                   </LineChart>
                 </ChartContainer>

@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { Addon } from '@/features/products/types';
 
 export interface CartItem {
-  id: string; 
+  id: string;
   productId: string;
   name: string;
   price: number;
@@ -25,7 +25,7 @@ export const useCartStore = create<CartState>((set, get) => ({
   addItem: (item) =>
     set((state) => {
 
-      const existingItemIndex = state.items.findIndex((i) => 
+      const existingItemIndex = state.items.findIndex((i) =>
         i.productId === item.productId &&
         i.sweetness === item.sweetness &&
         JSON.stringify(i.toppings) === JSON.stringify(item.toppings)
@@ -36,7 +36,7 @@ export const useCartStore = create<CartState>((set, get) => ({
         newItems[existingItemIndex].quantity += item.quantity;
         return { items: newItems };
       }
-      
+
       return { items: [...state.items, { ...item, id: crypto.randomUUID() }] };
     }),
   removeItem: (id) =>

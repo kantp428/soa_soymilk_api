@@ -39,10 +39,10 @@ export function AddonModal({ isOpen, onClose, product, onConfirm }: AddonModalPr
 
   const addons = addonsData?.date || [];
 
-  const availableAddons = addons.filter(addon => addon.status === 'Available' || addon.status === 'Active' || !addon.status); 
+  const availableAddons = addons.filter(addon => addon.status === 'Available' || addon.status === 'Active' || !addon.status);
 
   const toggleTopping = (addon: Addon) => {
-    setSelectedToppings(prev => 
+    setSelectedToppings(prev =>
       prev.some(t => t.addon_id === addon.addon_id)
         ? prev.filter(t => t.addon_id !== addon.addon_id)
         : [...prev, addon]
@@ -92,7 +92,7 @@ export function AddonModal({ isOpen, onClose, product, onConfirm }: AddonModalPr
                 <span>เลือกท็อปปิ้ง (Toppings)</span>
                 <span className="text-sm font-normal text-zinc-500">เลือกได้หลายรายการ</span>
               </h3>
-              
+
               {isLoading ? (
                 <div className="flex items-center justify-center p-8 text-zinc-400">
                   <Loader2 className="w-8 h-8 animate-spin" />
@@ -107,12 +107,12 @@ export function AddonModal({ isOpen, onClose, product, onConfirm }: AddonModalPr
                     availableAddons.map((addon) => {
                       const isSelected = selectedToppings.some(t => t.addon_id === addon.addon_id);
                       return (
-                        <div 
+                        <div
                           key={addon.addon_id}
                           onClick={() => toggleTopping(addon)}
                           className={`flex items-center justify-between p-4 rounded-xl border-2 cursor-pointer transition-all ${
-                            isSelected 
-                              ? 'border-zinc-900 bg-zinc-50' 
+                            isSelected
+                              ? 'border-zinc-900 bg-zinc-50'
                               : 'border-zinc-100 hover:border-zinc-300'
                           }`}
                         >
@@ -137,18 +137,18 @@ export function AddonModal({ isOpen, onClose, product, onConfirm }: AddonModalPr
             <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-zinc-900">จำนวน (Quantity)</h3>
                 <div className="flex items-center gap-4 bg-zinc-50 p-2 rounded-2xl w-fit border border-zinc-200 shadow-sm">
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     className="h-12 w-12 rounded-xl bg-white shadow-sm border border-zinc-200 hover:bg-zinc-100"
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                   >
                     <Minus className="h-5 w-5" />
                   </Button>
                   <span className="w-12 text-center text-2xl font-bold">{quantity}</span>
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     className="h-12 w-12 rounded-xl bg-white shadow-sm border border-zinc-200 hover:bg-zinc-100"
                     onClick={() => setQuantity(quantity + 1)}
                   >
@@ -160,7 +160,7 @@ export function AddonModal({ isOpen, onClose, product, onConfirm }: AddonModalPr
         </ScrollArea>
 
         <DialogFooter className="p-6 border-t border-zinc-100 bg-white">
-          <Button 
+          <Button
             className="w-full py-7 text-lg font-bold rounded-xl bg-zinc-900 hover:bg-zinc-800 shadow-xl"
             onClick={handleConfirm}
           >

@@ -20,7 +20,8 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/components/ui/dialog';
-import { Loader2, Plus, Edit2, Search } from 'lucide-react';
+import { Loader2, Plus, Edit2 } from 'lucide-react';
+import { PaginatedResponse } from '@/features/products/types';
 
 export interface ColumnDef<T> {
   header: string;
@@ -32,7 +33,7 @@ export interface FormFieldDef {
   name: string;
   label: string;
   type: 'text' | 'number' | 'select' | 'textarea';
-  options?: { label: string; value: string | number }[]; 
+  options?: { label: string; value: string | number }[];
   required?: boolean;
 }
 
@@ -43,16 +44,15 @@ interface CrudTableProps<T> {
   formFields: FormFieldDef[];
   primaryKey: keyof T;
   searchPlaceholder?: string;
-  dataKey?: string; 
+  dataKey?: string;
 }
 
-export function CrudTable<T extends Record<string, any>>({
+export function CrudTable<T extends Record<string, unknown>>({
   title,
   endpoint,
   columns,
   formFields,
   primaryKey,
-  searchPlaceholder = 'ค้นหาข้อมูล...',
   dataKey = 'data'
 }: CrudTableProps<T>) {
   const queryClient = useQueryClient();
@@ -61,24 +61,23 @@ export function CrudTable<T extends Record<string, any>>({
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<T | null>(null);
-  const [formData, setFormData] = useState<Record<string, any>>({});
+  const [formData, setFormData] = useState<Partial<T>>({});
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading } = useQuery<PaginatedResponse<T>>({
     queryKey: [endpoint, page],
     queryFn: async () => {
       const res = await apiClient.get(`${endpoint}?page=${page}&limit=${limit}`);
-      return res;
+      return res as unknown as PaginatedResponse<T>;
     },
   });
 
-  const rawData = data as any;
-  const items: T[] = rawData?.[dataKey] || [];
-  const totalItemCount = rawData?.pagination?.total || 0;
+  const rawData = data;
+  const items: T[] = (rawData ? (rawData as unknown as Record<string, unknown>)[dataKey] : []) as T[];
 
   const filteredItems = items;
 
   const createMutation = useMutation({
-    mutationFn: (newObj: Record<string, any>) => apiClient.post(endpoint, newObj),
+    mutationFn: (newObj: Partial<T>) => apiClient.post(endpoint, newObj),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [endpoint] });
       setIsModalOpen(false);
@@ -86,7 +85,7 @@ export function CrudTable<T extends Record<string, any>>({
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string | number; data: Record<string, any> }) => 
+    mutationFn: ({ id, data }: { id: string | number; data: Partial<T> }) =>
       apiClient.put(`${endpoint}/${id}`, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [endpoint] });
@@ -183,14 +182,14 @@ export function CrudTable<T extends Record<string, any>>({
                 {field.type === 'textarea' ? (
                   <textarea
                     className="flex min-h-[80px] w-full border-zinc-200 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-950 focus-visible:ring-offset-2 rounded-md border"
-                    value={formData[field.name] || ''}
-                    onChange={(e) => setFormData({ ...formData, [field.name]: e.target.value })}
+                    value={(formData[field.name] as string | number | undefined) || ''}
+                    onChange={(e) => setFormData({ ...formData, [field.name]: e.target.value as unknown as T[keyof T] })}
                   />
                 ) : field.type === 'select' && field.options ? (
                   <select
                     className="flex h-10 w-full border-zinc-200 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-950 focus-visible:ring-offset-2 rounded-md border"
-                    value={formData[field.name] || ''}
-                    onChange={(e) => setFormData({ ...formData, [field.name]: e.target.value })}
+                    value={(formData[field.name] as string | number | undefined) || ''}
+                    onChange={(e) => setFormData({ ...formData, [field.name]: e.target.value as unknown as T[keyof T] })}
                   >
                     <option value="" disabled>Select option</option>
                     {field.options.map(opt => (
@@ -200,10 +199,10 @@ export function CrudTable<T extends Record<string, any>>({
                 ) : (
                   <Input
                     type={field.type}
-                    value={formData[field.name] || ''}
-                    onChange={(e) => setFormData({ 
-                      ...formData, 
-                      [field.name]: field.type === 'number' ? Number(e.target.value) : e.target.value 
+                    value={(formData[field.name] as string | number | undefined) || ''}
+                    onChange={(e) => setFormData({
+                      ...formData,
+                      [field.name]: (field.type === 'number' ? Number(e.target.value) : e.target.value) as unknown as T[keyof T]
                     })}
                   />
                 )}

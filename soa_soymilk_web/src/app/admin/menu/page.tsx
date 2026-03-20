@@ -15,22 +15,22 @@ export default function AdminMenuPage() {
       </div>
 
       <div className="flex gap-2 border-b border-zinc-200 pb-px">
-        <Button 
-          variant="ghost" 
+        <Button
+          variant="ghost"
           className={`rounded-none border-b-2 px-6 ${activeTab === 'menus' ? 'border-zinc-900 font-semibold' : 'border-transparent text-zinc-500'}`}
           onClick={() => setActiveTab('menus')}
         >
           Menus
         </Button>
-        <Button 
-          variant="ghost" 
+        <Button
+          variant="ghost"
           className={`rounded-none border-b-2 px-6 ${activeTab === 'categories' ? 'border-zinc-900 font-semibold' : 'border-transparent text-zinc-500'}`}
           onClick={() => setActiveTab('categories')}
         >
           Categories
         </Button>
-        <Button 
-          variant="ghost" 
+        <Button
+          variant="ghost"
           className={`rounded-none border-b-2 px-6 ${activeTab === 'addons' ? 'border-zinc-900 font-semibold' : 'border-transparent text-zinc-500'}`}
           onClick={() => setActiveTab('addons')}
         >
@@ -49,8 +49,8 @@ export default function AdminMenuPage() {
               { header: 'Name', accessorKey: 'menu_name' },
               { header: 'Category ID', accessorKey: 'category_id' },
               { header: 'Price (฿)', accessorKey: 'price' },
-              { 
-                header: 'Status', 
+              {
+                header: 'Status',
                 accessorKey: 'status',
                 cell: (row) => (
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${row.status === 'Active' || row.status === 'Available' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
@@ -94,7 +94,7 @@ export default function AdminMenuPage() {
             title="Addons"
             endpoint="/addons"
             primaryKey="addon_id"
-            dataKey="date" 
+            dataKey="date"
             columns={[
               { header: 'ID', accessorKey: 'addon_id' },
               { header: 'Addon Name', accessorKey: 'addon_name' },

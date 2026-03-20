@@ -2,12 +2,12 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { 
-  LayoutDashboard, 
-  List, 
-  PackageOpen, 
-  Truck, 
-  Tag, 
+import {
+  LayoutDashboard,
+  List,
+  PackageOpen,
+  Truck,
+  Tag,
   Users,
   Store,
   ArrowLeft,
@@ -54,8 +54,8 @@ export function AdminSidebar() {
                   href={item.href}
                   className={cn(
                     "flex items-center px-3 py-2.5 rounded-md text-sm transition-colors",
-                    isActive 
-                      ? "bg-zinc-800 text-white font-medium" 
+                    isActive
+                      ? "bg-zinc-800 text-white font-medium"
                       : "hover:bg-zinc-800/50 hover:text-white"
                   )}
                 >

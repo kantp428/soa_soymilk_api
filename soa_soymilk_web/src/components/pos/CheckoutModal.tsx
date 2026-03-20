@@ -34,7 +34,7 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
         total_price: total,
         payment_method: paymentMethod,
         order_status: 'COMPLETED',
-        
+
       });
 
       const orderId = res.data.data.order_id;
@@ -78,7 +78,7 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
       <DialogContent className="sm:max-w-[450px] bg-white rounded-2xl overflow-hidden p-0 gap-0">
-        
+
         {isSuccess ? (
           <div className="flex flex-col items-center justify-center p-10 text-center space-y-4">
              <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-2">
@@ -103,7 +103,7 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
               <div className="space-y-4">
                 <h3 className="text-sm font-semibold text-zinc-500 uppercase tracking-wider">เลือกช่องทางการชำระเงิน (Payment Method)</h3>
                 <div className="grid grid-cols-3 gap-3">
-                  <Button 
+                  <Button
                     variant={paymentMethod === 'CASH' ? 'default' : 'outline'}
                     onClick={() => setPaymentMethod('CASH')}
                     className="flex flex-col h-24 gap-2 rounded-xl"
@@ -111,7 +111,7 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                     <Banknote className="w-6 h-6" />
                     <span>เงินสด</span>
                   </Button>
-                  <Button 
+                  <Button
                     variant={paymentMethod === 'PROMPTPAY' ? 'default' : 'outline'}
                     onClick={() => setPaymentMethod('PROMPTPAY')}
                     className="flex flex-col h-24 gap-2 rounded-xl"
@@ -119,7 +119,7 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                     <QrCode className="w-6 h-6" />
                     <span>พร้อมเพย์</span>
                   </Button>
-                  <Button 
+                  <Button
                     variant={paymentMethod === 'CREDIT_CARD' ? 'default' : 'outline'}
                     onClick={() => setPaymentMethod('CREDIT_CARD')}
                     className="flex flex-col h-24 gap-2 rounded-xl"
@@ -132,8 +132,8 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
             </div>
 
             <DialogFooter className="p-6 border-t border-zinc-100 bg-white">
-              <Button 
-                onClick={handleCheckout} 
+              <Button
+                onClick={handleCheckout}
                 disabled={isSubmitting || total === 0}
                 className="w-full py-7 text-lg font-bold rounded-xl bg-zinc-900 hover:bg-zinc-800 shadow-xl"
               >

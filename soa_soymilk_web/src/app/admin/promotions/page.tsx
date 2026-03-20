@@ -15,15 +15,15 @@ export default function AdminPromotionsPage() {
       </div>
 
       <div className="flex gap-2 border-b border-zinc-200 pb-px">
-        <Button 
-          variant="ghost" 
+        <Button
+          variant="ghost"
           className={`rounded-none border-b-2 px-6 ${activeTab === 'campaigns' ? 'border-zinc-900 font-semibold' : 'border-transparent text-zinc-500'}`}
           onClick={() => setActiveTab('campaigns')}
         >
           Promotion Campaigns
         </Button>
-        <Button 
-          variant="ghost" 
+        <Button
+          variant="ghost"
           className={`rounded-none border-b-2 px-6 ${activeTab === 'coupons' ? 'border-zinc-900 font-semibold' : 'border-transparent text-zinc-500'}`}
           onClick={() => setActiveTab('coupons')}
         >
@@ -35,7 +35,7 @@ export default function AdminPromotionsPage() {
         {activeTab === 'campaigns' && (
           <CrudTable
             title="Promotion Campaigns"
-            endpoint="/promotion-campain" 
+            endpoint="/promotion-campain"
             primaryKey="promotionCampainId"
             columns={[
               { header: 'ID', accessorKey: 'promotionCampainId' },

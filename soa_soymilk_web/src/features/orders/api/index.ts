@@ -4,7 +4,7 @@ export interface CreateOrderPayload {
   customer_id?: number | null;
   total_price: number;
   payment_method: string;
-  order_status: string; 
+  order_status: string;
   coupon_id?: number | null;
   staff_id?: number | null;
 }
@@ -19,7 +19,7 @@ export interface CreateOrderItemPayload {
 export interface CreateOrderItemAddonPayload {
   order_item_id: number;
   addon_id: number;
-  price: number; 
+  price: number;
 }
 
 export const createOrder = async (payload: CreateOrderPayload) => {
