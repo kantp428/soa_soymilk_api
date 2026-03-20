@@ -101,4 +101,21 @@ export interface Order {
   coupon_id?: number | null;
 }
 
+export interface OrderDetailItem {
+  order_item_id: number;
+  menu_id: number;
+  menu_name?: string;
+  quantity: number;
+  price: number;
+  addons?: {
+    addon_id: number;
+    addon_name: string;
+    price: number;
+  }[];
+}
+
+export interface OrderDetail extends Order {
+  items: OrderDetailItem[];
+}
+
 export type Product = Menu;

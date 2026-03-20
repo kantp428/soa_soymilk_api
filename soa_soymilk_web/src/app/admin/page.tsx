@@ -6,7 +6,15 @@ import { Loader2, DollarSign, ShoppingBag, Users as UsersIcon, TrendingUp } from
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Line, LineChart } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { Order, PaginatedResponse } from '@/features/products/types';
+import { Order, PaginatedResponse, OrderDetail } from '@/features/products/types';
+import { useState } from 'react';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Separator } from "@/components/ui/separator";
 
 const chartConfig = {
   revenue: {
@@ -20,9 +28,17 @@ const chartConfig = {
 };
 
 export default function AdminDashboardPage() {
+  const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
+
   const { data, isLoading } = useQuery<PaginatedResponse<Order>>({
     queryKey: ['/orders'],
     queryFn: () => apiClient.get('/orders?page=1&limit=100')
+  });
+
+  const { data: orderDetail, isLoading: isLoadingDetails } = useQuery<OrderDetail>({
+    queryKey: ['/orders', selectedOrderId, 'details'],
+    queryFn: () => apiClient.get(`/orders/${selectedOrderId}/details`),
+    enabled: !!selectedOrderId,
   });
 
   const orders = [...(data?.data || [])].sort((a, b) => (b.order_id || 0) - (a.order_id || 0));
@@ -139,7 +155,11 @@ export default function AdminDashboardPage() {
                     </thead>
                     <tbody className="[&_tr:last-child]:border-0">
                       {orders.slice(0, 10).map((order) => (
-                        <tr key={order.order_id} className="border-b transition-colors hover:bg-zinc-50/50">
+                        <tr 
+                          key={order.order_id} 
+                          className="border-b transition-colors hover:bg-zinc-100 cursor-pointer group"
+                          onClick={() => setSelectedOrderId(order.order_id)}
+                        >
                           <td className="p-4 align-middle font-medium">#{order.order_id}</td>
                           <td className="p-4 align-middle">
                             {order.created_at ? new Date(order.created_at.replace(' ', 'T')).toLocaleString('th-TH', { 
@@ -167,6 +187,74 @@ export default function AdminDashboardPage() {
               </CardContent>
             </Card>
           </div>
+      <Dialog open={!!selectedOrderId} onOpenChange={(open) => !open && setSelectedOrderId(null)}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="text-xl flex items-center justify-between">
+              <span>รายละเอียดออเดอร์ #{selectedOrderId}</span>
+              {orderDetail && (
+                <span className="text-sm font-normal text-zinc-500">
+                  {new Date(orderDetail.created_at?.replace(' ', 'T') || '').toLocaleString('th-TH')}
+                </span>
+              )}
+            </DialogTitle>
+          </DialogHeader>
+
+          {isLoadingDetails ? (
+            <div className="flex items-center justify-center p-12">
+              <Loader2 className="w-8 h-8 animate-spin text-zinc-400" />
+            </div>
+          ) : orderDetail ? (
+            <div className="space-y-6">
+              <div className="grid grid-cols-2 gap-4 text-sm bg-zinc-50 p-4 rounded-xl">
+                <div>
+                  <p className="text-zinc-500">วิธีชำระเงิน</p>
+                  <p className="font-bold text-zinc-900">{orderDetail.payment_method}</p>
+                </div>
+                <div>
+                  <p className="text-zinc-500">สถานะ</p>
+                  <p className="font-bold text-green-600">{orderDetail.order_status || 'PAID'}</p>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <h3 className="font-bold text-zinc-900">รายการสินค้า</h3>
+                <div className="space-y-3">
+                  {orderDetail.items?.map((item, idx) => (
+                    <div key={idx} className="border-b border-zinc-100 pb-3 last:border-0 last:pb-0">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <p className="font-bold text-zinc-900">{item.menu_name || `สินค้า #${item.menu_id}`}</p>
+                          <p className="text-xs text-zinc-500">จำนวน x{item.quantity}</p>
+                          {item.addons && item.addons.length > 0 && (
+                            <div className="mt-1 flex flex-wrap gap-1">
+                              {item.addons.map((addon, aidx) => (
+                                <span key={aidx} className="text-[10px] bg-zinc-100 text-zinc-600 px-1.5 py-0.5 rounded">
+                                  + {addon.addon_name} (฿{addon.price})
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                        <p className="font-bold">฿{(item.price * item.quantity).toLocaleString()}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <Separator />
+
+              <div className="flex justify-between items-center bg-zinc-950 text-white p-4 rounded-xl">
+                <span className="font-bold">ยอดเงินรวมทั้งสิ้น</span>
+                <span className="text-2xl font-black">฿{orderDetail.total_price?.toLocaleString()}</span>
+              </div>
+            </div>
+          ) : (
+            <div className="p-12 text-center text-zinc-500">ไม่พบข้อมูลออเดอร์</div>
+          )}
+        </DialogContent>
+          </Dialog>
         </>
       )}
     </div>
