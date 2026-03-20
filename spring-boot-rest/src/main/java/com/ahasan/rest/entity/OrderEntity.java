@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.ahasan.rest.common.CrudEntity;
 
 @Entity
@@ -39,7 +41,8 @@ public class OrderEntity implements CrudEntity {
 	@Column(name = "staff_id")
 	private Integer staffId;
 
-	@Column(name = "created_at", insertable = false, updatable = false)
+	@CreationTimestamp
+	@Column(name = "created_at", updatable = false)
 	private LocalDateTime createdAt;
 
 	@Override
