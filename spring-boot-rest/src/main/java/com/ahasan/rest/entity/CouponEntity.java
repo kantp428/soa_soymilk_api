@@ -32,7 +32,7 @@ public class CouponEntity implements CrudEntity {
 	@Column(name = "used_at")
 	private LocalDateTime usedAt;
 
-	@Column(name = "status", length = 8)
+	@Column(name = "status", length = 20)
 	private String status = "ACTIVE";
 
 	@Override

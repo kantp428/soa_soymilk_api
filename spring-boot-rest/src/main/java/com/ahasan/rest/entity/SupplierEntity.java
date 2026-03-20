@@ -29,7 +29,7 @@ public class SupplierEntity implements CrudEntity {
 	@Column(name = "address", columnDefinition = "text")
 	private String address;
 
-	@Column(name = "status", nullable = false, length = 8)
+	@Column(name = "status", nullable = false, length = 20)
 	private String status = "active";
 
 	@Column(name = "created_at", insertable = false, updatable = false)

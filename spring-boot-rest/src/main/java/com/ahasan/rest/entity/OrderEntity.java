@@ -27,10 +27,10 @@ public class OrderEntity implements CrudEntity {
 	@Column(name = "total_price", precision = 10, scale = 2)
 	private BigDecimal totalPrice;
 
-	@Column(name = "payment_method", nullable = false, length = 8)
+	@Column(name = "payment_method", nullable = false, length = 20)
 	private String paymentMethod = "CASH";
 
-	@Column(name = "order_status", length = 8)
+	@Column(name = "order_status", length = 20)
 	private String orderStatus;
 
 	@Column(name = "coupon_id")

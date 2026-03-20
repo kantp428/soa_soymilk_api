@@ -27,7 +27,7 @@ public class AddonEntity implements CrudEntity {
 	@Column(name = "price", nullable = false, precision = 10, scale = 2)
 	private BigDecimal price;
 
-	@Column(name = "status", length = 8)
+	@Column(name = "status", length = 20)
 	private String status = "active";
 
 	@Column(name = "created_at", insertable = false, updatable = false)

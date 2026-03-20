@@ -29,7 +29,7 @@ public class StaffEntity implements CrudEntity {
 	@Column(name = "role", length = 50)
 	private String role;
 
-	@Column(name = "status", length = 8)
+	@Column(name = "status", length = 20)
 	private String status = "ACTIVE";
 
 	@Column(name = "created_at", insertable = false, updatable = false)
