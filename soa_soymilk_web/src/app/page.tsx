@@ -132,11 +132,13 @@ export default function Home() {
 
         <motion.div
           variants={fadeInUp}
-          className="mt-20 flex flex-wrap justify-center gap-6 text-zinc-500 text-sm font-medium"
+          className="mt-20 flex flex-wrap justify-center gap-6 text-zinc-500 text-sm"
         >
-          <div className="flex items-center"><CheckCircle2 className="w-4 h-4 mr-2 text-green-500" /> รองรับข้อมูลปริมาณมาก</div>
-          <div className="flex items-center"><CheckCircle2 className="w-4 h-4 mr-2 text-green-500" /> ระบบเชื่อมโยงข้อมูลแบบเรียลไทม์</div>
-          <div className="flex items-center"><CheckCircle2 className="w-4 h-4 mr-2 text-green-500" /> ทำงานได้เต็มประสิทธิภาพ (Production-Grade)</div>
+          <div className="flex flex-col gap-4 mt-8 text-zinc-600">
+            <div className="flex items-center"><CheckCircle2 className="w-4 h-4 mr-2 text-primary" /> รองรับข้อมูลปริมาณมาก</div>
+            <div className="flex items-center"><CheckCircle2 className="w-4 h-4 mr-2 text-primary" /> ระบบเชื่อมโยงข้อมูลแบบเรียลไทม์</div>
+            <div className="flex items-center"><CheckCircle2 className="w-4 h-4 mr-2 text-primary" /> ทำงานได้เต็มประสิทธิภาพ (Production-Grade)</div>
+          </div>
         </motion.div>
       </motion.div>
     </div>

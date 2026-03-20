@@ -24,8 +24,8 @@ export default function AdminStaffPage() {
             header: 'Status',
             accessorKey: 'status',
             cell: (row) => (
-              <span className={`px-2 py-1 rounded-full text-xs font-medium ${row.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                {row.status || 'Active'}
+              <span className={`px-2 py-1 rounded-full text-xs font-medium ${row.status === 'Active' ? 'bg-primary/10 text-primary' : 'bg-red-100 text-red-800'}`}>
+                {row.status as string}
               </span>
             )
           },

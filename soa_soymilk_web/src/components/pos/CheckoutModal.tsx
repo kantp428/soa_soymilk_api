@@ -79,9 +79,9 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
       <DialogContent className="sm:max-w-[450px] bg-white rounded-2xl overflow-hidden p-0 gap-0">
 
         {isSuccess ? (
-          <div className="flex flex-col items-center justify-center p-10 text-center space-y-4">
-             <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-2">
-                <CheckCircle2 className="w-12 h-12 text-green-600" />
+          <div className="flex flex-col items-center justify-center py-10 text-center">
+             <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-2">
+                <CheckCircle2 className="w-12 h-12 text-primary" />
              </div>
              <h2 className="text-2xl font-bold text-zinc-900">ชำระเงินสำเร็จ!</h2>
              <p className="text-zinc-500">ออเดอร์ถูกบันทึกเข้าระบบเรียบร้อยแล้ว</p>
