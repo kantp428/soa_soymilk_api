@@ -32,9 +32,8 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
 
       const res = await createOrder({
         total_price: total,
-        payment_method: paymentMethod,
-        order_status: 'COMPLETED',
-
+        payment_method: paymentMethod === 'PROMPTPAY' ? 'PPAY' : paymentMethod === 'CREDIT_CARD' ? 'CARD' : 'CASH',
+        order_status: 'PAID',
       });
 
       const orderId = res.data.data.order_id;
