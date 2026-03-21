@@ -39,6 +39,9 @@ public class MenuEntity implements CrudEntity {
 	@Column(name = "status", length = 20)
 	private String status = "ACTIVE";
 
+	@Column(name = "image_url", length = 255)
+	private String imageUrl;
+
 	@CreationTimestamp
 	@Column(name = "created_at", updatable = false)
 	private LocalDateTime createdAt;
@@ -103,6 +106,14 @@ public class MenuEntity implements CrudEntity {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 	public LocalDateTime getCreatedAt() {

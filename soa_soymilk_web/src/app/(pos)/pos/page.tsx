@@ -138,9 +138,22 @@ export default function POSPage() {
               {filteredProducts.map((product) => (
                 <Card
                   key={product.menu_id}
-                  className="cursor-pointer hover:border-zinc-400 hover:shadow-md transition-all h-[200px] flex flex-col justify-between overflow-hidden bg-white"
+                  className="cursor-pointer hover:border-zinc-400 hover:shadow-md transition-all h-[320px] flex flex-col overflow-hidden bg-white group"
                   onClick={() => handleProductClick(product)}
                 >
+                  <div className="relative h-44 w-full overflow-hidden bg-zinc-100">
+                    {product.image_url ? (
+                      <img 
+                        src={product.image_url} 
+                        alt={product.menu_name} 
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-zinc-300">
+                         <Home className="w-12 h-12 opacity-10" />
+                      </div>
+                    )}
+                  </div>
                   <CardHeader className="p-4 pb-2">
                     <CardTitle className="text-lg leading-tight line-clamp-2">{product.menu_name}</CardTitle>
                     {product.description && (
@@ -176,19 +189,19 @@ export default function POSPage() {
             </div>
           ) : (
             <div className="space-y-4">
-              {items.map((item) => (
-                <div key={item.id} className="flex flex-col gap-2 p-3 bg-zinc-50 rounded-xl border border-zinc-100 shadow-sm">
+              {items.map((item, index) => (
+                <div key={item.id || `item-${index}`} className="flex flex-col gap-2 p-3 bg-zinc-50 rounded-xl border border-zinc-100 shadow-sm">
                   <div className="flex justify-between items-start">
                     <div className="font-semibold text-zinc-800">{item.name}</div>
-                    <div className="font-bold text-lg">฿{(item.price + item.toppings.reduce((s, t) => s + t.price, 0)) * item.quantity}</div>
+                    <div className="font-bold text-lg">฿{(item.price + (item.toppings?.reduce((s, t) => s + t.price, 0) || 0)) * item.quantity}</div>
                   </div>
 
                   <div className="flex flex-wrap gap-1 mt-1">
                     <div className="text-xs text-zinc-600 font-medium bg-white px-2 py-1 rounded inline-block border shadow-sm">
                       หวาน {item.sweetness}%
                     </div>
-                    {item.toppings.map(t => (
-                      <div key={t.addon_id} className="text-xs text-zinc-600 font-medium bg-zinc-100 px-2 py-1 rounded inline-block border shadow-sm">
+                    {item.toppings?.map((t, tIndex) => (
+                      <div key={`${item.id || index}-${t.addon_id}-${tIndex}`} className="text-xs text-zinc-600 font-medium bg-zinc-100 px-2 py-1 rounded inline-block border shadow-sm">
                         + {t.addon_name}
                       </div>
                     ))}

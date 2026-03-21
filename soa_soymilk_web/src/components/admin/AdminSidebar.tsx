@@ -11,18 +11,26 @@ import {
   Users,
   Store,
   ArrowLeft,
-  Home
+  Home,
+  History,
+  BarChart3,
+  Settings,
+  UserCog
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
 const navItems = [
   { href: '/admin', label: 'ภาพรวมระบบ (Dashboard)', icon: LayoutDashboard },
+  { href: '/admin/orders', label: 'ประวัติการขาย (History)', icon: History },
   { href: '/admin/menu', label: 'จัดการเมนูและหมวดหมู่', icon: List },
   { href: '/admin/inventory', label: 'จัดการสต็อกสินค้า', icon: PackageOpen },
   { href: '/admin/purchases', label: 'ซัพพลายเออร์และจัดซื้อ', icon: Truck },
   { href: '/admin/promotions', label: 'โปรโมชั่นและส่วนลด', icon: Tag },
-  { href: '/admin/staff', label: 'จัดการพนักงาน', icon: Users },
+  { href: '/admin/customers', label: 'จัดการข้อมูลลูกค้า', icon: Users },
+  { href: '/admin/staff', label: 'จัดการพนักงาน', icon: UserCog },
+  { href: '/admin/reports', label: 'รายงานและสถิติ', icon: BarChart3 },
+  { href: '/admin/settings', label: 'ตั้งค่าระบบ', icon: Settings },
 ];
 
 export function AdminSidebar() {

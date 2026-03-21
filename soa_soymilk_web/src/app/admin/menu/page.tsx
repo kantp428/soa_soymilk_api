@@ -45,30 +45,41 @@ export default function AdminMenuPage() {
             endpoint="/menus"
             primaryKey="menu_id"
             columns={[
+              { 
+                header: 'รูปภาพ', 
+                accessorKey: 'image_url',
+                cell: (row) => (
+                  <div className="w-12 h-12 rounded-lg overflow-hidden border bg-zinc-50">
+                    {row.image_url ? (
+                      <img src={row.image_url as string} alt="" className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-[10px] text-zinc-400">No Image</div>
+                    )}
+                  </div>
+                )
+              },
               { header: 'ID', accessorKey: 'menu_id' },
-              { header: 'Name', accessorKey: 'menu_name' },
-              { header: 'Category ID', accessorKey: 'category_id' },
-              { header: 'Price (฿)', accessorKey: 'price' },
+              { header: 'ชื่อเมนู', accessorKey: 'menu_name' },
+              { header: 'ราคา (฿)', accessorKey: 'price' },
               {
-                header: 'Status',
+                header: 'สถานะ',
                 accessorKey: 'status',
                 cell: (row) => (
-                  <td className="p-4 align-middle">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${row.status === 'Active' || row.status === 'Available' ? 'bg-primary/10 text-primary' : 'bg-red-100 text-red-800'}`}>
-                      {row.status as string}
-                    </span>
-                  </td>
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${row.status === 'Active' || row.status === 'Available' ? 'bg-primary/10 text-primary' : 'bg-red-100 text-red-800'}`}>
+                    {row.status as string}
+                  </span>
                 )
               },
             ]}
             formFields={[
-              { name: 'menu_name', label: 'Menu Name', type: 'text', required: true },
-              { name: 'category_id', label: 'Category ID', type: 'number', required: true },
-              { name: 'price', label: 'Price', type: 'number', required: true },
-              { name: 'description', label: 'Description', type: 'textarea' },
-              { name: 'status', label: 'Status', type: 'select', options: [
-                { label: 'Active', value: 'Active' },
-                { label: 'Inactive', value: 'Inactive' }
+              { name: 'image_url', label: 'รูปภาพสินค้า', type: 'image' },
+              { name: 'menu_name', label: 'ชื่อเมนู', type: 'text', required: true },
+              { name: 'category_id', label: 'หมวดหมู่ ID', type: 'number', required: true },
+              { name: 'price', label: 'ราคา', type: 'number', required: true },
+              { name: 'description', label: 'รายละเอียด', type: 'textarea' },
+              { name: 'status', label: 'สถานะ', type: 'select', options: [
+                { label: 'ใช้งานปกติ (Active)', value: 'Active' },
+                { label: 'ปิดการใช้งาน (Inactive)', value: 'Inactive' }
               ] },
             ]}
           />

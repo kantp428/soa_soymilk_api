@@ -32,7 +32,7 @@ export interface ColumnDef<T> {
 export interface FormFieldDef {
   name: string;
   label: string;
-  type: 'text' | 'number' | 'select' | 'textarea';
+  type: 'text' | 'number' | 'select' | 'textarea' | 'image';
   options?: { label: string; value: string | number }[];
   required?: boolean;
 }
@@ -62,6 +62,7 @@ export function CrudTable<T extends Record<string, unknown>>({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<T | null>(null);
   const [formData, setFormData] = useState<Partial<T>>({});
+  const [isUploading, setIsUploading] = useState(false);
 
   const { data, isLoading } = useQuery<PaginatedResponse<T>>({
     queryKey: [endpoint, page],
@@ -74,8 +75,6 @@ export function CrudTable<T extends Record<string, unknown>>({
   const rawData = data;
   const items: T[] = (rawData ? (rawData as unknown as Record<string, unknown>)[dataKey] : []) as T[];
 
-  const filteredItems = items;
-
   const createMutation = useMutation({
     mutationFn: (newObj: Partial<T>) => apiClient.post(endpoint, newObj),
     onSuccess: () => {
@@ -86,7 +85,7 @@ export function CrudTable<T extends Record<string, unknown>>({
 
   const updateMutation = useMutation({
     mutationFn: ({ id, data }: { id: string | number; data: Partial<T> }) =>
-      apiClient.put(`${endpoint}/${id}`, data),
+      apiClient.put(endpoint, { ...data, [primaryKey]: id }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [endpoint] });
       setIsModalOpen(false);
@@ -109,6 +108,42 @@ export function CrudTable<T extends Record<string, unknown>>({
       updateMutation.mutate({ id: editingItem[primaryKey] as string | number, data: formData });
     } else {
       createMutation.mutate(formData);
+    }
+  };
+
+  const handleImageUpload = async (file: File, fieldName: string) => {
+    setIsUploading(true);
+    try {
+      const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'dfxf4u91m';
+      const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || 'soa_soymilk';
+      const formDataUpload = new FormData();
+      formDataUpload.append('file', file);
+      formDataUpload.append('upload_preset', uploadPreset);
+
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+        {
+          method: 'POST',
+          body: formDataUpload,
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error('Cloudinary upload failed:', data);
+        alert(`อัปโหลดรูปภาพล้มเหลว: ${data.error?.message || 'Unknown error'}`);
+        return;
+      }
+
+      if (data.secure_url) {
+        setFormData((prev) => ({ ...prev, [fieldName]: data.secure_url }));
+      }
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      alert('อัปโหลดรูปภาพล้มเหลว กรุณาลองใหม่อีกครั้ง');
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -142,14 +177,14 @@ export function CrudTable<T extends Record<string, unknown>>({
                   <Loader2 className="w-6 h-6 animate-spin mx-auto" />
                 </TableCell>
               </TableRow>
-            ) : filteredItems.length === 0 ? (
+            ) : items.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={columns.length + 1} className="h-32 text-center text-zinc-500">
                   ไม่พบข้อมูล
                 </TableCell>
               </TableRow>
             ) : (
-              filteredItems.map((item, index) => (
+              items.map((item, index) => (
                 <TableRow key={index}>
                   {columns.map((col) => (
                     <TableCell key={String(col.accessorKey)}>
@@ -169,7 +204,7 @@ export function CrudTable<T extends Record<string, unknown>>({
       </div>
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="bg-white sm:max-w-[425px]">
+        <DialogContent className="bg-white sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>{editingItem ? 'แก้ไขข้อมูล' : 'สร้างข้อมูลใหม่'}</DialogTitle>
           </DialogHeader>
@@ -196,6 +231,38 @@ export function CrudTable<T extends Record<string, unknown>>({
                       <option key={opt.value} value={opt.value}>{opt.label}</option>
                     ))}
                   </select>
+                ) : field.type === 'image' ? (
+                  <div className="space-y-3">
+                    {formData[field.name] && (
+                      <div className="relative w-32 h-32 group">
+                        <img 
+                          src={formData[field.name] as string} 
+                          alt="Preview" 
+                          className="w-full h-full object-cover rounded-xl border-2 border-zinc-100 shadow-sm" 
+                        />
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl flex items-center justify-center">
+                           <p className="text-white text-[10px] font-bold">เปลี่ยนรูปภาพ</p>
+                        </div>
+                      </div>
+                    )}
+                    <div className="relative">
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        disabled={isUploading}
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) handleImageUpload(file, field.name);
+                        }}
+                        className="bg-zinc-50 file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-zinc-900 file:text-white hover:file:bg-zinc-800 cursor-pointer"
+                      />
+                      {isUploading && (
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                          <Loader2 className="w-4 h-4 animate-spin text-zinc-400" />
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 ) : (
                   <Input
                     type={field.type}
@@ -209,10 +276,11 @@ export function CrudTable<T extends Record<string, unknown>>({
               </div>
             ))}
           </div>
-          <DialogFooter>
+          <DialogFooter className="gap-2 sm:gap-0">
             <Button variant="outline" onClick={() => setIsModalOpen(false)}>ยกเลิก</Button>
-            <Button onClick={handleSave} disabled={isSaving}>
-              {isSaving && <Loader2 className="w-4 h-4 mr-2 animate-spin" />} บันทึกข้อมูล
+            <Button onClick={handleSave} disabled={isSaving || isUploading} className="bg-zinc-900 text-white hover:bg-zinc-800">
+              {isSaving && <Loader2 className="w-4 h-4 mr-2 animate-spin" />} 
+              {editingItem ? 'บันทึกการแก้ไข' : 'ยืนยันการสร้าง'}
             </Button>
           </DialogFooter>
         </DialogContent>

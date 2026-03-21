@@ -17,6 +17,7 @@ export interface Menu {
   description: string;
   price: number;
   status: string;
+  image_url?: string;
   create_at: string;
   update_at: string;
 }
