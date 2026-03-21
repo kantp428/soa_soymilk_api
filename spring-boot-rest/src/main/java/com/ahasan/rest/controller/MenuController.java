@@ -83,9 +83,6 @@ public class MenuController extends ApiControllerSupport {
 		if (body.containsKey("status")) {
 			entity.setStatus(stringValue(body.get("status")));
 		}
-		if (body.containsKey("image_url")) {
-			entity.setImageUrl(stringValue(body.get("image_url")));
-		}
 	}
 
 	private Map<String, Object> toMenuMap(MenuEntity entity) {
@@ -96,7 +93,6 @@ public class MenuController extends ApiControllerSupport {
 		data.put("description", entity.getDescription());
 		data.put("price", entity.getPrice());
 		data.put("status", entity.getStatus());
-		data.put("image_url", entity.getImageUrl());
 		data.put("create_at", entity.getCreatedAt());
 		data.put("update_at", entity.getUpdatedAt());
 		return data;
