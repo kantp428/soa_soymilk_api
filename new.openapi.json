@@ -7,6 +7,9 @@
   },
   "tags": [
     {
+      "name": "collaboration"
+    },
+    {
       "name": "promotion"
     },
     {
@@ -41,6 +44,58 @@
     }
   ],
   "paths": {
+    "/colab/ice-cream": {
+      "post": {
+        "summary": "create-coupon (ice cream)",
+        "deprecated": false,
+        "description": "fix: promotion_campain_id = 1",
+        "tags": [
+          "collaboration"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "create successfully",
+                  "data": {
+                    "coupon_id": 1,
+                    "coupon_code": "AXUUCOSA9587ASDN11",
+                    "promotion_campain_id": 1,
+                    "status": "INACTIVE",
+                    "created_at": "2025-10-10T10:30:45.000Z"
+                  }
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "404": {
+            "$ref": "#/components/responses/404 Not Found",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      }
+    },
     "/promotion/coupon": {
       "post": {
         "summary": "create-coupon",
@@ -2001,6 +2056,7 @@
                   "description": "no sugar",
                   "price": 10,
                   "status": "ACTIVE",
+                  "image_url": "https://xxxxx.com",
                   "create_at": "2026-03-07T10:00:00Z",
                   "update_at": "2026-03-07T10:00:00Z"
                 }
@@ -2067,6 +2123,7 @@
                 "menu_name": "soy_milk_light",
                 "description": "less sugar",
                 "price": 11,
+                "image_url": "https://xxxxx.com",
                 "status": "ACTIVE"
               }
             }
@@ -2090,6 +2147,7 @@
                     "menu_name": "soy_milk_light",
                     "description": "less sugar",
                     "price": 11,
+                    "image_url": "https://xxxxx.com",
                     "status": "ACTIVE",
                     "create_at": "2026-03-07T10:00:00Z",
                     "update_at": "2026-03-07T12:00:00Z"
@@ -2147,6 +2205,16 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "category_id",
+            "in": "query",
+            "description": "group",
+            "required": false,
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -2167,6 +2235,7 @@
                       "description": "no sugar",
                       "price": 10,
                       "status": "ACTIVE",
+                      "image_url": "https://xxxxx.com",
                       "create_at": "2026-03-07T10:00:00Z",
                       "update_at": "2026-03-07T10:00:00Z"
                     },
@@ -2177,6 +2246,7 @@
                       "description": "normal sugar",
                       "price": 12,
                       "status": "ACTIVE",
+                      "image_url": "https://xxxxx.com",
                       "create_at": "2026-03-07T10:05:00Z",
                       "update_at": "2026-03-07T10:05:00Z"
                     }
@@ -2238,6 +2308,7 @@
                 "menu_name": "soy_milk_black_sesame",
                 "description": "black sesame flavor",
                 "price": 15,
+                "image_url": "https://xxxxx.com",
                 "status": "ACTIVE"
               }
             }
@@ -2304,7 +2375,7 @@
             }
           },
           {
-            "name": "seach",
+            "name": "search",
             "in": "query",
             "description": "",
             "required": false,
@@ -2746,6 +2817,16 @@
             "schema": {
               "type": "integer"
             }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "ACTIVE | INACTIVE",
+            "required": false,
+            "example": "ACTIVE",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -2957,7 +3038,7 @@
                 "properties": {}
               },
               "example": {
-                "supplierId": 1
+                "supplier_id": 1
               }
             }
           },
@@ -3148,7 +3229,7 @@
                         "total": 300
                       }
                     ],
-                    "totalCost": 1675
+                    "total_cost": 1675
                   }
                 }
               }
@@ -3438,7 +3519,11 @@
             "examples": {
               "Example 1": {
                 "summary": "Example 1",
-                "value": "{\r\n  \"status\": \"error\",\r\n  \"error\": \"Bad Request\",\r\n  \"message\": \"Invalid request parameters\""
+                "value": {
+                  "status": "error",
+                  "error": "Bad Request",
+                  "message": "Invalid request parameters"
+                }
               }
             }
           }
