@@ -31,7 +31,7 @@ public class SupplierController extends ApiControllerSupport {
 	@GetMapping("/suppliers")
 	public Map<String, Object> getAll(@RequestParam(required = false) Integer page,
 			@RequestParam(required = false) Integer limit,
-			@RequestParam(name = "seach", required = false) String search) {
+			@RequestParam(name = "search", required = false) String search) {
 		int normalizedPage = normalizePage(page);
 		int normalizedLimit = normalizeLimit(limit, 10);
 		Page<SupplierEntity> result = search == null || search.trim().isEmpty()

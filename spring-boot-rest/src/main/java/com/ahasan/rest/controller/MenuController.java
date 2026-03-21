@@ -29,10 +29,13 @@ public class MenuController extends ApiControllerSupport {
 
 	@GetMapping("/menus")
 	public Map<String, Object> getAll(@RequestParam(required = false) Integer page,
-			@RequestParam(required = false) Integer limit) {
+			@RequestParam(required = false) Integer limit,
+			@RequestParam(name = "category_id", required = false) Integer categoryId) {
 		int normalizedPage = normalizePage(page);
 		int normalizedLimit = normalizeLimit(limit, 5);
-		Page<MenuEntity> result = menuRepo.findAll(PageRequest.of(normalizedPage - 1, normalizedLimit));
+		Page<MenuEntity> result = categoryId == null
+				? menuRepo.findAll(PageRequest.of(normalizedPage - 1, normalizedLimit))
+				: menuRepo.findByCategoryId(categoryId, PageRequest.of(normalizedPage - 1, normalizedLimit));
 		Map<String, Object> response = new LinkedHashMap<String, Object>();
 		response.put("data", result.getContent().stream().map(this::toMenuMap).collect(Collectors.toList()));
 		Map<String, Object> pagination = new LinkedHashMap<String, Object>();
@@ -77,6 +80,9 @@ public class MenuController extends ApiControllerSupport {
 		if (body.containsKey("description")) {
 			entity.setDescription(stringValue(body.get("description")));
 		}
+		if (body.containsKey("image_url")) {
+			entity.setImageUrl(stringValue(body.get("image_url")));
+		}
 		if (body.containsKey("price")) {
 			entity.setPrice(decimalValue(body.get("price")));
 		}
@@ -93,6 +99,7 @@ public class MenuController extends ApiControllerSupport {
 		data.put("description", entity.getDescription());
 		data.put("price", entity.getPrice());
 		data.put("status", entity.getStatus());
+		data.put("image_url", entity.getImageUrl());
 		data.put("create_at", entity.getCreatedAt());
 		data.put("update_at", entity.getUpdatedAt());
 		return data;
