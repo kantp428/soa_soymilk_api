@@ -34,7 +34,8 @@ public class StaffController extends ApiControllerSupport {
 		int normalizedLimit = normalizeLimit(limit, 10);
 		Page<StaffEntity> result = staffRepo.findAll(PageRequest.of(normalizedPage - 1, normalizedLimit));
 		Map<String, Object> response = new LinkedHashMap<String, Object>();
-		response.put("data", result.getContent().stream().map(this::toStaffMap).collect(Collectors.toList()));
+		response.put("success", true);
+		response.put("data", result.getContent().stream().map(this::toStaffListMap).collect(Collectors.toList()));
 		Map<String, Object> pagination = new LinkedHashMap<String, Object>();
 		pagination.put("page", normalizedPage);
 		pagination.put("limit", normalizedLimit);
@@ -46,21 +47,21 @@ public class StaffController extends ApiControllerSupport {
 
 	@GetMapping("/staff/{id}")
 	public Map<String, Object> getOne(@PathVariable Integer id) {
-		return toStaffMap(getEntity(id));
+		return toStaffDetailMap(getEntity(id));
 	}
 
 	@PostMapping("/staff")
 	public Map<String, Object> create(@RequestBody Map<String, Object> body) {
 		StaffEntity entity = new StaffEntity();
 		applyStaff(entity, body);
-		return messageData("create successfully", toStaffDetailMap(staffRepo.save(entity)));
+		return messageData("create successfully", toStaffCreateMap(staffRepo.save(entity)));
 	}
 
 	@PutMapping("/staff/{id}")
 	public Map<String, Object> update(@PathVariable Integer id, @RequestBody Map<String, Object> body) {
 		StaffEntity entity = getEntity(id);
 		applyStaff(entity, body);
-		return messageData("update successfully", toStaffDetailMap(staffRepo.save(entity)));
+		return messageData("active successfully", toStaffUpdateMap(staffRepo.save(entity)));
 	}
 
 	private StaffEntity getEntity(Integer id) {
@@ -82,20 +83,31 @@ public class StaffController extends ApiControllerSupport {
 		}
 	}
 
-	private Map<String, Object> toStaffMap(StaffEntity entity) {
+	private Map<String, Object> toStaffListMap(StaffEntity entity) {
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
 		data.put("staff_id", entity.getStaffId());
 		data.put("staff_name", entity.getStaffName());
 		data.put("phone", entity.getPhone());
 		data.put("role", entity.getRole());
 		data.put("status", entity.getStatus());
-		data.put("created_at", entity.getCreatedAt());
 		return data;
 	}
 
 	private Map<String, Object> toStaffDetailMap(StaffEntity entity) {
-		Map<String, Object> data = toStaffMap(entity);
+		Map<String, Object> data = toStaffListMap(entity);
 		data.put("created_at", entity.getCreatedAt());
+		data.put("updated_at", entity.getUpdatedAt());
+		return data;
+	}
+
+	private Map<String, Object> toStaffCreateMap(StaffEntity entity) {
+		Map<String, Object> data = toStaffListMap(entity);
+		data.put("created_at", entity.getCreatedAt());
+		return data;
+	}
+
+	private Map<String, Object> toStaffUpdateMap(StaffEntity entity) {
+		Map<String, Object> data = toStaffListMap(entity);
 		return data;
 	}
 }

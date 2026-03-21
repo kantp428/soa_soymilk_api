@@ -35,12 +35,12 @@ public class AddonController extends ApiControllerSupport {
 		int normalizedLimit = normalizeLimit(limit, 10);
 		Page<AddonEntity> result = addonRepo.findAll(PageRequest.of(normalizedPage - 1, normalizedLimit));
 		Map<String, Object> response = new LinkedHashMap<String, Object>();
-		response.put("date", result.getContent().stream().map(this::toAddonMap).collect(Collectors.toList()));
+		response.put("data", result.getContent().stream().map(this::toAddonMap).collect(Collectors.toList()));
 		Map<String, Object> pagination = new LinkedHashMap<String, Object>();
 		pagination.put("page", normalizedPage);
 		pagination.put("limit", normalizedLimit);
 		pagination.put("total", result.getTotalElements());
-		pagination.put("total_page", result.getTotalPages());
+		pagination.put("total_pages", result.getTotalPages());
 		response.put("pagination", pagination);
 		return response;
 	}

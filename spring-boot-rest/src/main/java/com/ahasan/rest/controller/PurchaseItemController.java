@@ -30,8 +30,8 @@ public class PurchaseItemController extends ApiControllerSupport {
 	public Map<String, Object> update(@PathVariable Integer id, @RequestBody Map<String, Object> body) {
 		PurchaseItemEntity entity = purchaseItemRepo.findById(id)
 				.orElseThrow(() -> new RecordNotFoundException("Purchase item id " + id + " not found"));
-		if (body.containsKey("stockId")) {
-			entity.setStockId(nullableInt(body.get("stockId")));
+		if (body.containsKey("stock_id")) {
+			entity.setStockId(nullableInt(body.get("stock_id")));
 		}
 		if (body.containsKey("quantity")) {
 			entity.setQuantity(decimalValue(body.get("quantity")));
@@ -42,8 +42,8 @@ public class PurchaseItemController extends ApiControllerSupport {
 		PurchaseItemEntity saved = purchaseItemRepo.save(entity);
 		recalculatePurchaseTotal(saved.getPurchaseId());
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
-		data.put("purchaseItemId", saved.getPurchaseItemId());
-		data.put("stockId", saved.getStockId());
+		data.put("purchase_item_id", saved.getPurchaseItemId());
+		data.put("stock_id", saved.getStockId());
 		data.put("quantity", saved.getQuantity());
 		data.put("price", saved.getPrice());
 		data.put("total", saved.getPrice().multiply(saved.getQuantity()));

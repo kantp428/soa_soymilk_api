@@ -2026,6 +2026,97 @@
           }
         },
         "security": []
+      },
+      "put": {
+        "summary": "update",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "menus"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "category_id": 1,
+                "menu_name": "soy_milk_light",
+                "description": "less sugar",
+                "price": 11,
+                "status": "ACTIVE"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "update successfully",
+                  "data": {
+                    "menu_id": 1,
+                    "category_id": 1,
+                    "menu_name": "soy_milk_light",
+                    "description": "less sugar",
+                    "price": 11,
+                    "status": "ACTIVE",
+                    "create_at": "2026-03-07T10:00:00Z",
+                    "update_at": "2026-03-07T12:00:00Z"
+                  }
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "404": {
+            "$ref": "#/components/responses/404 Not Found",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
       }
     },
     "/menus": {
@@ -2178,88 +2269,6 @@
               }
             },
             "headers": {}
-          }
-        },
-        "security": []
-      },
-      "put": {
-        "summary": "update",
-        "deprecated": false,
-        "description": "",
-        "tags": [
-          "menus"
-        ],
-        "parameters": [
-          {
-            "name": "Content-Type",
-            "in": "header",
-            "description": "",
-            "required": false,
-            "example": "application/json",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {}
-              },
-              "example": {
-                "category_id": 1,
-                "menu_name": "soy_milk_light",
-                "description": "less sugar",
-                "price": 11,
-                "status": "ACTIVE"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {}
-                },
-                "example": {
-                  "message": "update successfully",
-                  "data": {
-                    "menu_id": 1,
-                    "category_id": 1,
-                    "menu_name": "soy_milk_light",
-                    "description": "less sugar",
-                    "price": 11,
-                    "status": "ACTIVE",
-                    "create_at": "2026-03-07T10:00:00Z",
-                    "update_at": "2026-03-07T12:00:00Z"
-                  }
-                }
-              }
-            },
-            "headers": {}
-          },
-          "400": {
-            "$ref": "#/components/responses/400 Bad Request",
-            "description": ""
-          },
-          "401": {
-            "$ref": "#/components/responses/401 Unauthorized",
-            "description": ""
-          },
-          "404": {
-            "$ref": "#/components/responses/404 Not Found",
-            "description": ""
-          },
-          "500": {
-            "$ref": "#/components/responses/500 Internal Server Error",
-            "description": ""
           }
         },
         "security": []
