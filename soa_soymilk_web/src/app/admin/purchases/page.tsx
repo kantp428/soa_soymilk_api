@@ -42,18 +42,18 @@ export default function AdminPurchasesPage() {
               { header: 'ID', accessorKey: 'supplier_id' },
               { header: 'Supplier Name', accessorKey: 'supplier_name' },
               { header: 'Phone', accessorKey: 'phone' },
-              { header: 'Status', accessorKey: 'status' },
+              // { header: 'Status', accessorKey: 'status' },
             ]}
             formFields={[
               { name: 'supplier_name', label: 'Supplier Name', type: 'text', required: true },
               { name: 'phone', label: 'Phone', type: 'text' },
               { name: 'address', label: 'Address', type: 'textarea' },
-              {
-                name: 'status', label: 'Status', type: 'select', options: [
-                  { label: 'Active', value: 'active' },
-                  { label: 'Inactive', value: 'inactive' }
-                ]
-              },
+              // {
+              //   name: 'status', label: 'Status', type: 'select', options: [
+              //     { label: 'Active', value: 'active' },
+              //     { label: 'Inactive', value: 'inactive' }
+              //   ]
+              // },
             ]}
           />
         )}
@@ -63,15 +63,17 @@ export default function AdminPurchasesPage() {
             title="Purchase Orders"
             endpoint="/purchases"
             primaryKey="purchase_id"
+            hideEdit={true}
+            hideDelete={true}
             formFields={[
               { name: 'supplier_id', label: 'Supplier ID', type: 'number', required: true },
               { name: 'total_cost', label: 'Total Invoice Cost', type: 'number', required: true },
             ]}
             columns={[
               { header: 'PO Number', accessorKey: 'purchase_id' },
-              { header: 'Supplier ID', accessorKey: 'supplier_id' },
+              { header: 'Supplier Name', accessorKey: 'supplier_name' },
               { header: 'Total Cost (฿)', accessorKey: 'total_cost' },
-              { header: 'Order Date', accessorKey: 'create_at' },
+              { header: 'Purchase Date', accessorKey: 'purchase_date' },
             ]}
           />
         )}

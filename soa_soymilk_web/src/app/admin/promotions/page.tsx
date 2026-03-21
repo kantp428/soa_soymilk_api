@@ -37,6 +37,8 @@ export default function AdminPromotionsPage() {
             title="Promotion Campaigns"
             endpoint="/promotion/campaign"
             primaryKey="promotion_campain_id"
+            hideDelete={true}
+            hideEdit={true}
             columns={[
               { header: 'ID', accessorKey: 'promotion_campain_id' },
               { header: 'Campaign Name', accessorKey: 'name' },

@@ -20,7 +20,7 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/components/ui/dialog';
-import { Loader2, Plus, Edit2 } from 'lucide-react';
+import { Loader2, Plus, Edit2, Trash2 } from 'lucide-react';
 import { PaginatedResponse } from '@/features/products/types';
 
 export interface ColumnDef<T> {
@@ -46,6 +46,11 @@ interface CrudTableProps<T> {
   searchPlaceholder?: string;
   dataKey?: string;
   useIdInUpdateUrl?: boolean;
+  hideCreate?: boolean;
+  hideEdit?: boolean;
+  hideDelete?: boolean;
+  hideActions?: boolean;
+  customActions?: (row: T) => React.ReactNode;
 }
 
 export function CrudTable<T extends Record<string, unknown>>({
@@ -55,7 +60,12 @@ export function CrudTable<T extends Record<string, unknown>>({
   formFields,
   primaryKey,
   dataKey = 'data',
-  useIdInUpdateUrl = false
+  useIdInUpdateUrl = false,
+  hideCreate = false,
+  hideEdit = false,
+  hideDelete = false,
+  hideActions = false,
+  customActions,
 }: CrudTableProps<T>) {
   const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
@@ -69,29 +79,65 @@ export function CrudTable<T extends Record<string, unknown>>({
   const { data, isLoading } = useQuery<PaginatedResponse<T>>({
     queryKey: [endpoint, page],
     queryFn: async () => {
-      const res = await apiClient.get(`${endpoint}?page=${page}&limit=${limit}`);
+      const separator = endpoint.includes('?') ? '&' : '?';
+      const res = await apiClient.get(`${endpoint}${separator}page=${page}&limit=${limit}`);
       return res as unknown as PaginatedResponse<T>;
     },
   });
 
   const rawData = data;
   const extracted = rawData ? (Array.isArray(rawData) ? rawData : (rawData as unknown as Record<string, unknown>)[dataKey]) : [];
-  const items: T[] = (Array.isArray(extracted) ? extracted : []) as T[];
+  const rawItems: T[] = (Array.isArray(extracted) ? extracted : []) as T[];
+
+  // กรองให้แสดงเฉพาะข้อมูลที่มีสถานะเป็น Active หรือไม่มีสถานะระบุไว้
+  const items = rawItems.filter(item => {
+    const status = item['status' as keyof T] as string | undefined;
+    if (!status) return true;
+    const s = String(status).toLowerCase();
+    return s === 'active' || s === 'available' || s === 'ปกติ';
+  });
 
   const createMutation = useMutation({
-    mutationFn: (newObj: Partial<T>) => apiClient.post(endpoint, newObj),
+    mutationFn: (newObj: Partial<T>) => {
+      const baseUrl = endpoint.split('?')[0];
+      return apiClient.post(baseUrl, newObj);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [endpoint] });
       setIsModalOpen(false);
+    },
+    onError: (error: unknown) => {
+      const err = error as { response?: { data?: { message?: string } } };
+      alert(`ไม่สามารถสร้างข้อมูลได้: ${err?.response?.data?.message || 'เกิดข้อผิดพลาด'}`);
     }
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string | number; data: Partial<T> }) =>
-      apiClient.put(useIdInUpdateUrl ? `${endpoint}/${id}` : endpoint, useIdInUpdateUrl ? data : { ...data, [primaryKey]: id }),
+    mutationFn: ({ id, data }: { id: string | number; data: Partial<T> }) => {
+      const baseUrl = endpoint.split('?')[0];
+      return apiClient.put(useIdInUpdateUrl ? `${baseUrl}/${id}` : baseUrl, useIdInUpdateUrl ? data : { ...data, [primaryKey]: id });
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [endpoint] });
       setIsModalOpen(false);
+    },
+    onError: (error: unknown) => {
+      const err = error as { response?: { data?: { message?: string } } };
+      alert(`ไม่สามารถอัปเดตข้อมูลได้: ${err?.response?.data?.message || 'เกิดข้อผิดพลาด'}`);
+    }
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: string | number) => {
+      const baseUrl = endpoint.split('?')[0];
+      return apiClient.delete(`${baseUrl}/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [endpoint] });
+    },
+    onError: (error: unknown) => {
+      const err = error as { response?: { data?: { message?: string } } };
+      alert(`ไม่สามารถลบข้อมูลได้: ${err?.response?.data?.message || 'ไม่มี API สำหรับลบข้อมูลนี้ หรือเกิดข้อผิดพลาด'}`);
     }
   });
 
@@ -111,6 +157,21 @@ export function CrudTable<T extends Record<string, unknown>>({
       updateMutation.mutate({ id: editingItem[primaryKey] as string | number, data: formData });
     } else {
       createMutation.mutate(formData);
+    }
+  };
+
+  const handleDelete = (item: T) => {
+    if (window.confirm('คุณแน่ใจหรือไม่ว่าต้องการลบรายการนี้?')) {
+      const id = item[primaryKey] as string | number;
+      const hasStatus = 'status' in item || formFields.some(f => f.name === 'status');
+
+      if (hasStatus) {
+        // อัปเดตสถานะเป็น Inactive แทบลบข้อมูลทิ้งจริง
+        updateMutation.mutate({ id, data: { ...item, status: 'Inactive' as unknown as T[keyof T] } });
+      } else {
+        // หากไม่มีคอลัมน์ status ให้ลบออกไปเลย
+        deleteMutation.mutate(id);
+      }
     }
   };
 
@@ -157,9 +218,11 @@ export function CrudTable<T extends Record<string, unknown>>({
       <div className="flex justify-between items-center">
         <h2 className="text-xl font-bold text-zinc-900">{title}</h2>
         <div className="flex items-center gap-3">
-          <Button onClick={() => handleOpenModal()} className="bg-zinc-900 text-white hover:bg-zinc-800">
-            <Plus className="w-4 h-4 mr-2" /> เพิ่มใหม่
-          </Button>
+          {!hideCreate && (
+            <Button onClick={() => handleOpenModal()} className="bg-zinc-900 text-white hover:bg-zinc-800">
+              <Plus className="w-4 h-4 mr-2" /> เพิ่มใหม่
+            </Button>
+          )}
         </div>
       </div>
 
@@ -170,7 +233,9 @@ export function CrudTable<T extends Record<string, unknown>>({
               {columns.map((col) => (
                 <TableHead key={String(col.accessorKey)}>{col.header}</TableHead>
               ))}
-              <TableHead className="text-right">จัดการ</TableHead>
+              {!hideActions && (
+                <TableHead className="text-right">จัดการ</TableHead>
+              )}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -194,11 +259,21 @@ export function CrudTable<T extends Record<string, unknown>>({
                       {col.cell ? col.cell(item) : String(item[col.accessorKey] ?? '-')}
                     </TableCell>
                   ))}
-                  <TableCell className="text-right">
-                    <Button variant="ghost" size="sm" onClick={() => handleOpenModal(item)}>
-                      <Edit2 className="w-4 h-4 text-zinc-500 hover:text-zinc-900" />
-                    </Button>
-                  </TableCell>
+                  {!hideActions && (
+                    <TableCell className="text-right whitespace-nowrap">
+                      {customActions && customActions(item)}
+                      {!hideEdit && (
+                        <Button variant="ghost" size="sm" onClick={() => handleOpenModal(item)}>
+                          <Edit2 className="w-4 h-4 text-zinc-500 hover:text-zinc-900" />
+                        </Button>
+                      )}
+                      {!hideDelete && (
+                        <Button variant="ghost" size="sm" onClick={() => handleDelete(item)}>
+                          <Trash2 className="w-4 h-4 text-red-500 hover:text-red-700" />
+                        </Button>
+                      )}
+                    </TableCell>
+                  )}
                 </TableRow>
               ))
             )}
@@ -238,13 +313,13 @@ export function CrudTable<T extends Record<string, unknown>>({
                   <div className="space-y-3">
                     {formData[field.name] && (
                       <div className="relative w-32 h-32 group">
-                        <img 
-                          src={formData[field.name] as string} 
-                          alt="Preview" 
-                          className="w-full h-full object-cover rounded-xl border-2 border-zinc-100 shadow-sm" 
+                        <img
+                          src={formData[field.name] as string}
+                          alt="Preview"
+                          className="w-full h-full object-cover rounded-xl border-2 border-zinc-100 shadow-sm"
                         />
                         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl flex items-center justify-center">
-                           <p className="text-white text-[10px] font-bold">เปลี่ยนรูปภาพ</p>
+                          <p className="text-white text-[10px] font-bold">เปลี่ยนรูปภาพ</p>
                         </div>
                       </div>
                     )}
@@ -282,7 +357,7 @@ export function CrudTable<T extends Record<string, unknown>>({
           <DialogFooter className="gap-2 sm:gap-0">
             <Button variant="outline" onClick={() => setIsModalOpen(false)}>ยกเลิก</Button>
             <Button onClick={handleSave} disabled={isSaving || isUploading} className="bg-zinc-900 text-white hover:bg-zinc-800">
-              {isSaving && <Loader2 className="w-4 h-4 mr-2 animate-spin" />} 
+              {isSaving && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
               {editingItem ? 'บันทึกการแก้ไข' : 'ยืนยันการสร้าง'}
             </Button>
           </DialogFooter>

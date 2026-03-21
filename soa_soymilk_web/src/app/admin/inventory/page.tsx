@@ -16,6 +16,7 @@ export default function AdminInventoryPage() {
         endpoint="/stocks"
         primaryKey="stock_id"
         useIdInUpdateUrl={true}
+        hideDelete={true}
         columns={[
           { header: 'ID', accessorKey: 'stock_id' },
           { header: 'Item Name', accessorKey: 'stock_name' },
