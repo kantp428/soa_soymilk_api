@@ -45,6 +45,7 @@ interface CrudTableProps<T> {
   primaryKey: keyof T;
   searchPlaceholder?: string;
   dataKey?: string;
+  useIdInUpdateUrl?: boolean;
 }
 
 export function CrudTable<T extends Record<string, unknown>>({
@@ -53,7 +54,8 @@ export function CrudTable<T extends Record<string, unknown>>({
   columns,
   formFields,
   primaryKey,
-  dataKey = 'data'
+  dataKey = 'data',
+  useIdInUpdateUrl = false
 }: CrudTableProps<T>) {
   const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
@@ -73,7 +75,8 @@ export function CrudTable<T extends Record<string, unknown>>({
   });
 
   const rawData = data;
-  const items: T[] = (rawData ? (rawData as unknown as Record<string, unknown>)[dataKey] : []) as T[];
+  const extracted = rawData ? (Array.isArray(rawData) ? rawData : (rawData as unknown as Record<string, unknown>)[dataKey]) : [];
+  const items: T[] = (Array.isArray(extracted) ? extracted : []) as T[];
 
   const createMutation = useMutation({
     mutationFn: (newObj: Partial<T>) => apiClient.post(endpoint, newObj),
@@ -85,7 +88,7 @@ export function CrudTable<T extends Record<string, unknown>>({
 
   const updateMutation = useMutation({
     mutationFn: ({ id, data }: { id: string | number; data: Partial<T> }) =>
-      apiClient.put(endpoint, { ...data, [primaryKey]: id }),
+      apiClient.put(useIdInUpdateUrl ? `${endpoint}/${id}` : endpoint, useIdInUpdateUrl ? data : { ...data, [primaryKey]: id }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [endpoint] });
       setIsModalOpen(false);

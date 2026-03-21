@@ -33,3 +33,23 @@ export const createOrderItem = async (payload: CreateOrderItemPayload) => {
 export const createOrderItemAddon = async (payload: CreateOrderItemAddonPayload) => {
   return apiClient.post('/order-item-addons', payload);
 };
+
+export const getOrder = async (id: string | number) => {
+  return apiClient.get(`/orders/${id}`);
+};
+
+export const getOrderItems = async (page = 1, limit = 50) => {
+  return apiClient.get(`/order-items?page=${page}&limit=${limit}`);
+};
+
+export const getOrderItem = async (id: string | number) => {
+  return apiClient.get(`/order-items/${id}`);
+};
+
+export const getOrderItemAddons = async (page = 1, limit = 50) => {
+  return apiClient.get(`/order-item-addons?page=${page}&limit=${limit}`);
+};
+
+export const getOrderItemAddon = async (id: string | number) => {
+  return apiClient.get(`/order-item-addons/${id}`);
+};

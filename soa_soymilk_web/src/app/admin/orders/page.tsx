@@ -27,7 +27,7 @@ export default function AdminOrdersPage() {
 
   const { data: orderDetail, isLoading: isLoadingDetails } = useQuery<OrderDetail>({
     queryKey: ['/orders', selectedOrderId, 'details'],
-    queryFn: () => apiClient.get(`/orders/${selectedOrderId}/details`),
+    queryFn: () => apiClient.get(`/orders/${selectedOrderId}`),
     enabled: !!selectedOrderId,
   });
 
@@ -71,18 +71,18 @@ export default function AdminOrdersPage() {
               </thead>
               <tbody className="[&_tr:last-child]:border-0">
                 {isLoading ? (
-                  <tr>
+                  <tr key="loading">
                     <td colSpan={7} className="p-8 text-center text-zinc-500">
                       <Loader2 className="w-6 h-6 animate-spin mx-auto mb-2" />
                       กำลังโหลดข้อมูล...
                     </td>
                   </tr>
                 ) : orders.length === 0 ? (
-                  <tr>
+                  <tr key="empty">
                     <td colSpan={7} className="p-8 text-center text-zinc-500">ไม่พบรายการธุรกรรม</td>
                   </tr>
-                ) : orders.map((order) => (
-                  <tr key={order.order_id} className="border-b transition-colors hover:bg-zinc-50/50">
+                ) : orders.map((order, idx) => (
+                  <tr key={order.order_id || `order-${idx}`} className="border-b transition-colors hover:bg-zinc-50/50">
                     <td className="p-4 align-middle font-medium">#{order.order_id}</td>
                     <td className="p-4 align-middle">
                       {order.created_at ? new Date(order.created_at.replace(' ', 'T')).toLocaleString('th-TH') : 'N/A'}

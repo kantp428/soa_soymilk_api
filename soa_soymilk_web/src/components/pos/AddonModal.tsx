@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -27,6 +28,7 @@ export function AddonModal({ isOpen, onClose, product, onConfirm }: AddonModalPr
   const [selectedToppings, setSelectedToppings] = useState<Addon[]>([]);
   const [quantity, setQuantity] = useState(1);
 
+
   useEffect(() => {
     if (isOpen) {
       setSweetness(100);
@@ -37,7 +39,7 @@ export function AddonModal({ isOpen, onClose, product, onConfirm }: AddonModalPr
 
   if (!product) return null;
 
-  const addons = addonsData?.date || [];
+  const addons = addonsData?.data || [];
 
   const availableAddons = addons.filter(addon => addon.status === 'Available' || addon.status === 'Active' || !addon.status);
 

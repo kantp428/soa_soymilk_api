@@ -108,6 +108,7 @@ export default function AdminMenuPage() {
             endpoint="/addons"
             primaryKey="addon_id"
             dataKey="date"
+            useIdInUpdateUrl={true}
             columns={[
               { header: 'ID', accessorKey: 'addon_id' },
               { header: 'Addon Name', accessorKey: 'addon_name' },

@@ -37,7 +37,7 @@ export default function AdminDashboardPage() {
 
   const { data: orderDetail, isLoading: isLoadingDetails } = useQuery<OrderDetail>({
     queryKey: ['/orders', selectedOrderId, 'details'],
-    queryFn: () => apiClient.get(`/orders/${selectedOrderId}/details`),
+    queryFn: () => apiClient.get(`/orders/${selectedOrderId}`),
     enabled: !!selectedOrderId,
   });
 
@@ -154,9 +154,9 @@ export default function AdminDashboardPage() {
                       </tr>
                     </thead>
                     <tbody className="[&_tr:last-child]:border-0">
-                      {orders.slice(0, 10).map((order) => (
+                      {orders.slice(0, 10).map((order, idx) => (
                         <tr 
-                          key={order.order_id} 
+                          key={order.order_id || `order-${idx}`} 
                           className="border-b transition-colors hover:bg-zinc-100 cursor-pointer group"
                           onClick={() => setSelectedOrderId(order.order_id)}
                         >

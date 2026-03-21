@@ -15,6 +15,7 @@ export default function AdminInventoryPage() {
         title="สต็อกสินค้าปัจจุบัน"
         endpoint="/stocks"
         primaryKey="stockId"
+        useIdInUpdateUrl={true}
         columns={[
           { header: 'ID', accessorKey: 'stockId' },
           { header: 'Item Name', accessorKey: 'stockName' },

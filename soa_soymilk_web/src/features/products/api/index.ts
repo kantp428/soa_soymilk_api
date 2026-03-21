@@ -16,3 +16,19 @@ export const getAddons = async (page = 1, limit = 50): Promise<PaginatedResponse
 export const getProductsByCategory = async (categoryId: string, page = 1, limit = 50): Promise<PaginatedResponse<Menu>> => {
   return apiClient.get(`/menus?category_id=${categoryId}&page=${page}&limit=${limit}`);
 };
+
+export const getMenu = async (id: string | number): Promise<Menu> => {
+  return apiClient.get(`/menus/${id}`);
+};
+
+export const getCategory = async (id: string | number): Promise<Category> => {
+  return apiClient.get(`/categories/${id}`);
+};
+
+export const getAddon = async (id: string | number): Promise<Addon> => {
+  return apiClient.get(`/addons/${id}`);
+};
+
+export const updateAddon = async (id: string | number, data: Partial<Addon>): Promise<{ message: string, data: Addon }> => {
+  return apiClient.put(`/addons/${id}`, data);
+};

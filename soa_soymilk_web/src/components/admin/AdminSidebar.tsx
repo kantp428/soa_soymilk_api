@@ -14,7 +14,6 @@ import {
   Home,
   History,
   BarChart3,
-  Settings,
   UserCog
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -30,7 +29,6 @@ const navItems = [
   { href: '/admin/customers', label: 'จัดการข้อมูลลูกค้า', icon: Users },
   { href: '/admin/staff', label: 'จัดการพนักงาน', icon: UserCog },
   { href: '/admin/reports', label: 'รายงานและสถิติ', icon: BarChart3 },
-  { href: '/admin/settings', label: 'ตั้งค่าระบบ', icon: Settings },
 ];
 
 export function AdminSidebar() {

@@ -15,6 +15,7 @@ export default function AdminStaffPage() {
         title="รายชื่อพนักงาน"
         endpoint="/staff"
         primaryKey="staff_id"
+        useIdInUpdateUrl={true}
         columns={[
           { header: 'ID', accessorKey: 'staff_id' },
           { header: 'Name', accessorKey: 'staff_name' },
