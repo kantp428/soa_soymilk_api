@@ -22,26 +22,26 @@ export default function AdminPromotionsPage() {
         >
           Promotion Campaigns
         </Button>
-        <Button
+        {/* <Button
           variant="ghost"
           className={`rounded-none border-b-2 px-6 ${activeTab === 'coupons' ? 'border-zinc-900 font-semibold' : 'border-transparent text-zinc-500'}`}
           onClick={() => setActiveTab('coupons')}
         >
           Coupons
-        </Button>
+        </Button> */}
       </div>
 
       <div className="pt-4">
         {activeTab === 'campaigns' && (
           <CrudTable
             title="Promotion Campaigns"
-            endpoint="/promotion-campain"
-            primaryKey="promotionCampainId"
+            endpoint="/promotion/campaign"
+            primaryKey="promotion_campain_id"
             columns={[
-              { header: 'ID', accessorKey: 'promotionCampainId' },
+              { header: 'ID', accessorKey: 'promotion_campain_id' },
               { header: 'Campaign Name', accessorKey: 'name' },
               { header: 'Discount (%)', accessorKey: 'discount' },
-              { header: 'Expiry Date', accessorKey: 'expireDate' },
+              { header: 'Expiry Date', accessorKey: 'expire_date' },
             ]}
             formFields={[
               { name: 'name', label: 'Campaign Name', type: 'text', required: true },
@@ -51,7 +51,7 @@ export default function AdminPromotionsPage() {
           />
         )}
 
-        {activeTab === 'coupons' && (
+        {/* {activeTab === 'coupons' && (
           <CrudTable
             title="Discount Coupons"
             endpoint="/coupons"
@@ -72,7 +72,7 @@ export default function AdminPromotionsPage() {
               ] },
             ]}
           />
-        )}
+        )} */}
       </div>
     </div>
   );

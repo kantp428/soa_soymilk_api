@@ -22,7 +22,7 @@ export default function AdminMenuPage() {
         >
           Menus
         </Button>
-        <Button
+        {/* <Button
           variant="ghost"
           className={`rounded-none border-b-2 px-6 ${activeTab === 'categories' ? 'border-zinc-900 font-semibold' : 'border-transparent text-zinc-500'}`}
           onClick={() => setActiveTab('categories')}
@@ -35,7 +35,7 @@ export default function AdminMenuPage() {
           onClick={() => setActiveTab('addons')}
         >
           Addons
-        </Button>
+        </Button> */}
       </div>
 
       <div className="pt-4">
@@ -85,7 +85,7 @@ export default function AdminMenuPage() {
           />
         )}
 
-        {activeTab === 'categories' && (
+        {/* {activeTab === 'categories' && (
           <CrudTable
             title="Categories"
             endpoint="/categories"
@@ -124,7 +124,7 @@ export default function AdminMenuPage() {
               ] },
             ]}
           />
-        )}
+        )} */}
       </div>
     </div>
   );

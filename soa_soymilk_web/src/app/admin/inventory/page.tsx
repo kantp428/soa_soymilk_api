@@ -14,25 +14,27 @@ export default function AdminInventoryPage() {
       <CrudTable
         title="สต็อกสินค้าปัจจุบัน"
         endpoint="/stocks"
-        primaryKey="stockId"
+        primaryKey="stock_id"
         useIdInUpdateUrl={true}
         columns={[
-          { header: 'ID', accessorKey: 'stockId' },
-          { header: 'Item Name', accessorKey: 'stockName' },
+          { header: 'ID', accessorKey: 'stock_id' },
+          { header: 'Item Name', accessorKey: 'stock_name' },
           { header: 'Quantity', accessorKey: 'quantity' },
           { header: 'Unit', accessorKey: 'unit' },
         ]}
         formFields={[
-          { name: 'stockName', label: 'Material/Item Name', type: 'text', required: true },
+          { name: 'stock_name', label: 'Material/Item Name', type: 'text', required: true },
           { name: 'quantity', label: 'Quantity Available', type: 'number', required: true },
-          { name: 'unit', label: 'Unit (e.g., kg, liters, cups)', type: 'select', options: [
-            { label: 'Kilograms (kg)', value: 'kg' },
-            { label: 'Grams (g)', value: 'g' },
-            { label: 'Liters (L)', value: 'L' },
-            { label: 'Milliliters (ml)', value: 'ml' },
-            { label: 'Pieces (pcs)', value: 'pcs' },
-            { label: 'Boxes', value: 'boxes' },
-          ], required: true },
+          {
+            name: 'unit', label: 'Unit (e.g., kg, liters, cups)', type: 'select', options: [
+              { label: 'Kilograms (kg)', value: 'kg' },
+              { label: 'Grams (g)', value: 'g' },
+              { label: 'Liters (L)', value: 'L' },
+              { label: 'Milliliters (ml)', value: 'ml' },
+              { label: 'Pieces (pcs)', value: 'pcs' },
+              { label: 'Boxes', value: 'boxes' },
+            ], required: true
+          },
         ]}
       />
     </div>
