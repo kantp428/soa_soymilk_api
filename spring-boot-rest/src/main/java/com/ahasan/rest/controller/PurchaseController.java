@@ -68,7 +68,7 @@ public class PurchaseController extends ApiControllerSupport {
 		pagination.put("total", result.getTotalElements());
 		pagination.put("page", normalizedPage);
 		pagination.put("limit", normalizedLimit);
-		pagination.put("totalpage", result.getTotalPages());
+		pagination.put("total_pages", result.getTotalPages());
 		response.put("pagination", pagination);
 		return response;
 	}
@@ -82,14 +82,14 @@ public class PurchaseController extends ApiControllerSupport {
 	public Map<String, Object> getItems(@PathVariable Integer id) {
 		getPurchase(id);
 		Map<String, Object> response = new LinkedHashMap<String, Object>();
-		response.put("purchaseId", id);
+		response.put("purchase_id", id);
 		response.put("items", purchaseItemRepo.findByPurchaseId(id).stream().map(this::toPurchaseItemSummaryMap)
 				.collect(Collectors.toList()));
 		return response;
 	}
 
-	@PostMapping("/purchases/{purchaseId}/items")
-	public Map<String, Object> addItems(@PathVariable("purchaseId") Integer purchaseId,
+	@PostMapping("/purchases/{purchase_id}/items")
+	public Map<String, Object> addItems(@PathVariable("purchase_id") Integer purchaseId,
 			@RequestBody Map<String, Object> body) {
 		PurchaseEntity purchase = getPurchase(purchaseId);
 		List<Map<String, Object>> items = (List<Map<String, Object>>) body.get("items");
@@ -98,7 +98,7 @@ public class PurchaseController extends ApiControllerSupport {
 		for (Map<String, Object> itemBody : safeList(items)) {
 			PurchaseItemEntity item = new PurchaseItemEntity();
 			item.setPurchaseId(purchaseId);
-			item.setStockId(nullableInt(itemBody.get("stockId")));
+			item.setStockId(nullableInt(itemBody.get("stock_id")));
 			item.setQuantity(decimalValue(itemBody.get("quantity")));
 			item.setPrice(decimalValue(itemBody.get("price")));
 			PurchaseItemEntity saved = purchaseItemRepo.save(item);
@@ -111,8 +111,8 @@ public class PurchaseController extends ApiControllerSupport {
 		purchase.setTotalCost(total);
 		purchaseRepo.save(purchase);
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
-		data.put("purchaseId", purchaseId);
-		data.put("itemsAdded", itemsAdded);
+		data.put("purchase_id", purchaseId);
+		data.put("items_added", itemsAdded);
 		data.put("totalCost", total);
 		return messageData("Items added successfully", data);
 	}
@@ -134,11 +134,11 @@ public class PurchaseController extends ApiControllerSupport {
 	private Map<String, Object> toPurchaseSummaryMap(PurchaseEntity entity) {
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
 		SupplierEntity supplier = entity.getSupplierId() == null ? null : supplierRepo.findById(entity.getSupplierId()).orElse(null);
-		data.put("purchaseId", entity.getPurchaseId());
-		data.put("supplierId", entity.getSupplierId());
-		data.put("supplierName", supplier == null ? null : supplier.getSupplierName());
-		data.put("purchaseDate", entity.getCreateAt() == null ? null : entity.getCreateAt().toLocalDate());
-		data.put("totalCost", entity.getTotalCost());
+		data.put("purchase_id", entity.getPurchaseId());
+		data.put("supplier_id", entity.getSupplierId());
+		data.put("supplier_name", supplier == null ? null : supplier.getSupplierName());
+		data.put("purchase_date", entity.getCreateAt() == null ? null : entity.getCreateAt().toLocalDate());
+		data.put("total_cost", entity.getTotalCost());
 		return data;
 	}
 
@@ -148,13 +148,14 @@ public class PurchaseController extends ApiControllerSupport {
 				.map(this::toPurchaseItemDetailMap)
 				.collect(Collectors.toList());
 		data.put("items", items);
+		data.put("totalCost", entity.getTotalCost());
 		return data;
 	}
 
 	private Map<String, Object> toPurchaseItemSummaryMap(PurchaseItemEntity entity) {
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
-		data.put("purchaseItemId", entity.getPurchaseItemId());
-		data.put("stockId", entity.getStockId());
+		data.put("purchase_item_id", entity.getPurchaseItemId());
+		data.put("stock_id", entity.getStockId());
 		data.put("quantity", entity.getQuantity());
 		data.put("price", entity.getPrice());
 		return data;
@@ -163,7 +164,7 @@ public class PurchaseController extends ApiControllerSupport {
 	private Map<String, Object> toPurchaseItemDetailMap(PurchaseItemEntity entity) {
 		Map<String, Object> data = toPurchaseItemSummaryMap(entity);
 		StockEntity stock = entity.getStockId() == null ? null : stockRepo.findById(entity.getStockId()).orElse(null);
-		data.put("stockName", stock == null ? null : stock.getStockName());
+		data.put("stock_name", stock == null ? null : stock.getStockName());
 		data.put("total", entity.getPrice().multiply(entity.getQuantity()));
 		return data;
 	}

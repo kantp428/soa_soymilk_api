@@ -43,7 +43,7 @@ public class SupplierController extends ApiControllerSupport {
 		pagination.put("total", result.getTotalElements());
 		pagination.put("page", normalizedPage);
 		pagination.put("limit", normalizedLimit);
-		pagination.put("totalPage", result.getTotalPages());
+		pagination.put("total_pages", result.getTotalPages());
 		response.put("pagination", pagination);
 		return response;
 	}
@@ -74,7 +74,7 @@ public class SupplierController extends ApiControllerSupport {
 		entity.setStatus(stringValue(body.get("status")));
 		supplierRepo.save(entity);
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
-		data.put("supplierId", entity.getSupplierId());
+		data.put("supplier_id", entity.getSupplierId());
 		data.put("status", entity.getStatus());
 		return messageData("Supplier updated", data);
 	}
@@ -91,8 +91,8 @@ public class SupplierController extends ApiControllerSupport {
 	}
 
 	private void applySupplier(SupplierEntity entity, Map<String, Object> body) {
-		if (body.containsKey("supplierName")) {
-			entity.setSupplierName(stringValue(body.get("supplierName")));
+		if (body.containsKey("supplier_name")) {
+			entity.setSupplierName(stringValue(body.get("supplier_name")));
 		}
 		if (body.containsKey("phone")) {
 			entity.setPhone(stringValue(body.get("phone")));
@@ -107,16 +107,16 @@ public class SupplierController extends ApiControllerSupport {
 
 	private Map<String, Object> toSupplierSummaryMap(SupplierEntity entity) {
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
-		data.put("id", entity.getSupplierId());
-		data.put("supplierName", entity.getSupplierName());
+		data.put("supplier_id", entity.getSupplierId());
+		data.put("supplier_name", entity.getSupplierName());
 		data.put("phone", entity.getPhone());
 		return data;
 	}
 
 	private Map<String, Object> toSupplierDetailMap(SupplierEntity entity) {
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
-		data.put("id", entity.getSupplierId());
-		data.put("supplierName", entity.getSupplierName());
+		data.put("supplier_id", entity.getSupplierId());
+		data.put("supplier_name", entity.getSupplierName());
 		data.put("phone", entity.getPhone());
 		data.put("address", entity.getAddress());
 		return data;
@@ -124,8 +124,8 @@ public class SupplierController extends ApiControllerSupport {
 
 	private Map<String, Object> toSupplierUpdateMap(SupplierEntity entity) {
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
-		data.put("supplierId", entity.getSupplierId());
-		data.put("supplierName", entity.getSupplierName());
+		data.put("supplier_id", entity.getSupplierId());
+		data.put("supplier_name", entity.getSupplierName());
 		data.put("phone", entity.getPhone());
 		data.put("address", entity.getAddress());
 		data.put("status", entity.getStatus());

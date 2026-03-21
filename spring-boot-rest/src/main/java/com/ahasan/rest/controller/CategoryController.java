@@ -33,6 +33,7 @@ public class CategoryController extends ApiControllerSupport {
 		Page<CategoryEntity> result = categoryRepo.findAll(PageRequest.of(normalizedPage - 1, normalizedLimit));
 		List<Map<String, Object>> data = result.getContent().stream().map(this::toCategoryMap).collect(Collectors.toList());
 		Map<String, Object> response = new LinkedHashMap<String, Object>();
+		response.put("success", "Fetch Successfully");
 		response.put("data", data);
 		Map<String, Object> pagination = new LinkedHashMap<String, Object>();
 		pagination.put("page", normalizedPage);

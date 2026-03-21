@@ -56,12 +56,8 @@ public class MenuController extends ApiControllerSupport {
 		return messageData("create successfully", toMenuMap(menuRepo.save(entity)));
 	}
 
-	@PutMapping("/menus")
-	public Map<String, Object> update(@RequestBody Map<String, Object> body) {
-		Integer id = nullableInt(body.get("menu_id"));
-		if (id == null) {
-			throw new RecordNotFoundException("menu_id is required");
-		}
+	@PutMapping("/menus/{id}")
+	public Map<String, Object> update(@PathVariable Integer id, @RequestBody Map<String, Object> body) {
 		MenuEntity entity = getEntity(id);
 		applyMenu(entity, body);
 		return messageData("update successfully", toMenuMap(menuRepo.save(entity)));

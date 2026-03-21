@@ -1,0 +1,3638 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Default module",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "promotion"
+    },
+    {
+      "name": "order"
+    },
+    {
+      "name": "order-item"
+    },
+    {
+      "name": "staff"
+    },
+    {
+      "name": "categories"
+    },
+    {
+      "name": "addon"
+    },
+    {
+      "name": "order-item-addons"
+    },
+    {
+      "name": "menus"
+    },
+    {
+      "name": "suppliers"
+    },
+    {
+      "name": "stocks"
+    },
+    {
+      "name": "purchases"
+    }
+  ],
+  "paths": {
+    "/promotion/coupon": {
+      "post": {
+        "summary": "create-coupon",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "promotion"
+        ],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "promotion_campain_id": 1
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "create successfully",
+                  "data": {
+                    "coupon_id": 1,
+                    "coupon_code": "AXUUCOSA9587ASDN11",
+                    "promotion_campain_id": 1,
+                    "status": "INACTIVE",
+                    "created_at": "2025-10-10T10:30:45.000Z"
+                  }
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "409": {
+            "$ref": "#/components/responses/409 Conflict",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      }
+    },
+    "/promotion/campaign/{id}/coupon": {
+      "get": {
+        "summary": "get-promotion-coupon",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "promotion"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "used_coupons": 30,
+                  "unused_coupons": 70,
+                  "total_coupons": 100
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/promotion/campaign": {
+      "get": {
+        "summary": "get-all",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "promotion"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": 1,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": 10,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "data": [
+                    {
+                      "promotion_campain_id": 1,
+                      "name": "New Year Promotion",
+                      "discount": 20,
+                      "expire_date": "2026-01-31"
+                    },
+                    {
+                      "promotion_campain_id": 2,
+                      "name": "Water Festival Promotion",
+                      "discount": 10,
+                      "expire_date": "2026-04-15"
+                    },
+                    {
+                      "promotion_campain_id": 3,
+                      "name": "Holloween Promotion",
+                      "discount": 13,
+                      "expire_date": "2026-07-01"
+                    }
+                  ],
+                  "pagination": {
+                    "page": 1,
+                    "limit": 10,
+                    "total": 3,
+                    "total_pages": 1
+                  }
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      },
+      "post": {
+        "summary": "create-campaign",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "promotion"
+        ],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "name": "New Year Promotion",
+                "discount": 20,
+                "expire_date": "2026-01-31"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "create successfully",
+                  "data": {
+                    "promotion_campain_id": 1,
+                    "name": "New Year Promotion",
+                    "discount": 20,
+                    "expire_date": "2026-01-31",
+                    "created_at": "2025-10-10T10:30:45.000Z"
+                  }
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "409": {
+            "$ref": "#/components/responses/409 Conflict",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      }
+    },
+    "/promotion/coupon/active": {
+      "put": {
+        "summary": "active-coupon",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "promotion"
+        ],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "coupon_code": "AXUUCOSA9587ASDN11"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "active successfully",
+                  "data": {
+                    "coupon_id": 1,
+                    "coupon_code": "AXUUCOSA9587ASDN11",
+                    "promotion_campain_id": 1,
+                    "status": "ACTIVE",
+                    "used_at": "2025-10-20T90:30:00.000Z"
+                  }
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "404": {
+            "$ref": "#/components/responses/404 Not Found",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      }
+    },
+    "/promotion/coupon/validate": {
+      "post": {
+        "summary": "validate-coupon",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "promotion"
+        ],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "coupon_code": "AXUUCOSA9587ASDN11"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "valid coupon",
+                  "data": {
+                    "coupon_id": 1,
+                    "coupon_code": "AXUUCOSA9587ASDN11",
+                    "promotion_campain_id": 1,
+                    "status": "INACTIVE"
+                  }
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "409": {
+            "$ref": "#/components/responses/409 Conflict",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      }
+    },
+    "/orders/{id}": {
+      "get": {
+        "summary": "get-one",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "order"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": 1,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": ""
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "customer_id": 1,
+                  "order_time": "2025-10-10T10:30:45.000Z",
+                  "total_price": 160,
+                  "payment_method": "cash",
+                  "order_status": "pending",
+                  "coupon_id": 1,
+                  "staff_id": 1
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "404": {
+            "$ref": "#/components/responses/404 Not Found",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      }
+    },
+    "/orders": {
+      "get": {
+        "summary": "get-all",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "order"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": 1,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": 10,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "data": [
+                    {
+                      "customer_id": 1,
+                      "order_time": "2025-10-10T10:30:45.000Z",
+                      "total_price": 160,
+                      "payment_method": "cash",
+                      "order_status": "pending",
+                      "coupon_id": 1,
+                      "staff_id": 1
+                    },
+                    {
+                      "customer_id": 2,
+                      "order_time": "2025-10-10T10:30:45.000Z",
+                      "total_price": 175,
+                      "payment_method": "cash",
+                      "order_status": "pending",
+                      "coupon_id": null,
+                      "staff_id": 1
+                    },
+                    {
+                      "customer_id": 3,
+                      "order_time": "2025-10-10T10:30:45.000Z",
+                      "total_price": 220,
+                      "payment_method": "transfer",
+                      "order_status": "pending",
+                      "coupon_id": null,
+                      "staff_id": 1
+                    }
+                  ],
+                  "pagination": {
+                    "page": 1,
+                    "limit": 10,
+                    "total": 3,
+                    "total_pages": 1
+                  }
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      },
+      "post": {
+        "summary": "create",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "order"
+        ],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "customer_id": 1,
+                "order_time": "2025-10-10T10:30:45.000Z",
+                "total_price": 160,
+                "payment_method": "cash",
+                "order_status": "pending",
+                "coupon_id": 1,
+                "staff_id": 1
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "create successfully",
+                  "data": {
+                    "customer_id": 1,
+                    "order_time": "2025-10-10T10:30:45.000Z",
+                    "total_price": 160,
+                    "payment_method": "cash",
+                    "order_status": "pending",
+                    "coupon_id": 1,
+                    "staff_id": 1
+                  }
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "409": {
+            "$ref": "#/components/responses/409 Conflict",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      }
+    },
+    "/order-items": {
+      "get": {
+        "summary": "get-all",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "order-item"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": 1,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": 5,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "data": [
+                    {
+                      "order_item_id": 1,
+                      "order_id": 101,
+                      "menu_id": 5,
+                      "quantity": 2,
+                      "price": 25
+                    },
+                    {
+                      "order_item_id": 2,
+                      "order_id": 101,
+                      "menu_id": 3,
+                      "quantity": 1,
+                      "price": 15
+                    }
+                  ],
+                  "pagination": {
+                    "page": 1,
+                    "limit": 10,
+                    "total": 2,
+                    "total_pages": 1
+                  }
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      },
+      "post": {
+        "summary": "create",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "order-item"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "order_id": 101,
+                "menu_id": 5,
+                "quantity": 2,
+                "price": 25
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "order_item_id": 1,
+                  "order_id": 101,
+                  "menu_id": 5,
+                  "quantity": 2,
+                  "price": 25
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "409": {
+            "$ref": "#/components/responses/409 Conflict",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      }
+    },
+    "/order-items/{id}": {
+      "get": {
+        "summary": "get-one",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "order-item"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "examples": {}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": "\"data\": {\r\n    \"order_item_id\": 1,\r\n    \"order_id\": 101,\r\n    \"menu_id\": 5,\r\n    \"quantity\": 2,\r\n    \"price\": 25.00\r\n}"
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "404": {
+            "$ref": "#/components/responses/404 Not Found",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      }
+    },
+    "/staff/{id}": {
+      "get": {
+        "summary": "get-one",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "staff"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "staff_id": 1,
+                  "staff_name": "John Doe",
+                  "phone": "0812345678",
+                  "role": "ADMIN",
+                  "status": "ACTIVE",
+                  "created_at": "2026-03-20T10:00:00.000Z",
+                  "updated_at": "2026-03-20T10:00:00.000Z"
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "404": {
+            "$ref": "#/components/responses/404 Not Found",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      },
+      "put": {
+        "summary": "update",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "staff"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "staff_name": "Somchai",
+                "phone": "0812345678",
+                "role": "admin",
+                "status": "active"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "active successfully",
+                  "data": {
+                    "staff_id": 1,
+                    "staff_name": "Somchai",
+                    "phone": "0812345678",
+                    "role": "admin",
+                    "status": "active"
+                  }
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "404": {
+            "$ref": "#/components/responses/404 Not Found",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      }
+    },
+    "/staff": {
+      "get": {
+        "summary": "get-all",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "staff"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "examples": {}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "staff_id": {
+                      "type": "string"
+                    },
+                    "staff_name": {
+                      "type": "string"
+                    },
+                    "phone": {
+                      "type": "string"
+                    },
+                    "role": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "staff_id",
+                    "staff_name",
+                    "phone",
+                    "role",
+                    "status"
+                  ]
+                },
+                "example": {
+                  "success": true,
+                  "data": [
+                    {
+                      "staff_id": 1,
+                      "staff_name": "Somchai",
+                      "phone": "0812345678",
+                      "role": "cashier",
+                      "status": "active"
+                    },
+                    {
+                      "staff_id": 2,
+                      "staff_name": "Suda",
+                      "phone": "0899999999",
+                      "role": "admin",
+                      "status": "active"
+                    }
+                  ],
+                  "pagination": {
+                    "page": 1,
+                    "limit": 10,
+                    "total": 2,
+                    "total_pages": 1
+                  }
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      },
+      "post": {
+        "summary": "create",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "staff"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "staff_name": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "staff_name",
+                  "phone",
+                  "role"
+                ]
+              },
+              "example": {
+                "staff_name": "Somchai",
+                "phone": "0812345678",
+                "role": "cashier"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "staff_id": {
+                          "type": "integer"
+                        },
+                        "staff_name": {
+                          "type": "string"
+                        },
+                        "phone": {
+                          "type": "integer"
+                        },
+                        "role": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      },
+                      "required": [
+                        "staff_id",
+                        "staff_name",
+                        "phone",
+                        "role",
+                        "status",
+                        "created_at"
+                      ]
+                    }
+                  }
+                },
+                "example": {
+                  "message": "create successfully",
+                  "data": {
+                    "staff_id": 1,
+                    "staff_name": "Somchai",
+                    "phone": "0812345678",
+                    "role": "cashier",
+                    "status": "active",
+                    "created_at": "2026-03-07T21:00:00Z"
+                  }
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "409": {
+            "$ref": "#/components/responses/409 Conflict",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      }
+    },
+    "/categories": {
+      "get": {
+        "summary": "get-all",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "categories"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": "Fetch Successfully",
+                  "data": [
+                    {
+                      "category_id": 1,
+                      "category_name": "Soy Milk",
+                      "created_at": "2026-03-20T10:00:00.000Z"
+                    },
+                    {
+                      "category_id": 2,
+                      "category_name": "Coffee",
+                      "created_at": "2026-03-20T10:00:00.000Z"
+                    }
+                  ],
+                  "pagination": {
+                    "page": 1,
+                    "limit": 10,
+                    "total": 2,
+                    "total_pages": 1
+                  }
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      }
+    },
+    "/categories/{id}": {
+      "get": {
+        "summary": "get-one",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "categories"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "category_id": {
+                      "type": "integer"
+                    },
+                    "category_name": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "required": [
+                    "category_id",
+                    "category_name",
+                    "created_at"
+                  ]
+                },
+                "example": {
+                  "category_id": 1,
+                  "category_name": "Drinks",
+                  "created_at": "2026-03-07T21:00:00Z"
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "404": {
+            "$ref": "#/components/responses/404 Not Found",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      }
+    },
+    "/addons/{id}": {
+      "get": {
+        "summary": "get-one",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "addon"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "addon_id": 1,
+                  "addon_name": "basil seeds",
+                  "price": 5,
+                  "status": "ACTIVE"
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "404": {
+            "$ref": "#/components/responses/404 Not Found",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      },
+      "put": {
+        "summary": "update",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "addon"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "addon_name": "basil seeds",
+                "price": 10,
+                "status": "INACTIVE"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "update successfully",
+                  "data": {
+                    "addon_id": 1,
+                    "addon_name": "basil seeds",
+                    "price": 5,
+                    "status": "INACTIVE"
+                  }
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "404": {
+            "$ref": "#/components/responses/404 Not Found",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      }
+    },
+    "/addons": {
+      "get": {
+        "summary": "get-all",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "addon"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": 1,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": 10,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "data": [
+                    {
+                      "addon_id": 1,
+                      "addon_name": "basil seeds",
+                      "price": 5,
+                      "status": "ACTIVE"
+                    },
+                    {
+                      "addon_id": 2,
+                      "addon_name": "chia seeds",
+                      "price": 5,
+                      "status": "ACTIVE"
+                    },
+                    {
+                      "addon_id": 3,
+                      "addon_name": "grass jelly",
+                      "price": 7,
+                      "status": "ACTIVE"
+                    }
+                  ],
+                  "pagination": {
+                    "page": 1,
+                    "limit": 10,
+                    "total": 3,
+                    "total_pages": 1
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      },
+      "post": {
+        "summary": "create",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "addon"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "addon_name": "basil seeds",
+                "price": 10,
+                "status": "ACTIVE"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "create successfully",
+                  "data": {
+                    "addon_id": 1,
+                    "addon_name": "basil seeds",
+                    "price": 10,
+                    "status": "ACTIVE"
+                  }
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "409": {
+            "$ref": "#/components/responses/409 Conflict",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      }
+    },
+    "/order-item-addons": {
+      "get": {
+        "summary": "get-all",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "order-item-addons"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": 1,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": 5,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "data": [
+                    {
+                      "order_item_addon_id": 1,
+                      "order_item_id": 101,
+                      "addon_id": 1,
+                      "addon_name": "basil seeds",
+                      "price": 5
+                    },
+                    {
+                      "order_item_addon_id": 2,
+                      "order_item_id": 101,
+                      "addon_id": 2,
+                      "addon_name": "chia seeds",
+                      "price": 5
+                    }
+                  ],
+                  "pagination": {
+                    "page": 1,
+                    "limit": 10,
+                    "total": 2,
+                    "total_pages": 1
+                  }
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      },
+      "post": {
+        "summary": "create",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "order-item-addons"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "order_item_id": 101,
+                "addon_id": 3,
+                "price": 7
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "create successfully",
+                  "data": {
+                    "order_item_addon_id": 5,
+                    "order_item_id": 101,
+                    "addon_id": 3,
+                    "price": 7
+                  }
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "409": {
+            "$ref": "#/components/responses/409 Conflict",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      }
+    },
+    "/order-item-addons/{id}": {
+      "get": {
+        "summary": "get-one",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "order-item-addons"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "examples": {}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "order_item_addon_id": 1,
+                  "order_item_id": 101,
+                  "addon_id": 1,
+                  "price": 5
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "404": {
+            "$ref": "#/components/responses/404 Not Found",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      }
+    },
+    "/menus/{id}": {
+      "get": {
+        "summary": "get-one",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "menus"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "menu_id": 1,
+                  "category_id": 1,
+                  "menu_name": "soy_milk_light",
+                  "description": "no sugar",
+                  "price": 10,
+                  "status": "ACTIVE",
+                  "create_at": "2026-03-07T10:00:00Z",
+                  "update_at": "2026-03-07T10:00:00Z"
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "404": {
+            "$ref": "#/components/responses/404 Not Found",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      },
+      "put": {
+        "summary": "update",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "menus"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "category_id": 1,
+                "menu_name": "soy_milk_light",
+                "description": "less sugar",
+                "price": 11,
+                "status": "ACTIVE"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "update successfully",
+                  "data": {
+                    "menu_id": 1,
+                    "category_id": 1,
+                    "menu_name": "soy_milk_light",
+                    "description": "less sugar",
+                    "price": 11,
+                    "status": "ACTIVE",
+                    "create_at": "2026-03-07T10:00:00Z",
+                    "update_at": "2026-03-07T12:00:00Z"
+                  }
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "404": {
+            "$ref": "#/components/responses/404 Not Found",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      }
+    },
+    "/menus": {
+      "get": {
+        "summary": "get-all",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "menus"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "5",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "data": [
+                    {
+                      "menu_id": 1,
+                      "category_id": 1,
+                      "menu_name": "soy_milk_light",
+                      "description": "no sugar",
+                      "price": 10,
+                      "status": "ACTIVE",
+                      "create_at": "2026-03-07T10:00:00Z",
+                      "update_at": "2026-03-07T10:00:00Z"
+                    },
+                    {
+                      "menu_id": 2,
+                      "category_id": 1,
+                      "menu_name": "soy_milk_sweet",
+                      "description": "normal sugar",
+                      "price": 12,
+                      "status": "ACTIVE",
+                      "create_at": "2026-03-07T10:05:00Z",
+                      "update_at": "2026-03-07T10:05:00Z"
+                    }
+                  ],
+                  "pagination": {
+                    "page": 1,
+                    "limit": 10,
+                    "total": 2,
+                    "total_pages": 1
+                  }
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      },
+      "post": {
+        "summary": "create",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "menus"
+        ],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": " application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "category_id": 1,
+                "menu_name": "soy_milk_black_sesame",
+                "description": "black sesame flavor",
+                "price": 15,
+                "status": "ACTIVE"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "create successfully",
+                  "data": {
+                    "menu_id": 3,
+                    "category_id": 1,
+                    "menu_name": "soy_milk_black_sesame",
+                    "description": "black sesame flavor",
+                    "price": 15,
+                    "status": "ACTIVE",
+                    "create_at": "2026-03-07T11:00:00Z",
+                    "update_at": "2026-03-07T11:00:00Z"
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/suppliers": {
+      "get": {
+        "summary": "get-all",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "suppliers"
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": 1,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": 1,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "seach",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "data": [
+                    {
+                      "supplier_id": 1,
+                      "supplier_name": "CP1",
+                      "phone": "0999999911"
+                    },
+                    {
+                      "supplier_id": 2,
+                      "supplier_name": "CP2",
+                      "phone": "0999999922"
+                    },
+                    {
+                      "supplier_id": 3,
+                      "supplier_name": "CP3",
+                      "phone": "0999999933"
+                    }
+                  ],
+                  "pagination": {
+                    "page": 1,
+                    "limit": 10,
+                    "total": 3,
+                    "total_pages": 1
+                  }
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      },
+      "post": {
+        "summary": "create",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "suppliers"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "supplier_name": "ABC Farm",
+                "phone": "0812345678",
+                "address": "Bangkok"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "Supplier created successfully"
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "409": {
+            "$ref": "#/components/responses/409 Conflict",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      }
+    },
+    "/suppliers/{id}": {
+      "get": {
+        "summary": "get-one",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "suppliers"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "supplier_id": 1,
+                  "supplier_name": "CP",
+                  "phone": "0999999999",
+                  "address": "24 ถนนตีทอง เเขวงป้อนปราบ เขตบางใหญ กรุงเทพ 10200"
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "404": {
+            "$ref": "#/components/responses/404 Not Found",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      },
+      "delete": {
+        "summary": "delete",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "suppliers"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "Supplier deleted successfully"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      },
+      "put": {
+        "summary": "update",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "suppliers"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "supplier_name": "ABC Farm Updated",
+                "phone": "0899999999",
+                "address": "Chiang Mai"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "Supplier updated",
+                  "data": {
+                    "supplier_id": 1,
+                    "supplier_name": "ABC Farm Updated",
+                    "phone": "0899999999",
+                    "address": "Chiang Mai",
+                    "status": "active"
+                  }
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "404": {
+            "$ref": "#/components/responses/404 Not Found",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      }
+    },
+    "/suppliers/inactive/{id}": {
+      "put": {
+        "summary": "activeUpdate",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "suppliers"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "status": "inactive"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "Supplier updated",
+                  "data": {
+                    "supplier_id": 1,
+                    "status": "inactive"
+                  }
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "404": {
+            "$ref": "#/components/responses/404 Not Found",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      }
+    },
+    "/stocks": {
+      "post": {
+        "summary": "create",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "stocks"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "stock_name": "Soybean",
+                "quantity": 100,
+                "unit": "kg"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "Stock created"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      },
+      "get": {
+        "summary": "get-all",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "stocks"
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": 1,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": 1,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "Stocks fetched successfully",
+                  "data": [
+                    {
+                      "stock_id": 1,
+                      "stock_name": "Soybean",
+                      "quantity": 200,
+                      "unit": "kg",
+                      "updated_at": "2026-03-07T10:30:00"
+                    },
+                    {
+                      "stock_id": 2,
+                      "stock_name": "Sugar",
+                      "quantity": 150,
+                      "unit": "kg",
+                      "updated_at": "2026-03-07T10:30:00"
+                    }
+                  ],
+                  "pagination": {
+                    "page": 1,
+                    "limit": 10,
+                    "total": 2,
+                    "total_pages": 1
+                  }
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      }
+    },
+    "/stocks/{id}": {
+      "get": {
+        "summary": "get-one",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "stocks"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "Stock fetched successfully",
+                  "data": {
+                    "stock_id": 1,
+                    "stock_name": "Soybean",
+                    "quantity": 200,
+                    "unit": "kg"
+                  }
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "404": {
+            "$ref": "#/components/responses/404 Not Found",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      },
+      "put": {
+        "summary": "update",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "stocks"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "stock_name": "Soybean",
+                "quantity": 250,
+                "unit": "kg"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "Stock updated successfully",
+                  "data": {
+                    "stock_id": 1,
+                    "stock_name": "Soybean",
+                    "quantity": 250,
+                    "unit": "kg"
+                  }
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "404": {
+            "$ref": "#/components/responses/404 Not Found",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      }
+    },
+    "/purchases": {
+      "post": {
+        "summary": "create",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "purchases"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "supplierId": 1
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "Purchase created"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      },
+      "get": {
+        "summary": "get-all",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "purchases"
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": 1,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": 1,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "examples": {}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "Purchases fetched successfully",
+                  "data": [
+                    {
+                      "purchase_id": 10,
+                      "supplie_id": 1,
+                      "supplier_name": "ABC Farm",
+                      "purchase_date": "2026-03-07",
+                      "total_cost": 1675
+                    },
+                    {
+                      "purchase_id": 10,
+                      "supplier_id": 1,
+                      "supplier_name": "ABC Farm",
+                      "purchase_date": "2026-03-07",
+                      "total_cost": 1675
+                    },
+                    {
+                      "purchase_id": 10,
+                      "supplier_id": 1,
+                      "supplier_name": "ABC Farm",
+                      "purchase_date": "2026-03-07",
+                      "total_cost": 1675
+                    }
+                  ],
+                  "pagination": {
+                    "page": 1,
+                    "limit": 10,
+                    "total": 3,
+                    "total_pages": 1
+                  }
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      }
+    },
+    "/purchases/{id}": {
+      "get": {
+        "summary": "get-one",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "purchases"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "Purchase fetched successfully",
+                  "data": {
+                    "purchase_id": 10,
+                    "supplier_id": 1,
+                    "supplier_name": "ABC Farm",
+                    "purchase_date": "2026-03-07",
+                    "items": [
+                      {
+                        "purchase_item_id": 1,
+                        "stock_id": 1,
+                        "stock_name": "Soybean",
+                        "quantity": 50,
+                        "price": 20,
+                        "total": 1000
+                      },
+                      {
+                        "purchase_item_id": 2,
+                        "stock_id": 2,
+                        "stock_name": "Sugar",
+                        "quantity": 30,
+                        "price": 10,
+                        "total": 300
+                      }
+                    ],
+                    "totalCost": 1675
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/purchases/{id}/items": {
+      "get": {
+        "summary": "get-item",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "purchases"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "purchase_id": 10,
+                  "items": [
+                    {
+                      "purchase_item_id": 1,
+                      "stock_id": 1,
+                      "quantity": 50,
+                      "price": 20
+                    }
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/purchases/{purchase_id}/items": {
+      "post": {
+        "summary": "create",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "purchases"
+        ],
+        "parameters": [
+          {
+            "name": "purchase_id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "items": [
+                  {
+                    "stock_id": 1,
+                    "quantity": 50,
+                    "price": 20
+                  },
+                  {
+                    "stock_id": 2,
+                    "quantity": 30,
+                    "price": 10
+                  },
+                  {
+                    "stock_id": 3,
+                    "quantity": 15,
+                    "price": 25
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "examples": {
+                  "1": {
+                    "summary": "success",
+                    "value": {
+                      "message": "Items added successfully",
+                      "data": {
+                        "purchase_id": 10,
+                        "items_added": [
+                          {
+                            "purchase_item_id": 1,
+                            "stock_id": 1,
+                            "quantity": 50,
+                            "price": 20,
+                            "total": 1000
+                          },
+                          {
+                            "purchase_item_id": 2,
+                            "stock_id": 2,
+                            "quantity": 30,
+                            "price": 10,
+                            "total": 300
+                          },
+                          {
+                            "purchase_item_id": 3,
+                            "stockId": 3,
+                            "quantity": 15,
+                            "price": 25,
+                            "total": 375
+                          }
+                        ],
+                        "totalCost": 1675
+                      }
+                    }
+                  },
+                  "2": {
+                    "summary": "some success",
+                    "value": {
+                      "message": "ข้าวสวย,ถั่วเหลือง มีอยู่เเล้ว",
+                      "data": {
+                        "purchaseId": 10,
+                        "itemsAdded": [
+                          {
+                            "purchaseItemId": 3,
+                            "stockId": 3,
+                            "quantity": 15,
+                            "price": 25,
+                            "total": 375
+                          }
+                        ],
+                        "totalCost": 1675
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/purchase-items/{id}": {
+      "put": {
+        "summary": "update",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "purchases"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "stock_id": 3,
+                "quantity": 20,
+                "price": 25
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "Purchase item updated successfully",
+                  "data": {
+                    "purchase_item_id": 3,
+                    "stock_id": 3,
+                    "quantity": 20,
+                    "price": 25,
+                    "total": 500
+                  }
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Bad Request",
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": ""
+          },
+          "404": {
+            "$ref": "#/components/responses/404 Not Found",
+            "description": ""
+          },
+          "500": {
+            "$ref": "#/components/responses/500 Internal Server Error",
+            "description": ""
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "responses": {
+      "400 Bad Request": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "title": "",
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string"
+                },
+                "error": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "status",
+                "error",
+                "message"
+              ]
+            },
+            "examples": {
+              "Example 1": {
+                "summary": "Example 1",
+                "value": "{\r\n  \"status\": \"error\",\r\n  \"error\": \"Bad Request\",\r\n  \"message\": \"Invalid request parameters\""
+              }
+            }
+          }
+        }
+      },
+      "401 Unauthorized": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "title": "",
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string"
+                },
+                "error": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "status",
+                "error",
+                "message"
+              ]
+            },
+            "examples": {
+              "Example 1": {
+                "summary": "Example 1",
+                "value": {
+                  "status": "error",
+                  "error": "Unauthorized",
+                  "message": "Authentication required"
+                }
+              }
+            }
+          }
+        }
+      },
+      "404 Not Found": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "error",
+                "status",
+                "message"
+              ]
+            },
+            "examples": {
+              "Example 1": {
+                "summary": "Example 1",
+                "value": {
+                  "status": "error",
+                  "error": "Not Found",
+                  "message": "Resource not found"
+                }
+              }
+            }
+          }
+        }
+      },
+      "500 Internal Server Error": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "title": "",
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string"
+                },
+                "error": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "status",
+                "error",
+                "message"
+              ]
+            },
+            "examples": {
+              "Example 1": {
+                "summary": "Example 1",
+                "value": {
+                  "status": "error",
+                  "error": "Internal Server Error",
+                  "message": "Unexpected server error"
+                }
+              },
+              "Example 2": {
+                "summary": "Example 2",
+                "value": "{\r\n    \"status\": \"error\",\r\n    \"error\": \"Internal Server Error\",\r\n    \"message\": \"Unexpected server error\",\r\n}"
+              }
+            }
+          }
+        }
+      },
+      "409 Conflict": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string"
+                },
+                "error": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "status",
+                "error",
+                "message"
+              ]
+            },
+            "examples": {
+              "Example 1": {
+                "summary": "Example 1",
+                "value": {
+                  "status": "error",
+                  "error": "Conflict",
+                  "message": "Data already exists"
+                }
+              }
+            }
+          }
+        }
+      },
+      "502 Bad Gateway": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string"
+                },
+                "error": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "status",
+                "error",
+                "message"
+              ]
+            },
+            "examples": {
+              "Example 1": {
+                "summary": "Example 1",
+                "value": {
+                  "status": "error",
+                  "error": "Bad Gateway",
+                  "message": "Upstream service failed"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {}
+  },
+  "servers": [],
+  "security": []
+}

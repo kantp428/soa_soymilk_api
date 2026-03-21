@@ -47,7 +47,7 @@ public class StockController extends ApiControllerSupport {
 		pagination.put("total", result.getTotalElements());
 		pagination.put("page", normalizedPage);
 		pagination.put("limit", normalizedLimit);
-		pagination.put("totalPage", result.getTotalPages());
+		pagination.put("total_pages", result.getTotalPages());
 		response.put("pagination", pagination);
 		return response;
 	}
@@ -69,8 +69,8 @@ public class StockController extends ApiControllerSupport {
 	}
 
 	private void applyStock(StockEntity entity, Map<String, Object> body) {
-		if (body.containsKey("stockName")) {
-			entity.setStockName(stringValue(body.get("stockName")));
+		if (body.containsKey("stock_name")) {
+			entity.setStockName(stringValue(body.get("stock_name")));
 		}
 		if (body.containsKey("quantity")) {
 			entity.setQuantity(intValue(body.get("quantity")));
@@ -82,14 +82,14 @@ public class StockController extends ApiControllerSupport {
 
 	private Map<String, Object> toStockListMap(StockEntity entity) {
 		Map<String, Object> data = toStockDetailMap(entity);
-		data.put("updatedAt", entity.getUpdatedAt());
+		data.put("updated_at", entity.getUpdatedAt());
 		return data;
 	}
 
 	private Map<String, Object> toStockDetailMap(StockEntity entity) {
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
-		data.put("stockId", entity.getStockId());
-		data.put("stockName", entity.getStockName());
+		data.put("stock_id", entity.getStockId());
+		data.put("stock_name", entity.getStockName());
 		data.put("quantity", entity.getQuantity());
 		data.put("unit", entity.getUnit());
 		return data;

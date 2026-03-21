@@ -1,8 +1,5 @@
 package com.ahasan.rest.common.exceptions;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.validation.ConstraintViolationException;
@@ -18,46 +15,41 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
-	private String INCORRECT_REQUEST = "INCORRECT_REQUEST";
-	private String BAD_REQUEST = "BAD_REQUEST";
-	private String CONFLICT = "CONFLICT";
-
 	@ExceptionHandler(RecordNotFoundException.class)
 	public final ResponseEntity<ErrorResponse> handleUserNotFoundException(RecordNotFoundException ex, WebRequest request) {
-		List<String> details = new ArrayList<>();
-		details.add(ex.getLocalizedMessage());
-		ErrorResponse error = new ErrorResponse(INCORRECT_REQUEST, details);
-		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+		return build(HttpStatus.NOT_FOUND, "Not Found", ex.getLocalizedMessage());
 	}
 
 	@ExceptionHandler(MissingHeaderInfoException.class)
 	public final ResponseEntity<ErrorResponse> handleInvalidTraceIdException(MissingHeaderInfoException ex, WebRequest request) {
-		List<String> details = new ArrayList<>();
-		details.add(ex.getLocalizedMessage());
-		ErrorResponse error = new ErrorResponse(BAD_REQUEST, details);
-		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+		return build(HttpStatus.BAD_REQUEST, "Bad Request", ex.getLocalizedMessage());
 	}
 
 	@ExceptionHandler(ConstraintViolationException.class)
 	public final ResponseEntity<ErrorResponse> handleConstraintViolation(ConstraintViolationException ex, WebRequest request) {
-		List<String> details = ex.getConstraintViolations().parallelStream()
-					.map(e -> e.getMessage()).collect(Collectors.toList());
-		ErrorResponse error = new ErrorResponse(BAD_REQUEST, details);
-		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+		String message = ex.getConstraintViolations().parallelStream()
+				.map(e -> e.getMessage())
+				.collect(Collectors.joining(", "));
+		return build(HttpStatus.BAD_REQUEST, "Bad Request", message);
 	}
 
 	@ExceptionHandler(CustomDataIntegrityViolationException.class)
 	public final ResponseEntity<ErrorResponse> dataIntegrityViolationException(CustomDataIntegrityViolationException ex, WebRequest request) {
-		String[] detail = ex.getLocalizedMessage().split("Detail: Key ");
-		ErrorResponse error = new ErrorResponse(CONFLICT, Arrays.asList(detail));
-		return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+		return build(HttpStatus.CONFLICT, "Conflict", ex.getLocalizedMessage());
 	}
 
 	@ExceptionHandler(DataIntegrityViolationException.class)
 	public final ResponseEntity<ErrorResponse> handleDataIntegrityViolation(DataIntegrityViolationException ex, WebRequest request) {
-		List<String> details = new ArrayList<>();
-		details.add(ex.getMostSpecificCause().getMessage());
-		ErrorResponse error = new ErrorResponse(CONFLICT, details);
-		return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+		return build(HttpStatus.CONFLICT, "Conflict", ex.getMostSpecificCause().getMessage());
+	}
+
+	@ExceptionHandler(Exception.class)
+	public final ResponseEntity<ErrorResponse> handleUnexpected(Exception ex, WebRequest request) {
+		return build(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error", "Unexpected server error");
+	}
+
+	private ResponseEntity<ErrorResponse> build(HttpStatus statusCode, String error, String message) {
+		ErrorResponse errorResponse = new ErrorResponse("error", error, message);
+		return new ResponseEntity<>(errorResponse, statusCode);
 	}
 }
