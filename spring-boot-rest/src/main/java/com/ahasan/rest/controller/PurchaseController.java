@@ -83,7 +83,7 @@ public class PurchaseController extends ApiControllerSupport {
 		getPurchase(id);
 		Map<String, Object> response = new LinkedHashMap<String, Object>();
 		response.put("purchase_id", id);
-		response.put("items", purchaseItemRepo.findByPurchaseId(id).stream().map(this::toPurchaseItemSummaryMap)
+		response.put("items", purchaseItemRepo.findByPurchaseId(id).stream().map(this::toPurchaseItemDetailMap)
 				.collect(Collectors.toList()));
 		return response;
 	}
