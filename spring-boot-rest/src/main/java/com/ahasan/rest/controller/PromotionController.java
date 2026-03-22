@@ -74,6 +74,17 @@ public class PromotionController extends ApiControllerSupport {
 		return messageData("create successfully", toCouponDetailMap(couponRepo.save(coupon)));
 	}
 
+	@PostMapping("/promotion/coupon")
+	public Map<String, Object> createColabIceCreamCoupon() {
+		Integer promotionId = 1;
+		getCampaign(promotionId);
+		CouponEntity coupon = new CouponEntity();
+		coupon.setPromotionCampainId(promotionId);
+		coupon.setCouponCode(generateCouponCode());
+		coupon.setStatus("INACTIVE");
+		return messageData("create ice cream successfully", toCouponDetailMap(couponRepo.save(coupon)));
+	}
+
 	@GetMapping("/promotion/campaign/{id}/coupon")
 	public Map<String, Object> getCouponStats(@PathVariable Integer id) {
 		getCampaign(id);
