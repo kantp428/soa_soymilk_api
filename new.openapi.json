@@ -49,9 +49,7 @@
         "summary": "create-coupon (ice cream)",
         "deprecated": false,
         "description": "fix: promotion_campain_id = 1",
-        "tags": [
-          "collaboration"
-        ],
+        "tags": ["collaboration"],
         "parameters": [],
         "responses": {
           "200": {
@@ -101,9 +99,7 @@
         "summary": "create-coupon",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "promotion"
-        ],
+        "tags": ["promotion"],
         "parameters": [
           {
             "name": "Content-Type",
@@ -178,9 +174,7 @@
         "summary": "get-promotion-coupon",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "promotion"
-        ],
+        "tags": ["promotion"],
         "parameters": [
           {
             "name": "id",
@@ -219,9 +213,7 @@
         "summary": "get-all",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "promotion"
-        ],
+        "tags": ["promotion"],
         "parameters": [
           {
             "name": "page",
@@ -304,9 +296,7 @@
         "summary": "create-campaign",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "promotion"
-        ],
+        "tags": ["promotion"],
         "parameters": [
           {
             "name": "Content-Type",
@@ -383,9 +373,7 @@
         "summary": "active-coupon",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "promotion"
-        ],
+        "tags": ["promotion"],
         "parameters": [
           {
             "name": "Content-Type",
@@ -460,9 +448,7 @@
         "summary": "validate-coupon",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "promotion"
-        ],
+        "tags": ["promotion"],
         "parameters": [
           {
             "name": "Content-Type",
@@ -536,9 +522,7 @@
         "summary": "get-one",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "order"
-        ],
+        "tags": ["order"],
         "parameters": [
           {
             "name": "id",
@@ -610,9 +594,7 @@
         "summary": "get-all",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "order"
-        ],
+        "tags": ["order"],
         "parameters": [
           {
             "name": "page",
@@ -704,9 +686,7 @@
         "summary": "create",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "order"
-        ],
+        "tags": ["order"],
         "parameters": [
           {
             "name": "Content-Type",
@@ -799,9 +779,7 @@
         "summary": "get-all",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "order-item"
-        ],
+        "tags": ["order-item"],
         "parameters": [
           {
             "name": "page",
@@ -880,9 +858,7 @@
         "summary": "create",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "order-item"
-        ],
+        "tags": ["order-item"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -946,9 +922,7 @@
         "summary": "get-one",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "order-item"
-        ],
+        "tags": ["order-item"],
         "parameters": [
           {
             "name": "id",
@@ -1012,9 +986,7 @@
         "summary": "get-one",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "staff"
-        ],
+        "tags": ["staff"],
         "parameters": [
           {
             "name": "id",
@@ -1071,9 +1043,7 @@
         "summary": "update",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "staff"
-        ],
+        "tags": ["staff"],
         "parameters": [
           {
             "name": "id",
@@ -1150,9 +1120,7 @@
         "summary": "get-all",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "staff"
-        ],
+        "tags": ["staff"],
         "parameters": [
           {
             "name": "page",
@@ -1265,9 +1233,7 @@
         "summary": "create",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "staff"
-        ],
+        "tags": ["staff"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -1285,11 +1251,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "staff_name",
-                  "phone",
-                  "role"
-                ]
+                "required": ["staff_name", "phone", "role"]
               },
               "example": {
                 "staff_name": "Somchai",
@@ -1382,9 +1344,7 @@
         "summary": "get-all",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "categories"
-        ],
+        "tags": ["categories"],
         "parameters": [
           {
             "name": "page",
@@ -1460,9 +1420,7 @@
         "summary": "get-one",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "categories"
-        ],
+        "tags": ["categories"],
         "parameters": [
           {
             "name": "id",
@@ -1493,11 +1451,7 @@
                       "format": "date-time"
                     }
                   },
-                  "required": [
-                    "category_id",
-                    "category_name",
-                    "created_at"
-                  ]
+                  "required": ["category_id", "category_name", "created_at"]
                 },
                 "example": {
                   "category_id": 1,
@@ -1533,9 +1487,7 @@
         "summary": "get-one",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "addon"
-        ],
+        "tags": ["addon"],
         "parameters": [
           {
             "name": "id",
@@ -1589,9 +1541,7 @@
         "summary": "update",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "addon"
-        ],
+        "tags": ["addon"],
         "parameters": [
           {
             "name": "id",
@@ -1666,9 +1616,7 @@
         "summary": "get-all",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "addon"
-        ],
+        "tags": ["addon"],
         "parameters": [
           {
             "name": "page",
@@ -1739,9 +1687,7 @@
         "summary": "create",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "addon"
-        ],
+        "tags": ["addon"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -1806,9 +1752,7 @@
         "summary": "get-all",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "order-item-addons"
-        ],
+        "tags": ["order-item-addons"],
         "parameters": [
           {
             "name": "page",
@@ -1887,9 +1831,7 @@
         "summary": "create",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "order-item-addons"
-        ],
+        "tags": ["order-item-addons"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -1954,9 +1896,7 @@
         "summary": "get-one",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "order-item-addons"
-        ],
+        "tags": ["order-item-addons"],
         "parameters": [
           {
             "name": "id",
@@ -2025,9 +1965,7 @@
         "summary": "get-one",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "menus"
-        ],
+        "tags": ["menus"],
         "parameters": [
           {
             "name": "id",
@@ -2087,9 +2025,7 @@
         "summary": "update",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "menus"
-        ],
+        "tags": ["menus"],
         "parameters": [
           {
             "name": "id",
@@ -2182,9 +2118,7 @@
         "summary": "get-all",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "menus"
-        ],
+        "tags": ["menus"],
         "parameters": [
           {
             "name": "page",
@@ -2281,9 +2215,7 @@
         "summary": "create",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "menus"
-        ],
+        "tags": ["menus"],
         "parameters": [
           {
             "name": "Content-Type",
@@ -2350,9 +2282,7 @@
         "summary": "get-all",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "suppliers"
-        ],
+        "tags": ["suppliers"],
         "parameters": [
           {
             "name": "limit",
@@ -2442,9 +2372,7 @@
         "summary": "create",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "suppliers"
-        ],
+        "tags": ["suppliers"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -2503,9 +2431,7 @@
         "summary": "get-one",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "suppliers"
-        ],
+        "tags": ["suppliers"],
         "parameters": [
           {
             "name": "id",
@@ -2560,9 +2486,7 @@
         "summary": "delete",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "suppliers"
-        ],
+        "tags": ["suppliers"],
         "parameters": [
           {
             "name": "id",
@@ -2598,9 +2522,7 @@
         "summary": "update",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "suppliers"
-        ],
+        "tags": ["suppliers"],
         "parameters": [
           {
             "name": "id",
@@ -2677,9 +2599,7 @@
         "summary": "activeUpdate",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "suppliers"
-        ],
+        "tags": ["suppliers"],
         "parameters": [
           {
             "name": "id",
@@ -2751,9 +2671,7 @@
         "summary": "create",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "stocks"
-        ],
+        "tags": ["stocks"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -2794,9 +2712,7 @@
         "summary": "get-all",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "stocks"
-        ],
+        "tags": ["stocks"],
         "parameters": [
           {
             "name": "limit",
@@ -2888,9 +2804,7 @@
         "summary": "get-one",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "stocks"
-        ],
+        "tags": ["stocks"],
         "parameters": [
           {
             "name": "id",
@@ -2948,9 +2862,7 @@
         "summary": "update",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "stocks"
-        ],
+        "tags": ["stocks"],
         "parameters": [
           {
             "name": "id",
@@ -3026,9 +2938,7 @@
         "summary": "create",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "purchases"
-        ],
+        "tags": ["purchases"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -3067,9 +2977,7 @@
         "summary": "get-all",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "purchases"
-        ],
+        "tags": ["purchases"],
         "parameters": [
           {
             "name": "limit",
@@ -3180,9 +3088,7 @@
         "summary": "get-one",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "purchases"
-        ],
+        "tags": ["purchases"],
         "parameters": [
           {
             "name": "id",
@@ -3245,9 +3151,7 @@
         "summary": "get-item",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "purchases"
-        ],
+        "tags": ["purchases"],
         "parameters": [
           {
             "name": "id",
@@ -3293,9 +3197,7 @@
         "summary": "create",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "purchases"
-        ],
+        "tags": ["purchases"],
         "parameters": [
           {
             "name": "purchase_id",
@@ -3414,9 +3316,7 @@
         "summary": "update",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "purchases"
-        ],
+        "tags": ["purchases"],
         "parameters": [
           {
             "name": "id",
@@ -3510,11 +3410,7 @@
                   "type": "string"
                 }
               },
-              "required": [
-                "status",
-                "error",
-                "message"
-              ]
+              "required": ["status", "error", "message"]
             },
             "examples": {
               "Example 1": {
@@ -3547,11 +3443,7 @@
                   "type": "string"
                 }
               },
-              "required": [
-                "status",
-                "error",
-                "message"
-              ]
+              "required": ["status", "error", "message"]
             },
             "examples": {
               "Example 1": {
@@ -3583,11 +3475,7 @@
                   "type": "string"
                 }
               },
-              "required": [
-                "error",
-                "status",
-                "message"
-              ]
+              "required": ["error", "status", "message"]
             },
             "examples": {
               "Example 1": {
@@ -3620,11 +3508,7 @@
                   "type": "string"
                 }
               },
-              "required": [
-                "status",
-                "error",
-                "message"
-              ]
+              "required": ["status", "error", "message"]
             },
             "examples": {
               "Example 1": {
@@ -3660,11 +3544,7 @@
                   "type": "string"
                 }
               },
-              "required": [
-                "status",
-                "error",
-                "message"
-              ]
+              "required": ["status", "error", "message"]
             },
             "examples": {
               "Example 1": {
@@ -3696,11 +3576,7 @@
                   "type": "string"
                 }
               },
-              "required": [
-                "status",
-                "error",
-                "message"
-              ]
+              "required": ["status", "error", "message"]
             },
             "examples": {
               "Example 1": {
