@@ -74,7 +74,7 @@ public class PromotionController extends ApiControllerSupport {
 		return messageData("create successfully", toCouponDetailMap(couponRepo.save(coupon)));
 	}
 
-	@PostMapping("/promotion/coupon")
+	@PostMapping("/colab/ice-cream")
 	public Map<String, Object> createColabIceCreamCoupon() {
 		Integer promotionId = 1;
 		getCampaign(promotionId);
