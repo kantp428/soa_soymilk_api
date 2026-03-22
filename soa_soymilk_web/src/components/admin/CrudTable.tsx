@@ -20,7 +20,7 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/components/ui/dialog';
-import { Loader2, Plus, Edit2, Trash2 } from 'lucide-react';
+import { Loader2, Plus, Edit2, Trash2, Search } from 'lucide-react';
 import { PaginatedResponse } from '@/features/products/types';
 
 export interface ColumnDef<T> {
@@ -65,12 +65,14 @@ export function CrudTable<T extends Record<string, unknown>>({
   hideEdit = false,
   hideDelete = false,
   hideActions = false,
+  searchPlaceholder,
   customActions,
 }: CrudTableProps<T>) {
   const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
   const limit = 20;
 
+  const [searchQuery, setSearchQuery] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<T | null>(null);
   const [formData, setFormData] = useState<Partial<T>>({});
@@ -90,12 +92,25 @@ export function CrudTable<T extends Record<string, unknown>>({
   const rawItems: T[] = (Array.isArray(extracted) ? extracted : []) as T[];
 
   // กรองให้แสดงเฉพาะข้อมูลที่มีสถานะเป็น Active หรือไม่มีสถานะระบุไว้
-  const items = rawItems.filter(item => {
+  let items = rawItems.filter(item => {
     const status = item['status' as keyof T] as string | undefined;
     if (!status) return true;
     const s = String(status).toLowerCase();
     return s === 'active' || s === 'available' || s === 'ปกติ';
   });
+
+  // Client-Side Search (กรองข้อมูลจากรายการที่มีอยู่ในหน้านี้)
+  if (searchQuery.trim()) {
+    const lowerQuery = searchQuery.toLowerCase();
+    items = items.filter((item) => {
+      // ค้นหาจากทุกคอลัมน์ที่ตั้งค่าไว้ในตาราง
+      return columns.some((col) => {
+        const value = item[col.accessorKey];
+        if (value === null || value === undefined) return false;
+        return String(value).toLowerCase().includes(lowerQuery);
+      });
+    });
+  }
 
   const createMutation = useMutation({
     mutationFn: (newObj: Partial<T>) => {
@@ -215,11 +230,21 @@ export function CrudTable<T extends Record<string, unknown>>({
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
         <h2 className="text-xl font-bold text-zinc-900">{title}</h2>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
+          <div className="relative w-full sm:w-64">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
+            <Input
+              type="text"
+              placeholder={searchPlaceholder || 'ค้นหาในหน้านี้...'}
+              className="pl-10 bg-white border-zinc-200 focus-visible:ring-zinc-950 shadow-sm"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
           {!hideCreate && (
-            <Button onClick={() => handleOpenModal()} className="bg-zinc-900 text-white hover:bg-zinc-800">
+            <Button onClick={() => handleOpenModal()} className="bg-zinc-900 text-white hover:bg-zinc-800 shrink-0">
               <Plus className="w-4 h-4 mr-2" /> เพิ่มใหม่
             </Button>
           )}
@@ -363,6 +388,6 @@ export function CrudTable<T extends Record<string, unknown>>({
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </div>
+    </div >
   );
 }
