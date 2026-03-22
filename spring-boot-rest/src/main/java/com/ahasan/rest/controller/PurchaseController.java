@@ -113,7 +113,7 @@ public class PurchaseController extends ApiControllerSupport {
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
 		data.put("purchase_id", purchaseId);
 		data.put("items_added", itemsAdded);
-		data.put("totalCost", total);
+		data.put("total_cost", total);
 		return messageData("Items added successfully", data);
 	}
 
@@ -148,7 +148,7 @@ public class PurchaseController extends ApiControllerSupport {
 				.map(this::toPurchaseItemDetailMap)
 				.collect(Collectors.toList());
 		data.put("items", items);
-		data.put("totalCost", entity.getTotalCost());
+		data.put("total_cost", entity.getTotalCost());
 		return data;
 	}
 
