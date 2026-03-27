@@ -64,6 +64,8 @@
                   "message": "create successfully",
                   "data": {
                     "coupon_id": 1,
+                    "coupoun_name": "zvenzen x น้ำเต้าหู้ ลดอย่างแรงงง",
+                    "coupoun_discount": 15,
                     "coupon_code": "AXUUCOSA9587ASDN11",
                     "promotion_campain_id": 1,
                     "status": "INACTIVE",

@@ -77,12 +77,13 @@ public class PromotionController extends ApiControllerSupport {
 	@PostMapping("/colab/ice-cream")
 	public Map<String, Object> createColabIceCreamCoupon() {
 		Integer promotionId = 1;
-		getCampaign(promotionId);
+		PromotionCampainEntity campaign = getCampaign(promotionId);
 		CouponEntity coupon = new CouponEntity();
 		coupon.setPromotionCampainId(promotionId);
 		coupon.setCouponCode(generateCouponCode());
 		coupon.setStatus("INACTIVE");
-		return messageData("create ice cream successfully", toCouponDetailMap(couponRepo.save(coupon)));
+		CouponEntity savedCoupon = couponRepo.save(coupon);
+		return messageData("create successfully", toColabIceCreamCouponDetailMap(savedCoupon, campaign));
 	}
 
 	@GetMapping("/promotion/campaign/{id}/coupon")
@@ -153,6 +154,18 @@ public class PromotionController extends ApiControllerSupport {
 		Map<String, Object> data = toCouponMap(entity);
 		data.put("created_at", entity.getCreatedAt());
 		data.put("used_at", entity.getUsedAt());
+		return data;
+	}
+
+	private Map<String, Object> toColabIceCreamCouponDetailMap(CouponEntity entity, PromotionCampainEntity campaign) {
+		Map<String, Object> data = new LinkedHashMap<String, Object>();
+		data.put("coupon_id", entity.getCouponId());
+		data.put("coupoun_name", campaign.getName());
+		data.put("coupoun_discount", campaign.getDiscount());
+		data.put("coupon_code", entity.getCouponCode());
+		data.put("promotion_campain_id", entity.getPromotionCampainId());
+		data.put("status", entity.getStatus());
+		data.put("created_at", entity.getCreatedAt());
 		return data;
 	}
 }
