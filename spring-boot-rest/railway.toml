@@ -1,3 +1,0 @@
-[deploy]
-sleepApplication = true
-restartPolicyType = "NEVER"
