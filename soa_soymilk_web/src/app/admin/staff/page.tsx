@@ -60,19 +60,19 @@ export default function AdminStaffPage() {
             { label: 'Inactive', value: 'Inactive' }
           ] },
         ]}
-        customActions={(row) => (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setSelectedStaffId(row.staff_id as number)}
-            className="text-zinc-500 hover:text-primary transition-colors"
-          >
-            <UserCircle className="w-4 h-4" />
-          </Button>
-        )}
+        // customActions={(row) => (
+        //   <Button
+        //     variant="ghost"
+        //     size="sm"
+        //     onClick={() => setSelectedStaffId(row.staff_id as number)}
+        //     className="text-zinc-500 hover:text-primary transition-colors"
+        //   >
+        //     <UserCircle className="w-4 h-4" />
+        //   </Button>
+        // )}
       />
 
-      <Dialog open={!!selectedStaffId} onOpenChange={(open) => !open && setSelectedStaffId(null)}>
+      {/* <Dialog open={!!selectedStaffId} onOpenChange={(open) => !open && setSelectedStaffId(null)}>
         <DialogContent className="max-w-md bg-white border-zinc-200 shadow-2xl rounded-3xl overflow-hidden p-0">
           <div className="bg-zinc-900 h-24 w-full relative">
             <div className="absolute -bottom-10 left-6">
@@ -82,9 +82,9 @@ export default function AdminStaffPage() {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
           
-          <div className="px-6 pt-14 pb-6 space-y-6">
+          {/* <div className="px-6 pt-14 pb-6 space-y-6">
             <DialogHeader className="space-y-1">
               <DialogTitle className="text-2xl font-black text-zinc-900">
                 {isLoadingDetail ? '...' : staffDetail?.staff_name}
@@ -97,9 +97,9 @@ export default function AdminStaffPage() {
                   {staffDetail?.status}
                 </span>
               </div>
-            </DialogHeader>
+            </DialogHeader> */}
 
-            {isLoadingDetail ? (
+            {/* {isLoadingDetail ? (
               <div className="flex flex-col items-center justify-center py-12 gap-3">
                 <Loader2 className="w-6 h-6 animate-spin text-zinc-400" />
                 <p className="text-zinc-500 text-xs font-medium">กำลังโหลดข้อมูลโปรไฟล์...</p>
@@ -147,8 +147,8 @@ export default function AdminStaffPage() {
                   </div>
                 </div>
               </div>
-            )}
-
+            )} */}
+{/* 
             <Button 
               variant="outline" 
               className="w-full h-12 rounded-xl border-zinc-200 hover:bg-zinc-50 text-zinc-600 font-bold text-xs"
@@ -156,9 +156,9 @@ export default function AdminStaffPage() {
             >
               ปิดหน้าต่างนี้
             </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
+          </div> */}
+        {/* </DialogContent>
+      </Dialog> */}
     </div>
   );
 }

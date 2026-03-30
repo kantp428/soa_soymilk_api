@@ -164,7 +164,7 @@ export default function AdminPurchasesPage() {
             ]}
             customActions={(row: any) => (
               <div className="flex gap-2">
-                <Button
+                {/* <Button
                   variant="outline"
                   size="sm"
                   className="border-zinc-200 text-zinc-600 hover:text-zinc-900 bg-white shadow-sm"
@@ -172,8 +172,8 @@ export default function AdminPurchasesPage() {
                 >
                   <Info className="w-4 h-4 mr-1.5 text-zinc-400" />
                   รายละเอียด
-                </Button>
-                {row.status !== 'inactive' && (
+                </Button> */}
+                {/* {row.status !== 'inactive' && (
                   <Button
                     variant="outline"
                     size="sm"
@@ -192,7 +192,7 @@ export default function AdminPurchasesPage() {
                   >
                     ระงับการใช้งาน
                   </Button>
-                )}
+                )} */}
               </div>
             )}
             formFields={[
@@ -249,7 +249,8 @@ export default function AdminPurchasesPage() {
               </div>
               <div>
                 <DialogTitle className="text-xl font-bold text-zinc-900">
-                  Manage PO #{selectedPurchaseId}
+                  Manage PO 
+                  {/* #{selectedPurchaseId} */}
                 </DialogTitle>
                 <p className="text-xs text-zinc-500 font-medium mt-1">จัดการรายการวัตถุดิบและราคาในใบสั่งซื้อ</p>
               </div>

@@ -38,11 +38,11 @@ export default function AdminReportsPage() {
 
   const stats = useMemo(() => {
     const dailyData: Record<string, { date: string; revenue: number; count: number; timestamp: number }> = {};
-    const paymentData: Record<string, number> = { CASH: 0, PROMPTPAY: 0 };
+    const paymentData: Record<string, number> = { CASH: 0, PROMPTPAY: 0, CREDIT_CARD: 0 };
     let totalRevenue = 0;
 
     orders.forEach(order => {
-      const rawDate = order.created_at || new Date().toISOString();
+      const rawDate = order.order_time || new Date().toISOString();
       const dateObj = new Date(rawDate.replace(' ', 'T'));
       const dateKey = dateObj.toLocaleDateString('th-TH', { day: 'numeric', month: 'short' });
       
@@ -52,8 +52,11 @@ export default function AdminReportsPage() {
       dailyData[dateKey].revenue += (order.total_price || 0);
       dailyData[dateKey].count += 1;
       totalRevenue += (order.total_price || 0);
+      let method = String(order.payment_method || 'CASH').toUpperCase().replace(/[\s_]/g, '');
+      if (method.includes('CREDIT')) method = 'CREDIT_CARD';
+      else if (method.includes('PROMPT')) method = 'PROMPTPAY';
+      else method = 'CASH';
       
-      const method = order.payment_method || 'CASH';
       paymentData[method] = (paymentData[method] || 0) + (order.total_price || 0);
     });
 
@@ -164,7 +167,7 @@ export default function AdminReportsPage() {
              <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
-                    data={stats.paymentChart}
+                    data={stats.paymentChart.filter(item => item.value > 0)}
                     cx="50%"
                     cy="50%"
                     innerRadius={60}
@@ -172,8 +175,15 @@ export default function AdminReportsPage() {
                     paddingAngle={5}
                     dataKey="value"
                   >
-                    <Cell fill="#09090b" />
-                    <Cell fill="hsl(var(--primary))" />
+                    {stats.paymentChart.filter(item => item.value > 0).map((entry, index) => {
+                      const normalizedName = String(entry.name || '').toUpperCase().replace(/[\s_]/g, '');
+                      const colors: Record<string, string> = {
+                        'CASH': '#09090b',
+                        'PROMPTPAY': '#3b82f6',
+                        'CREDITCARD': '#9ca3af',
+                      };
+                      return <Cell key={`cell-${index}`} fill={colors[normalizedName] || '#cbd5e1'} />;
+                    })}
                   </Pie>
                   <Tooltip />
                 </PieChart>
@@ -186,6 +196,10 @@ export default function AdminReportsPage() {
                 <div className="flex items-center gap-2">
                    <div className="w-3 h-3 rounded-full bg-primary" />
                    <span className="font-medium">โอนเงิน (PROMPTPAY)</span>
+                </div>
+                  <div className="flex items-center gap-2">
+                   <div className="w-3 h-3 rounded-full bg-gray-400" />
+                   <span className="font-medium">เครดิตการ์ด (CREDIT CARD)</span>
                 </div>
              </div>
           </CardContent>
@@ -260,7 +274,7 @@ export default function AdminReportsPage() {
         </Card>
 
       <Dialog open={!!selectedToppingLogId} onOpenChange={(open) => !open && setSelectedToppingLogId(null)}>
-        <DialogContent className="sm:max-w-[400px] rounded-2xl">
+        <DialogContent className="sm:max-w-[400px] rounded-2xl" aria-describedby={undefined}>
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-xl font-bold">
               <Layers className="w-5 h-5 text-primary" /> รายละเอียดท็อปปิ้งที่ขายได้
@@ -277,15 +291,15 @@ export default function AdminReportsPage() {
               <div className="bg-zinc-50 p-4 rounded-xl border border-zinc-100 space-y-3">
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-zinc-500">Service Addon ID</span>
-                  <span className="font-mono text-sm font-bold text-zinc-900">#{(toppingDetailData as any).data.order_item_addon_id}</span>
+                  <span className="font-mono text-sm font-bold text-zinc-900">#{(toppingDetailData as any).order_item_addon_id}</span>
                 </div>
                 <div className="flex justify-between items-center">
                    <span className="text-sm text-zinc-500">ชื่อท็อปปิ้ง</span>
-                   <span className="font-bold text-zinc-900">{(toppingDetailData as any).data.addon_name}</span>
+                   <span className="font-bold text-zinc-900">{(toppingDetailData as any).addon_name || '-'}</span>
                 </div>
                 <div className="flex justify-between items-center">
                    <span className="text-sm text-zinc-500">ราคาที่ขาย</span>
-                   <span className="font-bold text-primary text-lg">฿{(toppingDetailData as any).data.price}</span>
+                   <span className="font-bold text-primary text-lg">฿{(toppingDetailData as any).price}</span>
                 </div>
               </div>
 
@@ -294,11 +308,11 @@ export default function AdminReportsPage() {
                 <div className="grid grid-cols-2 gap-3">
                    <div className="p-3 bg-white border border-zinc-100 rounded-xl">
                       <p className="text-[10px] text-zinc-400 uppercase font-bold mb-1">รหัสรายการออเดอร์</p>
-                      <p className="text-sm font-bold text-zinc-700">#{(toppingDetailData as any).data.order_item_id}</p>
+                      <p className="text-sm font-bold text-zinc-700">#{(toppingDetailData as any).order_item_id}</p>
                    </div>
                    <div className="p-3 bg-white border border-zinc-100 rounded-xl">
                       <p className="text-[10px] text-zinc-400 uppercase font-bold mb-1">รหัสท็อปปิ้งหลัก</p>
-                      <p className="text-sm font-bold text-zinc-700">ID: {(toppingDetailData as any).data.addon_id}</p>
+                      <p className="text-sm font-bold text-zinc-700">ID: {(toppingDetailData as any).addon_id}</p>
                    </div>
                 </div>
               </div>
