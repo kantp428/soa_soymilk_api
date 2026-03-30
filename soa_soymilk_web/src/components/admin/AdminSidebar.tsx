@@ -26,7 +26,6 @@ const navItems = [
   { href: '/admin/inventory', label: 'จัดการสต็อกสินค้า', icon: PackageOpen },
   { href: '/admin/purchases', label: 'ซัพพลายเออร์และจัดซื้อ', icon: Truck },
   { href: '/admin/promotions', label: 'โปรโมชั่นและส่วนลด', icon: Tag },
-  { href: '/admin/customers', label: 'จัดการข้อมูลลูกค้า', icon: Users },
   { href: '/admin/staff', label: 'จัดการพนักงาน', icon: UserCog },
   { href: '/admin/reports', label: 'รายงานและสถิติ', icon: BarChart3 },
 ];
