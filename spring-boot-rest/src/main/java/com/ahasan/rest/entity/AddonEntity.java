@@ -28,7 +28,7 @@ public class AddonEntity implements CrudEntity {
 	private BigDecimal price;
 
 	@Column(name = "status", length = 20)
-	private String status = "active";
+	private String status = "ACTIVE";
 
 	@Column(name = "created_at", insertable = false, updatable = false)
 	private LocalDateTime createdAt;
