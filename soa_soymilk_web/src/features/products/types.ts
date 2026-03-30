@@ -97,7 +97,7 @@ export interface Order {
   total_price: number;
   payment_method: string;
   order_status: string;
-  created_at: string;
+  order_time: string;
   staff_id?: number | null;
   coupon_id?: number | null;
 }

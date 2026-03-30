@@ -30,17 +30,17 @@ export default function AdminInventoryPage() {
           { header: 'Quantity', accessorKey: 'quantity' },
           { header: 'Unit', accessorKey: 'unit' },
         ]}
-        customActions={(row: any) => (
-          <Button
-            variant="outline"
-            size="sm"
-            className="mr-2 border-zinc-200 text-zinc-600 hover:text-zinc-900 bg-white shadow-sm"
-            onClick={() => setViewingStockId(row.stock_id)}
-          >
-            <Info className="w-4 h-4 mr-1.5 text-zinc-400" />
-            รายละเอียด
-          </Button>
-        )}
+        // customActions={(row: any) => (
+        //   <Button
+        //     variant="outline"
+        //     size="sm"
+        //     className="mr-2 border-zinc-200 text-zinc-600 hover:text-zinc-900 bg-white shadow-sm"
+        //     onClick={() => setViewingStockId(row.stock_id)}
+        //   >
+        //     <Info className="w-4 h-4 mr-1.5 text-zinc-400" />
+        //     รายละเอียด
+        //   </Button>
+        // )}
         formFields={[
           { name: 'stock_name', label: 'Material/Item Name', type: 'text', required: true },
           { name: 'quantity', label: 'Quantity Available', type: 'number', required: true },

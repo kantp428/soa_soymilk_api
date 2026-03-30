@@ -46,7 +46,7 @@ export default function AdminDashboardPage() {
   const totalOrders = orders.length;
 
   const salesByDate = orders.reduce((acc: Record<string, { date: string; revenue: number; count: number; timestamp: number }>, order: Order) => {
-    const rawDate = order.created_at || new Date().toISOString();
+    const rawDate = order.order_time || new Date().toISOString();
     const dateObj = new Date(rawDate.replace(' ', 'T'));
     const dateStr = dateObj.toLocaleDateString('th-TH', { month: 'short', day: 'numeric' });
 
@@ -160,9 +160,9 @@ export default function AdminDashboardPage() {
                           className="border-b transition-colors hover:bg-zinc-100 cursor-pointer group"
                           onClick={() => setSelectedOrderId(order.order_id)}
                         >
-                          <td className="p-4 align-middle font-medium">#{order.order_id}</td>
+                          <td className="p-4 align-middle font-medium">{order.order_id}</td>
                           <td className="p-4 align-middle">
-                            {order.created_at ? new Date(order.created_at.replace(' ', 'T')).toLocaleString('th-TH', { 
+                            {order.order_time ? new Date(order.order_time.replace(' ', 'T')).toLocaleString('th-TH', { 
                               day: '2-digit', month: '2-digit', year: '2-digit', 
                               hour: '2-digit', minute: '2-digit' 
                             }) : 'N/A'}
@@ -194,7 +194,7 @@ export default function AdminDashboardPage() {
               <span>รายละเอียดออเดอร์ #{selectedOrderId}</span>
               {orderDetail && (
                 <span className="text-sm font-normal text-zinc-500">
-                  {new Date(orderDetail.created_at?.replace(' ', 'T') || '').toLocaleString('th-TH')}
+                  {new Date(orderDetail.order_time?.replace(' ', 'T') || '').toLocaleString('th-TH')}
                 </span>
               )}
             </DialogTitle>

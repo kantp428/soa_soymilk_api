@@ -15,6 +15,8 @@ export default function AdminPromotionsPage() {
 
   const [selectedCampaignId, setSelectedCampaignId] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newCouponCode, setNewCouponCode] = useState<string | null>(null);
+  const [isCouponModalOpen, setIsCouponModalOpen] = useState(false);
 
   const { data: statsData, isLoading: isStatsLoading } = useQuery({
     queryKey: ['/promotion/campaign/coupon', selectedCampaignId],
@@ -46,13 +48,13 @@ export default function AdminPromotionsPage() {
         >
           Promotion Campaigns
         </Button>
-        <Button
+        {/* <Button
           variant="ghost"
           className={`rounded-none border-b-2 px-6 ${activeTab === 'icecream' ? 'border-zinc-900 font-semibold' : 'border-transparent text-zinc-500'}`}
           onClick={() => setActiveTab('icecream')}
         >
           Ice Cream Colab
-        </Button>
+        </Button> */}
       </div>
 
       <div className="pt-4">
@@ -75,7 +77,7 @@ export default function AdminPromotionsPage() {
               { name: 'expire_date', label: 'Expiry Date (YYYY-MM-DD)', type: 'text', required: true },
             ]}
             customActions={(row: Record<string, unknown>) => (
-              <div className="flex gap-2">
+              <div className="flex items-center justify-end gap-2">
                 <Button
                   variant="outline"
                   size="sm"
@@ -89,23 +91,25 @@ export default function AdminPromotionsPage() {
                   size="sm"
                   className="border-zinc-200 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 bg-white shadow-sm"
                   onClick={async () => {
-                    const promise = createCoupon(Number(row.promotion_campain_id));
-                    toast.promise(promise, {
-                      loading: 'กำลังสร้างคูปอง...',
-                      success: (res: any) => {
-                        const code = res?.data?.coupon_code || 'สร้างสำเร็จ';
-                        return (
-                          <div className="flex flex-col gap-1">
-                            <span className="font-bold">สร้างคูปองเรียบร้อย!</span>
-                            <span className="text-emerald-600 font-mono text-sm underline">{code}</span>
-                          </div>
-                        );
-                      },
-                      error: (err: any) => {
-                        if (err.response?.status === 409) return 'คูปองนี้มีอยู่แล้วในระบบ';
-                        return 'ไม่สามารถสร้างคูปองได้';
+                    const loadingToast = toast.loading('กำลังสร้างคูปอง...');
+                    try {
+                      const res = await createCoupon(Number(row.promotion_campain_id));
+                      toast.dismiss(loadingToast);
+                      const code = res?.data?.coupon_code;
+                      if (code) {
+                        setNewCouponCode(code);
+                        setIsCouponModalOpen(true);
+                      } else {
+                        toast.success('สร้างคูปองสำเร็จ');
                       }
-                    });
+                    } catch (err: any) {
+                      toast.dismiss(loadingToast);
+                      if (err.response?.status === 409) {
+                        toast.error('คูปองนี้ถูกสร้างใช้งานไปแล้วในระบบ');
+                      } else {
+                        toast.error('ไม่สามารถสร้างคูปองได้ โปรดลองอีกครั้ง');
+                      }
+                    }
                   }}
                 >
                   <Ticket className="w-4 h-4 mr-1.5" /> Create Coupon
@@ -115,7 +119,7 @@ export default function AdminPromotionsPage() {
           />
         )}
 
-        {activeTab === 'icecream' && (
+        {/* {activeTab === 'icecream' && (
           <div className="max-w-2xl mx-auto py-12">
             <div className="bg-white rounded-2xl border border-zinc-200 shadow-sm overflow-hidden">
               <div className="p-8 text-center border-b border-zinc-100 bg-zinc-50/50">
@@ -161,7 +165,7 @@ export default function AdminPromotionsPage() {
               </div>
             </div>
           </div>
-        )}
+        )} */}
       </div>
 
       {}
@@ -201,6 +205,45 @@ export default function AdminPromotionsPage() {
               Close
             </Button>
           </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isCouponModalOpen} onOpenChange={setIsCouponModalOpen}>
+        <DialogContent className="sm:max-w-sm bg-transparent border-none shadow-none p-0 overflow-visible" aria-describedby={undefined}>
+          <DialogTitle className="sr-only">สร้างคูปองเรียบร้อย</DialogTitle>
+          <div className="relative bg-white rounded-3xl p-8 text-center shadow-2xl overflow-hidden pointer-events-auto">
+            
+            <div className="absolute top-1/2 left-0 w-8 h-8 bg-zinc-900/10 rounded-full shadow-inner -translate-x-4 -translate-y-1/2 opacity-50" />
+            <div className="absolute top-1/2 right-0 w-8 h-8 bg-zinc-900/10 rounded-full shadow-inner translate-x-4 -translate-y-1/2 opacity-50" />
+            
+            <div className="absolute top-1/2 left-6 right-6 border-t-2 border-dashed border-zinc-200 -translate-y-1/2" />
+
+            <div className="pb-8">
+              <div className="w-16 h-16 bg-emerald-100/80 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-5 shadow-sm">
+                <Ticket className="w-8 h-8 transform rotate-[-15deg]" />
+              </div>
+              <h2 className="text-2xl font-black text-zinc-900 tracking-tight">คูปองพร้อมใช้งาน!</h2>
+              <p className="text-zinc-500 mt-2 text-sm font-medium">แคมเปญสร้างโค้ดส่วนลดสำเร็จแล้ว</p>
+            </div>
+
+            <div className="pt-8 relative z-10">
+              <div className="bg-zinc-50 border-2 border-dashed border-zinc-300 rounded-xl p-4 mb-6 relative overflow-hidden group hover:border-emerald-300 hover:bg-emerald-50/50 transition-colors">
+                <p className="font-mono text-2xl leading-tight font-bold tracking-wider text-emerald-600 break-all">
+                  {newCouponCode}
+                </p>
+              </div>
+              <Button 
+                className="w-full h-12 bg-zinc-900 text-white hover:bg-zinc-800 rounded-xl font-bold shadow-md hover:shadow-lg transition-all"
+                onClick={() => {
+                  navigator.clipboard.writeText(newCouponCode || '');
+                  toast.success('คัดลอกรหัสคูปองเรียบร้อยแล้ว');
+                  setIsCouponModalOpen(false);
+                }}
+              >
+                คัดลอกโค้ด & ปิดหน้าต่าง
+              </Button>
+            </div>
+          </div>
         </DialogContent>
       </Dialog>
     </div>
