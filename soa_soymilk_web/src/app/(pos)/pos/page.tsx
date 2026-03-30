@@ -228,7 +228,7 @@ export default function POSPage() {
                 Point of Sale
               </h1>
               <p className="mt-2 text-zinc-600">
-                Select menu items, customize toppings, and complete payment.
+              
               </p>
             </div>
 
