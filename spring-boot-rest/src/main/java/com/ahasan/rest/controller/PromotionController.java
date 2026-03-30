@@ -71,6 +71,7 @@ public class PromotionController extends ApiControllerSupport {
 		coupon.setPromotionCampainId(promotionId);
 		coupon.setCouponCode(generateCouponCode());
 		coupon.setStatus("INACTIVE");
+		coupon.setCreatedAt(LocalDateTime.now());
 		return messageData("create successfully", toCouponDetailMap(couponRepo.save(coupon)));
 	}
 
@@ -82,6 +83,7 @@ public class PromotionController extends ApiControllerSupport {
 		coupon.setPromotionCampainId(promotionId);
 		coupon.setCouponCode(generateCouponCode());
 		coupon.setStatus("INACTIVE");
+		coupon.setCreatedAt(LocalDateTime.now());
 		CouponEntity savedCoupon = couponRepo.save(coupon);
 		return messageData("create successfully", toColabIceCreamCouponDetailMap(savedCoupon, campaign));
 	}
