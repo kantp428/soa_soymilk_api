@@ -10,6 +10,13 @@ export const apiClient = axios.create({
   timeout: 10000,
 });
 
+export const localApiClient = axios.create({
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  timeout: 10000,
+});
+
 apiClient.interceptors.request.use(
   (config) => {
 

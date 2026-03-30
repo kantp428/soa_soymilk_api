@@ -129,3 +129,16 @@ export interface OrderDetail extends Order {
 }
 
 export type Product = Menu;
+
+
+export interface PartnerCouponResponse {
+  id: number;
+  code: string;
+  expireDate: string;
+  createdAt: string;
+  promotionId: number;
+  promotionName: string;
+  discountValue: number;
+  allowedCategoryIds: number[];
+  active: boolean;
+}
