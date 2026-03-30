@@ -32,3 +32,23 @@ export const getAddon = async (id: string | number): Promise<Addon> => {
 export const updateAddon = async (id: string | number, data: Partial<Addon>): Promise<{ message: string, data: Addon }> => {
   return apiClient.put(`/addons/${id}`, data);
 };
+
+export const updateMenu = async (id: string | number, data: Partial<Menu>): Promise<{ message: string, data: Menu }> => {
+  return apiClient.put(`/menus/${id}`, data);
+};
+
+export const updateCategory = async (id: string | number, data: Partial<Category>): Promise<{ message: string, data: Category }> => {
+  return apiClient.put(`/categories/${id}`, data);
+};
+
+export const createMenu = async (data: Partial<Menu>): Promise<{ message: string, data: Menu }> => {
+  return apiClient.post('/menus', data);
+};
+
+export const createCategory = async (data: Partial<Category>): Promise<{ message: string, data: Category }> => {
+  return apiClient.post('/categories', data);
+};
+
+export const createAddon = async (data: Partial<Addon>): Promise<{ message: string, data: Addon }> => {
+  return apiClient.post('/addons', data);
+};

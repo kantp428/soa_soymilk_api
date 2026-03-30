@@ -102,8 +102,17 @@ export interface Order {
   coupon_id?: number | null;
 }
 
+export interface OrderItemAddon {
+  order_item_addon_id: number;
+  order_item_id: number;
+  addon_id: number;
+  addon_name: string;
+  price: number;
+}
+
 export interface OrderDetailItem {
   order_item_id: number;
+  order_id?: number;
   menu_id: number;
   menu_name?: string;
   quantity: number;

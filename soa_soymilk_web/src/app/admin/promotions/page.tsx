@@ -6,10 +6,12 @@ import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '@/lib/axios';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { Eye, Loader2 } from 'lucide-react';
+import { Eye, Loader2, IceCream, Ticket } from 'lucide-react';
+import { createIceCreamCoupon, createCoupon } from '@/features/promotions/api';
+import { toast } from 'sonner';
 
 export default function AdminPromotionsPage() {
-  const [activeTab, setActiveTab] = useState<'campaigns' | 'coupons'>('campaigns');
+  const [activeTab, setActiveTab] = useState<'campaigns' | 'coupons' | 'icecream'>('campaigns');
 
   const [selectedCampaignId, setSelectedCampaignId] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -44,13 +46,13 @@ export default function AdminPromotionsPage() {
         >
           Promotion Campaigns
         </Button>
-        {/* <Button
+        <Button
           variant="ghost"
-          className={`rounded-none border-b-2 px-6 ${activeTab === 'coupons' ? 'border-zinc-900 font-semibold' : 'border-transparent text-zinc-500'}`}
-          onClick={() => setActiveTab('coupons')}
+          className={`rounded-none border-b-2 px-6 ${activeTab === 'icecream' ? 'border-zinc-900 font-semibold' : 'border-transparent text-zinc-500'}`}
+          onClick={() => setActiveTab('icecream')}
         >
-          Coupons
-        </Button> */}
+          Ice Cream Colab
+        </Button>
       </div>
 
       <div className="pt-4">
@@ -73,20 +75,96 @@ export default function AdminPromotionsPage() {
               { name: 'expire_date', label: 'Expiry Date (YYYY-MM-DD)', type: 'text', required: true },
             ]}
             customActions={(row: Record<string, unknown>) => (
-              <Button
-                variant="outline"
-                size="sm"
-                className="mr-2 border-zinc-200 text-zinc-600 hover:text-zinc-900 bg-white shadow-sm"
-                onClick={() => handleOpenStatsModal(Number(row.promotion_campain_id))}
-              >
-                <Eye className="w-4 h-4 mr-1.5" /> View Stats
-              </Button>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-zinc-200 text-zinc-600 hover:text-zinc-900 bg-white shadow-sm"
+                  onClick={() => handleOpenStatsModal(Number(row.promotion_campain_id))}
+                >
+                  <Eye className="w-4 h-4 mr-1.5" /> View Stats
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-zinc-200 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 bg-white shadow-sm"
+                  onClick={async () => {
+                    const promise = createCoupon(Number(row.promotion_campain_id));
+                    toast.promise(promise, {
+                      loading: 'กำลังสร้างคูปอง...',
+                      success: (res: any) => {
+                        const code = res?.data?.coupon_code || 'สร้างสำเร็จ';
+                        return (
+                          <div className="flex flex-col gap-1">
+                            <span className="font-bold">สร้างคูปองเรียบร้อย!</span>
+                            <span className="text-emerald-600 font-mono text-sm underline">{code}</span>
+                          </div>
+                        );
+                      },
+                      error: (err: any) => {
+                        if (err.response?.status === 409) return 'คูปองนี้มีอยู่แล้วในระบบ';
+                        return 'ไม่สามารถสร้างคูปองได้';
+                      }
+                    });
+                  }}
+                >
+                  <Ticket className="w-4 h-4 mr-1.5" /> Create Coupon
+                </Button>
+              </div>
             )}
           />
         )}
+
+        {activeTab === 'icecream' && (
+          <div className="max-w-2xl mx-auto py-12">
+            <div className="bg-white rounded-2xl border border-zinc-200 shadow-sm overflow-hidden">
+              <div className="p-8 text-center border-b border-zinc-100 bg-zinc-50/50">
+                <div className="w-16 h-16 bg-pink-100 text-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                  <IceCream className="w-8 h-8" />
+                </div>
+                <h2 className="text-xl font-bold text-zinc-900">Ice Cream Collaboration</h2>
+                <p className="text-zinc-500 mt-2">
+                  Generate special collaboration coupons for our Ice Cream partners.
+                  Each click generates a unique code for campaign ID #1.
+                </p>
+              </div>
+              <div className="p-8 flex flex-col items-center">
+                <Button 
+                  size="lg" 
+                  className="bg-zinc-900 text-white hover:bg-zinc-800 px-8 py-6 rounded-xl h-auto text-lg font-semibold transition-all hover:scale-105 active:scale-95"
+                  onClick={async () => {
+                    const promise = createIceCreamCoupon();
+                    toast.promise(promise, {
+                      loading: 'Generating coupon...',
+                      success: (res: any) => {
+                        const code = res?.data?.coupon_code || 'Generated Successfully';
+                        return (
+                          <div className="flex flex-col gap-1">
+                            <span className="font-bold">Coupon Created!</span>
+                            <span className="text-pink-600 font-mono text-sm underline decoration-pink-200">{code}</span>
+                          </div>
+                        );
+                      },
+                      error: 'Failed to generate coupon. Please check API connection.'
+                    });
+                  }}
+                >
+                  <Ticket className="w-5 h-5 mr-2" />
+                  Generate Ice Cream Coupon
+                </Button>
+                
+                <div className="mt-8 flex items-center gap-3 text-xs text-zinc-400 font-medium">
+                  <div className="w-8 h-px bg-zinc-100" />
+                  <span>CAMPAIGN ID #1</span>
+                  <div className="w-8 h-px bg-zinc-100" />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Coupon Stats Modal */}
+      {}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="sm:max-w-md bg-white">
           <DialogHeader>

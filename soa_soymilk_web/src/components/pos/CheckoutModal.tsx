@@ -11,7 +11,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { useCartStore } from '@/features/orders/store/useCartStore';
 import { createOrder, createOrderItem, createOrderItemAddon } from '@/features/orders/api';
-import { validateCoupon } from '@/features/promotions/api';
+import { validateCoupon, activeCoupon } from '@/features/promotions/api';
 import { Loader2, Banknote, CreditCard, QrCode, CheckCircle2, Ticket } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 
@@ -41,10 +41,7 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
       setCouponError('');
       const res = await validateCoupon(couponCode) as unknown as { data?: { coupon_id?: number } };
       if (res?.data?.coupon_id) {
-        // Since discount amount isn't clearly returned in the success response payload of validate
-        // In a real app we would get the discount value. For the sake of UI, let's assume valid
-        // Assuming the backend has a way to get campaign discount, but here we just attach ID.
-        // Let's assume a generic 10% discount for demo if not provided.
+
         const discountAmount = subtotal * 0.1; 
         setAppliedCoupon({ id: res.data.coupon_id, discount: discountAmount });
       } else {
@@ -88,6 +85,16 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
              addon_id: topping.addon_id,
              price: topping.price
           });
+        }
+      }
+
+      if (appliedCoupon && couponCode) {
+        try {
+          await activeCoupon(couponCode);
+          console.log("Coupon activated successfully");
+        } catch (couponError) {
+          console.error("Failed to activate coupon:", couponError);
+
         }
       }
 

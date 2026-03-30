@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '@/lib/axios';
-import { Loader2, BarChart3, TrendingUp, Calendar, CreditCard, Wallet } from 'lucide-react';
+import { Loader2, BarChart3, TrendingUp, Calendar, CreditCard, Wallet, Layers } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { 
   Bar, 
@@ -19,13 +19,20 @@ import {
   PieChart, 
   Pie 
 } from 'recharts';
-import { Order, PaginatedResponse } from '@/features/products/types';
+import { Order, PaginatedResponse, OrderItemAddon } from '@/features/products/types';
+import { useOrderItemAddons, useOrderItemAddon } from '@/features/orders/hooks/useOrders';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 export default function AdminReportsPage() {
+  const [selectedToppingLogId, setSelectedToppingLogId] = useState<number | null>(null);
+  
   const { data, isLoading } = useQuery<PaginatedResponse<Order>>({
     queryKey: ['/orders', 'reports'],
     queryFn: () => apiClient.get('/orders?page=1&limit=1000')
   });
+  
+  const { data: addonsSalesData, isLoading: isAddonsLoading } = useOrderItemAddons(1, 2000);
+  const { data: toppingDetailData, isLoading: isToppingDetailLoading } = useOrderItemAddon(selectedToppingLogId);
 
   const orders = data?.data || [];
 
@@ -55,6 +62,22 @@ export default function AdminReportsPage() {
 
     return { totalRevenue, totalOrders: orders.length, dailyChart, paymentChart };
   }, [orders]);
+
+  const toppingStats = useMemo(() => {
+    const addons = (addonsSalesData as any)?.data || [];
+    const counts: Record<string, number> = {};
+    const lastIds: Record<string, number> = {};
+    
+    addons.forEach((addon: OrderItemAddon) => {
+      counts[addon.addon_name] = (counts[addon.addon_name] || 0) + 1;
+      lastIds[addon.addon_name] = addon.order_item_addon_id;
+    });
+
+    return Object.entries(counts)
+      .map(([name, count]) => ({ name, count, lastId: lastIds[name] }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 10);
+  }, [addonsSalesData]);
 
   if (isLoading) {
     return (
@@ -189,6 +212,104 @@ export default function AdminReportsPage() {
              </ResponsiveContainer>
           </CardContent>
         </Card>
+
+        <Card className="shadow-sm border-zinc-200">
+          <CardHeader>
+            <CardTitle className="text-lg font-bold flex items-center gap-2">
+              <Layers className="w-5 h-5 text-zinc-500" /> ท็อปปิ้งยอดนิยม (Top 10 Toppings)
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="h-[350px]">
+            {isAddonsLoading ? (
+              <div className="flex items-center justify-center h-full text-zinc-500">
+                <Loader2 className="w-6 h-6 animate-spin mr-2" /> กำลังประมวลผล...
+              </div>
+            ) : toppingStats.length === 0 ? (
+              <div className="flex items-center justify-center h-full text-zinc-500">
+                ไม่มีข้อมูลท็อปปิ้ง
+              </div>
+            ) : (
+             <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={toppingStats} layout="vertical" margin={{ left: 40, right: 40 }}>
+                  <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#f1f5f9" />
+                  <XAxis type="number" hide />
+                  <YAxis 
+                    dataKey="name" 
+                    type="category" 
+                    fontSize={12} 
+                    width={100}
+                    axisLine={false} 
+                    tickLine={false} 
+                  />
+                  <Tooltip 
+                    cursor={{ fill: 'transparent' }}
+                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                  />
+                  <Bar 
+                    dataKey="count" 
+                    fill="#18181b" 
+                    radius={[0, 4, 4, 0]} 
+                    label={{ position: 'right', fontSize: 11, fill: '#71717a' }}
+                    onClick={(data) => setSelectedToppingLogId(data.lastId)}
+                    className="cursor-pointer hover:opacity-80 transition-opacity"
+                  />
+                </BarChart>
+             </ResponsiveContainer>
+            )}
+          </CardContent>
+        </Card>
+
+      <Dialog open={!!selectedToppingLogId} onOpenChange={(open) => !open && setSelectedToppingLogId(null)}>
+        <DialogContent className="sm:max-w-[400px] rounded-2xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-xl font-bold">
+              <Layers className="w-5 h-5 text-primary" /> รายละเอียดท็อปปิ้งที่ขายได้
+            </DialogTitle>
+          </DialogHeader>
+          
+          {isToppingDetailLoading ? (
+            <div className="py-10 flex flex-col items-center justify-center gap-3 text-zinc-500">
+              <Loader2 className="w-8 h-8 animate-spin" />
+              <p>กำลังดึงข้อมูล...</p>
+            </div>
+          ) : toppingDetailData ? (
+            <div className="space-y-6 py-2">
+              <div className="bg-zinc-50 p-4 rounded-xl border border-zinc-100 space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-zinc-500">Service Addon ID</span>
+                  <span className="font-mono text-sm font-bold text-zinc-900">#{(toppingDetailData as any).data.order_item_addon_id}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                   <span className="text-sm text-zinc-500">ชื่อท็อปปิ้ง</span>
+                   <span className="font-bold text-zinc-900">{(toppingDetailData as any).data.addon_name}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                   <span className="text-sm text-zinc-500">ราคาที่ขาย</span>
+                   <span className="font-bold text-primary text-lg">฿{(toppingDetailData as any).data.price}</span>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <p className="text-xs font-semibold text-zinc-400 uppercase tracking-widest pl-1">ข้อมูลประกอบ</p>
+                <div className="grid grid-cols-2 gap-3">
+                   <div className="p-3 bg-white border border-zinc-100 rounded-xl">
+                      <p className="text-[10px] text-zinc-400 uppercase font-bold mb-1">รหัสรายการออเดอร์</p>
+                      <p className="text-sm font-bold text-zinc-700">#{(toppingDetailData as any).data.order_item_id}</p>
+                   </div>
+                   <div className="p-3 bg-white border border-zinc-100 rounded-xl">
+                      <p className="text-[10px] text-zinc-400 uppercase font-bold mb-1">รหัสท็อปปิ้งหลัก</p>
+                      <p className="text-sm font-bold text-zinc-700">ID: {(toppingDetailData as any).data.addon_id}</p>
+                   </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="py-10 text-center text-zinc-500">
+              ไม่พบข้อมูลรายละเอียด
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

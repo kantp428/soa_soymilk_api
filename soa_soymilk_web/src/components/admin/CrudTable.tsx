@@ -91,7 +91,6 @@ export function CrudTable<T extends Record<string, unknown>>({
   const extracted = rawData ? (Array.isArray(rawData) ? rawData : (rawData as unknown as Record<string, unknown>)[dataKey]) : [];
   const rawItems: T[] = (Array.isArray(extracted) ? extracted : []) as T[];
 
-  // กรองให้แสดงเฉพาะข้อมูลที่มีสถานะเป็น Active หรือไม่มีสถานะระบุไว้
   let items = rawItems.filter(item => {
     const status = item['status' as keyof T] as string | undefined;
     if (!status) return true;
@@ -99,11 +98,10 @@ export function CrudTable<T extends Record<string, unknown>>({
     return s === 'active' || s === 'available' || s === 'ปกติ';
   });
 
-  // Client-Side Search (กรองข้อมูลจากรายการที่มีอยู่ในหน้านี้)
   if (searchQuery.trim()) {
     const lowerQuery = searchQuery.toLowerCase();
     items = items.filter((item) => {
-      // ค้นหาจากทุกคอลัมน์ที่ตั้งค่าไว้ในตาราง
+      
       return columns.some((col) => {
         const value = item[col.accessorKey];
         if (value === null || value === undefined) return false;
@@ -181,10 +179,10 @@ export function CrudTable<T extends Record<string, unknown>>({
       const hasStatus = 'status' in item || formFields.some(f => f.name === 'status');
 
       if (hasStatus) {
-        // อัปเดตสถานะเป็น Inactive แทบลบข้อมูลทิ้งจริง
+        
         updateMutation.mutate({ id, data: { ...item, status: 'Inactive' as unknown as T[keyof T] } });
       } else {
-        // หากไม่มีคอลัมน์ status ให้ลบออกไปเลย
+        
         deleteMutation.mutate(id);
       }
     }

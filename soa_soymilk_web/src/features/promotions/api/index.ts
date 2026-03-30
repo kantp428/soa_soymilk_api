@@ -11,3 +11,11 @@ export const validateCoupon = async (couponCode: string) => {
 export const getCampaignCouponStats = async (campaignId: string | number) => {
   return apiClient.get(`/promotion/campaign/${campaignId}/coupon`);
 };
+
+export const createIceCreamCoupon = async () => {
+  return apiClient.post('/colab/ice-cream');
+};
+
+export const createCoupon = async (campaignId: number | string) => {
+  return apiClient.post('/promotion/coupon', { promotion_campain_id: campaignId });
+};

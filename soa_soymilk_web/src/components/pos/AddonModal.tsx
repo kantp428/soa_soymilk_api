@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/set-state-in-effect */
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -27,7 +27,6 @@ export function AddonModal({ isOpen, onClose, product, onConfirm }: AddonModalPr
   const [sweetness, setSweetness] = useState(100);
   const [selectedToppings, setSelectedToppings] = useState<Addon[]>([]);
   const [quantity, setQuantity] = useState(1);
-
 
   useEffect(() => {
     if (isOpen) {

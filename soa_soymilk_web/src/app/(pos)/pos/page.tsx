@@ -138,22 +138,9 @@ export default function POSPage() {
               {filteredProducts.map((product) => (
                 <Card
                   key={product.menu_id}
-                  className="cursor-pointer hover:border-zinc-400 hover:shadow-md transition-all h-[320px] flex flex-col overflow-hidden bg-white group"
+                  className="cursor-pointer hover:border-zinc-300 hover:shadow-md transition-all h-[140px] flex flex-col overflow-hidden bg-white group border-zinc-100"
                   onClick={() => handleProductClick(product)}
                 >
-                  <div className="relative h-44 w-full overflow-hidden bg-zinc-100">
-                    {product.image_url ? (
-                      <img 
-                        src={product.image_url} 
-                        alt={product.menu_name} 
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-zinc-300">
-                         <Home className="w-12 h-12 opacity-10" />
-                      </div>
-                    )}
-                  </div>
                   <CardHeader className="p-4 pb-2">
                     <CardTitle className="text-lg leading-tight line-clamp-2">{product.menu_name}</CardTitle>
                     {product.description && (
