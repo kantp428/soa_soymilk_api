@@ -118,6 +118,7 @@ public class OrderController extends ApiControllerSupport {
 
 	private Map<String, Object> toOrderMap(OrderEntity entity) {
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
+		data.put("order_id", entity.getOrderId());
 		data.put("customer_id", entity.getCustomerId());
 		data.put("order_time", entity.getCreatedAt());
 		data.put("total_price", entity.getTotalPrice());
