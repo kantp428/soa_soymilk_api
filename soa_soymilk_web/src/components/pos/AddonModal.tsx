@@ -40,7 +40,10 @@ export function AddonModal({ isOpen, onClose, product, onConfirm }: AddonModalPr
 
   const addons = addonsData?.data || [];
 
-  const availableAddons = addons.filter(addon => addon.status === 'Available' || addon.status === 'active' || !addon.status);
+  const availableAddons = addons.filter((addon) => {
+    const normalizedStatus = addon.status?.trim().toUpperCase();
+    return !normalizedStatus || normalizedStatus === 'ACTIVE' || normalizedStatus === 'AVAILABLE';
+  });
 
   const toggleTopping = (addon: Addon) => {
     setSelectedToppings(prev =>

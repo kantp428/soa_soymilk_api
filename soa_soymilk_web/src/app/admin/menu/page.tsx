@@ -104,7 +104,7 @@ export default function AdminMenuPage() {
               accessorKey: 'status' as any,
               cell: (row: any) => (
                 <span className={`px-2 py-1 rounded-full text-xs font-medium ${row.status === 'Active' || row.status === 'Available' || row.status === 'ปกติ' || row.status === 'ACTIVE' ? 'bg-primary/10 text-primary' : 'bg-red-100 text-red-800'}`}>
-                  {(row.status as string) || 'Active'}
+                  {(row.status as string) || 'ACTIVE'}
                 </span>
               )
             },
@@ -114,16 +114,16 @@ export default function AdminMenuPage() {
             { name: 'price', label: 'ราคาเพิ่ม (฿)', type: 'number', required: true },
             {
               name: 'status', label: 'สถานะ', type: 'select', options: [
-                { label: 'ใช้งานปกติ (Active)', value: 'Active' },
-                { label: 'ปิดการใช้งาน (Inactive)', value: 'Inactive' }
+                { label: 'ใช้งานปกติ (ACTIVE)', value: 'ACTIVE' },
+                { label: 'ปิดการใช้งาน (INACTIVE)', value: 'INACTIVE' }
               ]
             }
           ] : (isCategories ? [
             { name: 'category_name', label: 'ชื่อหมวดหมู่', type: 'text', required: true },
             {
               name: 'status', label: 'สถานะ', type: 'select', options: [
-                { label: 'ใช้งานปกติ (Active)', value: 'Active' },
-                { label: 'ปิดการใช้งาน (Inactive)', value: 'Inactive' }
+                { label: 'ใช้งานปกติ (ACTIVE)', value: 'ACTIVE' },
+                { label: 'ปิดการใช้งาน (INACTIVE)', value: 'INACTIVE' }
               ]
             }
           ] : [
@@ -139,8 +139,8 @@ export default function AdminMenuPage() {
             { name: 'description', label: 'รายละเอียด', type: 'textarea' },
             {
               name: 'status', label: 'สถานะ', type: 'select', options: [
-                { label: 'ใช้งานปกติ (Active)', value: 'Active' },
-                { label: 'ปิดการใช้งาน (Inactive)', value: 'Inactive' }
+                { label: 'ใช้งานปกติ (ACTIVE)', value: 'ACTIVE' },
+                { label: 'ปิดการใช้งาน (INACTIVE)', value: 'INACTIVE' }
               ]
             },
           ])}

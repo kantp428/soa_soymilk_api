@@ -180,7 +180,7 @@ export function CrudTable<T extends Record<string, unknown>>({
 
       if (hasStatus) {
         
-        updateMutation.mutate({ id, data: { ...item, status: 'Inactive' as unknown as T[keyof T] } });
+        updateMutation.mutate({ id, data: { ...item, status: 'INACTIVE' as unknown as T[keyof T] } });
       } else {
         
         deleteMutation.mutate(id);
