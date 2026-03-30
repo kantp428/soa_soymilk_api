@@ -1,17 +1,37 @@
-'use client';
+"use client";
 
-import React, { useEffect, useMemo, useState } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { useProducts, useCategories } from '@/features/products/hooks/useProducts';
-import { useCartStore } from '@/features/orders/store/useCartStore';
-import { ShoppingCart, Plus, Minus, Trash2, Loader2, Search, Home, LayoutDashboard, LogOut, ChevronDown } from 'lucide-react';
-import { type Addon, type Menu } from '@/features/products/types';
-import { AddonModal } from '@/components/pos/AddonModal';
-import { CheckoutModal } from '@/components/pos/CheckoutModal';
+import React, { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  useProducts,
+  useCategories,
+} from "@/features/products/hooks/useProducts";
+import { useCartStore } from "@/features/orders/store/useCartStore";
+import {
+  ShoppingCart,
+  Plus,
+  Minus,
+  Trash2,
+  Loader2,
+  Search,
+  Home,
+  LayoutDashboard,
+  LogOut,
+  ChevronDown,
+} from "lucide-react";
+import { type Addon, type Menu } from "@/features/products/types";
+import { AddonModal } from "@/components/pos/AddonModal";
+import { CheckoutModal } from "@/components/pos/CheckoutModal";
 
 interface StaffSession {
   staffId: number;
@@ -20,19 +40,19 @@ interface StaffSession {
   role?: string;
 }
 
-const STAFF_ID_COOKIE = 'pos_staff_id';
-const STAFF_NAME_COOKIE = 'pos_staff_name';
-const STAFF_PHONE_COOKIE = 'pos_staff_phone';
-const STAFF_ROLE_COOKIE = 'pos_staff_role';
+const STAFF_ID_COOKIE = "pos_staff_id";
+const STAFF_NAME_COOKIE = "pos_staff_name";
+const STAFF_PHONE_COOKIE = "pos_staff_phone";
+const STAFF_ROLE_COOKIE = "pos_staff_role";
 
 const getCookieValue = (name: string) => {
-  if (typeof document === 'undefined') return '';
+  if (typeof document === "undefined") return "";
 
   const cookie = document.cookie
-    .split('; ')
+    .split("; ")
     .find((item) => item.startsWith(`${name}=`));
 
-  return cookie ? decodeURIComponent(cookie.split('=').slice(1).join('=')) : '';
+  return cookie ? decodeURIComponent(cookie.split("=").slice(1).join("=")) : "";
 };
 
 const clearSessionCookie = (name: string) => {
@@ -42,16 +62,26 @@ const clearSessionCookie = (name: string) => {
 export default function POSPage() {
   const router = useRouter();
   const { data: productsData, isLoading: isProductsLoading } = useProducts();
-  const { data: categoriesData, isLoading: isCategoriesLoading } = useCategories();
-  const [selectedCategoryId, setSelectedCategoryId] = useState<number | 'all'>('all');
-  const [searchQuery, setSearchQuery] = useState('');
+  const { data: categoriesData, isLoading: isCategoriesLoading } =
+    useCategories();
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | "all">(
+    "all",
+  );
+  const [searchQuery, setSearchQuery] = useState("");
   const [staffSession, setStaffSession] = useState<StaffSession | null>(null);
   const [isStaffMenuOpen, setIsStaffMenuOpen] = useState(false);
   const [isAddonModalOpen, setIsAddonModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Menu | null>(null);
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
 
-  const { items, addItem, removeItem, updateQuantity, getCartTotal, clearCart } = useCartStore();
+  const {
+    items,
+    addItem,
+    removeItem,
+    updateQuantity,
+    getCartTotal,
+    clearCart,
+  } = useCartStore();
 
   useEffect(() => {
     const staffId = getCookieValue(STAFF_ID_COOKIE);
@@ -60,7 +90,7 @@ export default function POSPage() {
     const role = getCookieValue(STAFF_ROLE_COOKIE);
 
     if (!staffId || !staffName || !phone) {
-      router.push('/');
+      router.push("/");
       return;
     }
 
@@ -77,7 +107,12 @@ export default function POSPage() {
     setIsAddonModalOpen(true);
   };
 
-  const handleAddToCart = (product: Menu, sweetness: number, toppings: Addon[], quantity: number) => {
+  const handleAddToCart = (
+    product: Menu,
+    sweetness: number,
+    toppings: Addon[],
+    quantity: number,
+  ) => {
     addItem({
       id: crypto.randomUUID(),
       productId: product.menu_id.toString(),
@@ -96,7 +131,7 @@ export default function POSPage() {
     clearSessionCookie(STAFF_PHONE_COOKIE);
     clearSessionCookie(STAFF_ROLE_COOKIE);
     clearCart();
-    router.push('/');
+    router.push("/");
   };
 
   const products = productsData?.data || [];
@@ -105,13 +140,15 @@ export default function POSPage() {
   const filteredProducts = useMemo(() => {
     let filtered = products;
 
-    if (selectedCategoryId !== 'all') {
-      filtered = filtered.filter((product) => product.category_id === selectedCategoryId);
+    if (selectedCategoryId !== "all") {
+      filtered = filtered.filter(
+        (product) => product.category_id === selectedCategoryId,
+      );
     }
 
     if (searchQuery.trim()) {
       filtered = filtered.filter((product) =>
-        product.menu_name.toLowerCase().includes(searchQuery.toLowerCase())
+        product.menu_name.toLowerCase().includes(searchQuery.toLowerCase()),
       );
     }
 
@@ -124,10 +161,16 @@ export default function POSPage() {
       <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(24,24,27,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(24,24,27,0.04)_1px,transparent_1px)] bg-[size:28px_28px]" />
       <header className="z-20 flex h-16 shrink-0 items-center justify-between border-b border-zinc-200 bg-white/90 px-8 backdrop-blur shadow-[0_10px_30px_rgba(0,0,0,0.06)]">
         <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center gap-2 font-medium text-zinc-500 transition-colors hover:text-zinc-950">
+          <Link
+            href="/"
+            className="flex items-center gap-2 font-medium text-zinc-500 transition-colors hover:text-zinc-950"
+          >
             <Home className="h-4 w-4" /> Home
           </Link>
-          <Link href="/admin" className="flex items-center gap-2 font-medium text-zinc-500 transition-colors hover:text-zinc-950">
+          <Link
+            href="/admin"
+            className="flex items-center gap-2 font-medium text-zinc-500 transition-colors hover:text-zinc-950"
+          >
             <LayoutDashboard className="h-4 w-4" /> Admin
           </Link>
         </div>
@@ -145,10 +188,16 @@ export default function POSPage() {
                 className="flex items-center justify-between gap-2 rounded-xl border border-zinc-200 bg-white/80 px-3 py-2 text-right shadow-sm transition-colors hover:border-zinc-950"
               >
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-xs font-semibold leading-tight text-zinc-900">{staffSession.staffName}</p>
-                  <p className="mt-0.5 truncate text-[11px] leading-tight text-zinc-500">{staffSession.phone}</p>
+                  <p className="truncate text-xs font-semibold leading-tight text-zinc-900">
+                    {staffSession.staffName}
+                  </p>
+                  <p className="mt-0.5 truncate text-[11px] leading-tight text-zinc-500">
+                    {staffSession.phone}
+                  </p>
                 </div>
-                <ChevronDown className={`h-3.5 w-3.5 shrink-0 text-zinc-500 transition-transform ${isStaffMenuOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown
+                  className={`h-3.5 w-3.5 shrink-0 text-zinc-500 transition-transform ${isStaffMenuOpen ? "rotate-180" : ""}`}
+                />
               </button>
 
               {isStaffMenuOpen ? (
@@ -172,9 +221,15 @@ export default function POSPage() {
         <div className="flex h-full flex-1 flex-col px-8 pb-6 pt-6">
           <div className="mb-6 flex items-center justify-between">
             <div>
-              <p className="mb-2 text-xs font-bold uppercase tracking-[0.28em] text-zinc-500">Counter Workspace</p>
-              <h1 className="text-4xl font-black tracking-[-0.04em] text-zinc-950">Point of Sale</h1>
-              <p className="mt-2 text-zinc-600">Select menu items, customize toppings, and complete payment.</p>
+              <p className="mb-2 text-xs font-bold uppercase tracking-[0.28em] text-zinc-500">
+                Counter Workspace
+              </p>
+              <h1 className="text-4xl font-black tracking-[-0.04em] text-zinc-950">
+                Point of Sale
+              </h1>
+              <p className="mt-2 text-zinc-600">
+                Select menu items, customize toppings, and complete payment.
+              </p>
             </div>
 
             <div className="relative hidden w-64 sm:block">
@@ -191,13 +246,13 @@ export default function POSPage() {
 
           <div className="mb-6 flex gap-2 overflow-x-auto pb-2 scrollbar-none">
             <Button
-              variant={selectedCategoryId === 'all' ? 'default' : 'outline'}
+              variant={selectedCategoryId === "all" ? "default" : "outline"}
               className={`shrink-0 rounded-full border shadow-sm ${
-                selectedCategoryId === 'all'
-                  ? 'border-zinc-950 bg-zinc-950 text-white hover:bg-zinc-800'
-                  : 'border-zinc-300 bg-white text-zinc-900 hover:bg-zinc-100'
+                selectedCategoryId === "all"
+                  ? "border-zinc-950 bg-zinc-950 text-white hover:bg-zinc-800"
+                  : "border-zinc-300 bg-white text-zinc-900 hover:bg-zinc-100"
               }`}
-              onClick={() => setSelectedCategoryId('all')}
+              onClick={() => setSelectedCategoryId("all")}
             >
               All Menu
             </Button>
@@ -211,11 +266,15 @@ export default function POSPage() {
               categories.map((category) => (
                 <Button
                   key={category.category_id}
-                  variant={selectedCategoryId === category.category_id ? 'default' : 'outline'}
+                  variant={
+                    selectedCategoryId === category.category_id
+                      ? "default"
+                      : "outline"
+                  }
                   className={`shrink-0 rounded-full border shadow-sm ${
                     selectedCategoryId === category.category_id
-                      ? 'border-zinc-950 bg-zinc-950 text-white hover:bg-zinc-800'
-                      : 'border-zinc-300 bg-white text-zinc-900 hover:bg-zinc-100'
+                      ? "border-zinc-950 bg-zinc-950 text-white hover:bg-zinc-800"
+                      : "border-zinc-300 bg-white text-zinc-900 hover:bg-zinc-100"
                   }`}
                   onClick={() => setSelectedCategoryId(category.category_id)}
                 >
@@ -244,14 +303,23 @@ export default function POSPage() {
                     onClick={() => handleProductClick(product)}
                   >
                     <CardHeader className="p-4 pb-2">
-                      <CardTitle className="text-base leading-snug text-zinc-950">{product.menu_name}</CardTitle>
+                      <CardTitle className="text-base leading-snug text-zinc-950">
+                        {product.menu_name}
+                      </CardTitle>
                       {product.description ? (
-                        <CardDescription className="mt-1 line-clamp-3 text-xs leading-relaxed text-zinc-500">{product.description}</CardDescription>
+                        <CardDescription className="mt-1 line-clamp-3 text-xs leading-relaxed text-zinc-500">
+                          {product.description}
+                        </CardDescription>
                       ) : null}
                     </CardHeader>
                     <CardContent className="mt-auto flex items-center justify-between border-t border-zinc-100 bg-zinc-50/80 p-4 pt-3">
-                      <span className="text-lg font-bold text-zinc-800">฿{product.price}</span>
-                      <Button size="icon" className="h-9 w-9 rounded-full border border-zinc-800 bg-zinc-950 p-0 shadow-sm">
+                      <span className="text-lg font-bold text-zinc-800">
+                        ฿{product.price}
+                      </span>
+                      <Button
+                        size="icon"
+                        className="h-9 w-9 rounded-full border border-zinc-800 bg-zinc-950 p-0 shadow-sm"
+                      >
                         <Plus className="h-4 w-4 text-white" />
                       </Button>
                     </CardContent>
@@ -278,11 +346,22 @@ export default function POSPage() {
             ) : (
               <div className="space-y-4">
                 {items.map((item, index) => (
-                  <div key={item.id || `item-${index}`} className="flex flex-col gap-2 rounded-[22px] border border-zinc-200 bg-zinc-50/90 p-4 shadow-[0_12px_30px_rgba(0,0,0,0.05)]">
+                  <div
+                    key={item.id || `item-${index}`}
+                    className="flex flex-col gap-2 rounded-[22px] border border-zinc-200 bg-zinc-50/90 p-4 shadow-[0_12px_30px_rgba(0,0,0,0.05)]"
+                  >
                     <div className="flex items-start justify-between">
-                      <div className="font-semibold text-zinc-800">{item.name}</div>
+                      <div className="font-semibold text-zinc-800">
+                        {item.name}
+                      </div>
                       <div className="text-lg font-bold">
-                        ฿{(item.price + (item.toppings?.reduce((sum, topping) => sum + topping.price, 0) || 0)) * item.quantity}
+                        ฿
+                        {(item.price +
+                          (item.toppings?.reduce(
+                            (sum, topping) => sum + topping.price,
+                            0,
+                          ) || 0)) *
+                          item.quantity}
                       </div>
                     </div>
 
@@ -307,18 +386,23 @@ export default function POSPage() {
                           size="icon"
                           className="h-8 w-8 rounded-none rounded-l-lg text-zinc-500 hover:bg-zinc-100"
                           onClick={() => {
-                            if (item.quantity > 1) updateQuantity(item.id, item.quantity - 1);
+                            if (item.quantity > 1)
+                              updateQuantity(item.id, item.quantity - 1);
                             else removeItem(item.id);
                           }}
                         >
                           <Minus className="h-3 w-3" />
                         </Button>
-                        <span className="w-8 text-center text-sm font-semibold">{item.quantity}</span>
+                        <span className="w-8 text-center text-sm font-semibold">
+                          {item.quantity}
+                        </span>
                         <Button
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8 rounded-none rounded-r-lg text-zinc-500 hover:bg-zinc-100"
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          onClick={() =>
+                            updateQuantity(item.id, item.quantity + 1)
+                          }
                         >
                           <Plus className="h-3 w-3" />
                         </Button>
@@ -342,7 +426,9 @@ export default function POSPage() {
           <div className="relative z-20 space-y-4 border-t border-zinc-200 bg-white p-6 shadow-[0_-10px_40px_rgba(0,0,0,0.03)]">
             <div className="flex items-center justify-between font-medium text-zinc-600">
               <span>Total</span>
-              <span className="text-3xl font-bold text-zinc-900">฿{getCartTotal()}</span>
+              <span className="text-3xl font-bold text-zinc-900">
+                ฿{getCartTotal()}
+              </span>
             </div>
 
             <div className="flex gap-3">
@@ -359,7 +445,7 @@ export default function POSPage() {
                 disabled={items.length === 0}
                 onClick={() => setIsCheckoutModalOpen(true)}
               >
-                Checkout
+                Confirm
               </Button>
             </div>
           </div>
