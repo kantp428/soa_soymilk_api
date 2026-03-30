@@ -33,6 +33,16 @@ interface ReceiptData {
   partnerCoupon: PartnerCouponResponse | null;
 }
 
+interface ValidateCouponResponse {
+  message?: string;
+  data?: {
+    coupon_id?: number;
+    coupon_discount?: number;
+    status?: string;
+    expire?: boolean;
+  };
+}
+
 const STAFF_ID_COOKIE = 'pos_staff_id';
 const STAFF_NAME_COOKIE = 'pos_staff_name';
 
@@ -96,12 +106,31 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
       setIsValidatingCoupon(true);
       setCouponError('');
 
-      const res = await validateCoupon(couponCode) as unknown as { data?: { coupon_id?: number } };
-      if (res?.data?.coupon_id) {
-        setAppliedCoupon({ id: res.data.coupon_id, discount: subtotal * 0.1 });
-      } else {
+      const res = await validateCoupon(couponCode) as unknown as ValidateCouponResponse;
+      const coupon = res?.data;
+
+      if (!coupon?.coupon_id) {
         setCouponError('Invalid coupon');
+        setAppliedCoupon(null);
+        return;
       }
+
+      if (coupon.expire !== false) {
+        setCouponError('Coupon has expired');
+        setAppliedCoupon(null);
+        return;
+      }
+
+      if (coupon.status?.toUpperCase() === 'ACTIVE') {
+        setCouponError('Coupon has already been used');
+        setAppliedCoupon(null);
+        return;
+      }
+
+      setAppliedCoupon({
+        id: coupon.coupon_id,
+        discount: Number(coupon.coupon_discount) || 0,
+      });
     } catch (err: unknown) {
       setCouponError((err as { response?: { data?: { message?: string } } }).response?.data?.message || 'Invalid or expired coupon');
       setAppliedCoupon(null);
@@ -190,6 +219,11 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
   const handleClose = () => {
     setIsSuccess(false);
     setReceiptData(null);
+    setCouponCode('');
+    setAppliedCoupon(null);
+    setCouponError('');
+    setIsValidatingCoupon(false);
+    setPaymentMethod('CASH');
     onClose();
   };
 

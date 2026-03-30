@@ -23,7 +23,14 @@ export const createCoupon = async (campaignId: number | string) => {
   return apiClient.post('/promotion/coupon', { promotion_campain_id: campaignId });
 };
 
-export const createPartnerCoupon = async (): Promise<PartnerCouponResponse> => {
-  const response = await localApiClient.post<PartnerCouponResponse>('/api/coupons/partner');
-  return response.data;
+export const createPartnerCoupon = async (): Promise<PartnerCouponResponse | null> => {
+  try {
+    const response = await localApiClient.post<PartnerCouponResponse>('/api/coupons/partner', undefined, {
+      timeout: 30000,
+    });
+    return response.data;
+  } catch (error) {
+    console.warn('Skipping partner coupon generation:', error instanceof Error ? error.message : error);
+    return null;
+  }
 };
