@@ -1066,7 +1066,7 @@
                 "staff_name": "Somchai",
                 "phone": "0812345678",
                 "role": "admin",
-                "status": "active"
+                "status": "ACTIVE"
               }
             }
           },
@@ -1088,7 +1088,7 @@
                     "staff_name": "Somchai",
                     "phone": "0812345678",
                     "role": "admin",
-                    "status": "active"
+                    "status": "ACTIVE"
                   }
                 }
               }
