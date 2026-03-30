@@ -487,12 +487,15 @@
                   "properties": {}
                 },
                 "example": {
-                  "message": "valid coupon",
+                  "message": "expire coupon",
                   "data": {
                     "coupon_id": 1,
                     "coupon_code": "AXUUCOSA9587ASDN11",
+                    "coupon_discount": 15.0,
+                    "promotion_name": "xxxxxxxxxxx",
                     "promotion_campain_id": 1,
-                    "status": "INACTIVE"
+                    "status": "INACTIVE",
+                    "expire": true
                   }
                 }
               }

@@ -111,7 +111,11 @@ public class PromotionController extends ApiControllerSupport {
 	@PostMapping("/promotion/coupon/validate")
 	public Map<String, Object> validateCoupon(@RequestBody Map<String, Object> body) {
 		CouponEntity coupon = getCouponByCode(stringValue(body.get("coupon_code")));
-		return messageData("valid coupon", toCouponMap(coupon));
+		PromotionCampainEntity campaign = getCampaign(coupon.getPromotionCampainId());
+		if (campaign.getExpireDate() != null && campaign.getExpireDate().isBefore(java.time.LocalDate.now())) {
+			return messageData("expire coupon", toCouponValidateMap(coupon, campaign, true));
+		}
+		return messageData("valid coupon", toCouponValidateMap(coupon, campaign, false));
 	}
 
 	private PromotionCampainEntity getCampaign(Integer id) {
@@ -144,9 +148,12 @@ public class PromotionController extends ApiControllerSupport {
 	}
 
 	private Map<String, Object> toCouponMap(CouponEntity entity) {
+		PromotionCampainEntity campaign = getCampaign(entity.getPromotionCampainId());
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
 		data.put("coupon_id", entity.getCouponId());
 		data.put("coupon_code", entity.getCouponCode());
+		data.put("coupon_discount", campaign.getDiscount());
+		data.put("promotion_name", campaign.getName());
 		data.put("promotion_campain_id", entity.getPromotionCampainId());
 		data.put("status", entity.getStatus());
 		return data;
@@ -156,6 +163,18 @@ public class PromotionController extends ApiControllerSupport {
 		Map<String, Object> data = toCouponMap(entity);
 		data.put("created_at", entity.getCreatedAt());
 		data.put("used_at", entity.getUsedAt());
+		return data;
+	}
+
+	private Map<String, Object> toCouponValidateMap(CouponEntity entity, PromotionCampainEntity campaign, boolean expire) {
+		Map<String, Object> data = new LinkedHashMap<String, Object>();
+		data.put("coupon_id", entity.getCouponId());
+		data.put("coupon_code", entity.getCouponCode());
+		data.put("coupon_discount", campaign.getDiscount());
+		data.put("promotion_name", campaign.getName());
+		data.put("promotion_campain_id", entity.getPromotionCampainId());
+		data.put("status", entity.getStatus());
+		data.put("expire", expire);
 		return data;
 	}
 
