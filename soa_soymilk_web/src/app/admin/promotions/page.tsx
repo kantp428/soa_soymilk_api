@@ -68,7 +68,7 @@ export default function AdminPromotionsPage() {
             columns={[
               { header: 'ID', accessorKey: 'promotion_campain_id' },
               { header: 'Campaign Name', accessorKey: 'name' },
-              { header: 'Discount (%)', accessorKey: 'discount' },
+              { header: 'Discount (Bath)', accessorKey: 'discount' },
               { header: 'Expiry Date', accessorKey: 'expire_date' },
             ]}
             formFields={[
